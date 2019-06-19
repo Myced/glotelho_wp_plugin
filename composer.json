@@ -1,0 +1,16 @@
+{
+    "name": "tnced/ced_plugin",
+    "description": "Testing to build a wordpress plugin",
+    "authors": [
+        {
+            "name": "tncedric",
+            "email": "tncedric@yahoo.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "./classes"
+        }
+    }
+}

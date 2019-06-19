@@ -1,0 +1,12 @@
+Ship to zone -> Point de livraison
+Free Shipping -> Retrait en magasin
+Shipping details -> Détails de livraison
+Region -> Région
+Sélectionner la région
+Sélectionner la ville
+Sélectionner le quartier
+Aucune ville trouvée
+Aucun quartier trouvé
+Aucune zone trouvée
+Coût
+Vous devez choisir la zone de livraison
