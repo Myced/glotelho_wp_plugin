@@ -16,7 +16,7 @@ class NewMomo extends \WC_Payment_Gateway {
         $this->init_settings();
 
         $this->title 			= "MTN Mobile Money";
-        $this->description      = "Pay for your order through MTN Mobile Money in Cameroon";
+        $this->description      = "Payez votre commande par MTN Mobile Money";
 
         $this->momo_email   = $this->settings['momo_email'];
         $this->momo_number       = $this->settings['momo_number'];
@@ -73,14 +73,13 @@ class NewMomo extends \WC_Payment_Gateway {
         if ($this->description) echo wpautop(wptexturize($this->description));
         ?>
         <ol class="my-list">
-            <li>Fill your inforation requested above.</li>
-            <li>Then Enter Your MTN mobile money number</li>
-            <li>A message enter your phone asking you to dail *126# and enter your pin.</li>
-            <li>Dial *126# and enter your pin to confirm your payment</li>
-            <li>If the payment goes through, the your order will be placed.</li>
+            <li>Entrez votre numéro MTN Mobile Money dans le champ de formulaire ci-dessous</li>
+            <li>Vous recevrez un message vous demandant de composer *126# et d'entrer votre code PIN</li>
+            <li>Composez *126# et entrez votre code PIN pour confirmer votre paiement</li>
+            <li>Si le paiement est effectué, votre commande sera automatiquement validé</li>
         </ol>
 
-        <label for="">Enter Your MTN Mobile Money number</label>
+        <label for="">Entrez votre numéro MTN Mobile Money</label>
 
         <input type="text" name="gt_user_momo_number" value=""
             style="background-color: #fff; border-radius: 0px; color: #222;"required class="form-controll"
@@ -97,13 +96,13 @@ class NewMomo extends \WC_Payment_Gateway {
                 return $this->is_valid_tel($_POST['gt_user_momo_number']);
             }
             else {
-                $this->place_error("Your Phone number is required");
+                $this->place_error("Numéro de téléphone requis");
                 return false;
             }
         }
 
         //the
-        $this->place_error("The Phone Number is required");
+        $this->place_error("Numéro de téléphone requis");
         return false;
     }
 
@@ -113,14 +112,14 @@ class NewMomo extends \WC_Payment_Gateway {
 
         if(strlen($tel) !== 9)
         {
-            $this->place_error("Telephone Number must be 9 digits");
+            $this->place_error("Le numéro de téléphone doit contenir 9 chiffres");
             return false;
         }
         else {
             //check that it contians only numbers
             if(!is_numeric($tel))
             {
-                $this->place_error("Telephone number must contain only digits");
+                $this->place_error("Le numéro de téléphone ne doit contenir que des chiffres");
                 return false;
             }
         }
@@ -153,7 +152,7 @@ class NewMomo extends \WC_Payment_Gateway {
     **/
     function receipt_page( $order ) {
 
-        echo '<p>'.__('Thank you for your order, You will be contacted soon', 'woocommerce').'</p>';
+
 
     }
 
@@ -190,16 +189,16 @@ class NewMomo extends \WC_Payment_Gateway {
             $parser = new \App\Momo\MomoParser($response);
             $parser->parse();
 
+            //log the result
+            $user_id = get_current_user_id();
+            $user_name  = $_POST['billing_first_name'] . ' ' . $_POST['billing_last_name'];
+
+            //log the result to the database
+            $parser->logPayout($order->get_id(), $user_id, $user_name, $this->momo_email);
+
             //now check if the request was Successful
             if($parser->success == true)
             {
-                //log the result
-                $user_id = get_current_user_id();
-                $user_name  = $_POST['billing_first_name'] . ' ' . $_POST['billing_last_name'];
-
-                //log the result to the database
-                $parser->logPayout($order->get_id(), $user_id, $user_name, $this->momo_email);
-
                 $this->complete_order($order);
                 return $this->send_success_response($order);
             }
@@ -252,9 +251,9 @@ class NewMomo extends \WC_Payment_Gateway {
     function thankyou_page() {
         ?>
         <p>
-            Thanks your MTN Mobile Money payment has been received.
+            Merci, votre payement mobile money a été effectué avec succès.
             <br>
-            Your order is being processed and you will be contacted soon.
+            Votre commande est en cours de traitement et nous vous contacterons d'ici peu
         </p>
         <?php
 

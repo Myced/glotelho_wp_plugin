@@ -56,31 +56,31 @@ class MomoParser
         if($code == "01")
         {
             $this->success = true;
-            $this->message = "Payment Successful";
+            $this->message = "Paiement effectué";
         }
         elseif($code == "515")
         {
             $this->success = false;
-            $this->message = "This number does not have a mobile money account";
+            $this->message = "Le numéro de téléphone que vous avez entré ne possède pas de compte mobile money";
         }
         elseif($code == "529")
         {
             $this->success = false;
-            $this->message = "You don't have enough money in your account. Please Recharge";
+            $this->message = "Vous n'avez assez d'argent sur votre compte. Rechargez votre compte et réessayez";
         }
         elseif($code == "100")
         {
             $this->success = false;
-            $this->message = "Transaction Failed. Declined by user.";
+            $this->message = "Echec de transaction";
         }
         elseif($code == "103")
         {
             $this->success = false;
-            $this->message = "You did not approve the payment. Payment Timed out";
+            $this->message = "Paiement non approuvé";
         }
         else{
             $this->success = false;
-            $this->message = "Unknown Response";
+            $this->message = "Une erreur est survenue. Veuillez recommencer SVP";
         }
     }
 
@@ -100,6 +100,7 @@ class MomoParser
             "receiver_number" => $this->receiverNumber,
             "momo_email" => $momoEmail,
             "status_code" => $this->statusCode,
+            "message" => $this->message,
             "transaction_id" => $this->transactionID,
             "processing_number" => $this->processingNumber,
             "raw_response" => $this->response,

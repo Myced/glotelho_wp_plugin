@@ -52,26 +52,24 @@ class MomoProcessor
             'filename'    => null
         );
 
-        // $raw_response = wp_remote_get( $this->url, $args );
+        $raw_response = wp_remote_get( $this->url, $args );
 
-        // $response = $raw_response['body'];
-
-        // $response = @file_get_contents($this->url);
-
-        // $response = $this->makeRequest();
+        $response = $raw_response['body'];
 
 
-        $response = '{"ReceiverNumber":"237673901939","StatusCode":"01",
-                    "Amount":"80500","TransactionID":"12343433",
-                    "ProcessingNumber":"152951799903033605854680843",
-                    "OpComment":"Transaction failed",
-                    "StatusDesc":"TARGET_AUTHORIZATION_ERROR",
-                    "SenderNumber":"237673901939",
-                    "OperationType":"RequestPaymentIndividual"}';
+
+        // $response = '{"ReceiverNumber":"237673901939","StatusCode":"01",
+        //             "Amount":"80500","TransactionID":"12343433",
+        //             "ProcessingNumber":"152951799903033605854680843",
+        //             "OpComment":"Transaction failed",
+        //             "StatusDesc":"TARGET_AUTHORIZATION_ERROR",
+        //             "SenderNumber":"237673901939",
+        //             "OperationType":"RequestPaymentIndividual"}';
 
         $this->response = $response;
 
         return $response;
+
     }
 
     protected function makeRequest()
