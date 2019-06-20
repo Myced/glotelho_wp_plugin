@@ -56,6 +56,11 @@ class Checkout
             {
 
             }
+
+            .m-t-10
+            {
+                margin-top: 10px;
+            }
         </style>
         <?php
     }
@@ -83,14 +88,13 @@ class Checkout
 
 
         <br><br>
-        <div id="le-zone" class="white-popup mfp-hide">
+        <div id="le-zone" class="white-popup mfp-hide" style="z-index: 8888;">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2 class="page-header">Choisir Votre zone</h2>
+                        <h2 class="page-header m-t-10" >Choisir Votre zone</h2>
                     </div>
                 </div>
 
-                <br><br>
                 <div class="row">
                     <div class="col-md-6 col-sm-12 col-xs-12">
 
@@ -303,7 +307,7 @@ class Checkout
                 <div class="row">
                     <div class="col-md-12">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-flat btn-warning" name="button"
+                            <button type="button" class="btn btn-flat btn-primary" name="button"
                                 id="close-btn">
                                 Choisir Cette Zone
                             </button>

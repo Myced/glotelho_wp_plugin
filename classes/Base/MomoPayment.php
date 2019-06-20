@@ -59,7 +59,7 @@ class NewMomo extends \WC_Payment_Gateway {
     **/
     public function admin_options() {
 
-        echo '<h3>'.__('TranzCore Payments', 'woocommerce').'</h3>';
+        echo '<h3>'.__('MTN Mobile Money Settings', 'woocommerce').'</h3>';
         echo '<table class="form-table">';
 
         $this->generate_settings_html();
@@ -72,8 +72,18 @@ class NewMomo extends \WC_Payment_Gateway {
     function payment_fields() {
         if ($this->description) echo wpautop(wptexturize($this->description));
         ?>
+        <ol class="my-list">
+            <li>Fill your inforation requested above.</li>
+            <li>Then Enter Your MTN mobile money number</li>
+            <li>A message enter your phone asking you to dail *126# and enter your pin.</li>
+            <li>Dial *126# and enter your pin to confirm your payment</li>
+            <li>If the payment goes through, the your order will be placed.</li>
+        </ol>
+
         <label for="">Enter Your MTN Mobile Money number</label>
-        <input type="text" name="gt_user_momo_number" value="" required class="form-controll"
+
+        <input type="text" name="gt_user_momo_number" value=""
+            style="background-color: #fff; border-radius: 0px; color: #222;"required class="form-controll"
             placeholder="Enter your phone number">
         <?php
     }

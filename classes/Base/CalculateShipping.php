@@ -51,7 +51,7 @@ class CalculateShipping
                                 echo $_SESSION[self::SHIPPING_COST_MESSAGE];
                                 ?>
                                 <button type="button" name="button"
-                                    class="button alt btn-flat mini_popup">
+                                    class="button btn-primary btn-flat mini_popup">
                                     Changer votre zone
                                 </button>
                                 <?php
@@ -138,7 +138,7 @@ class CalculateShipping
 
     function show_zone_in_admin_page_billing($order)
     {
-        $zone_id = get_post_meta( $order->id, $this->order_zone, true );
+        $zone_id = get_post_meta( $order->get_id(), $this->order_zone, true );
 
         if($zone_id != "")
         {
@@ -186,8 +186,11 @@ class CalculateShipping
             {
                 $selected_zone = $this->get_selected_zone($_POST['post_data']);
             }
-            else {
+            elseif(isset($_POST['gt_zone'])) {
                 $selected_zone = $_POST['gt_zone'];
+            }
+            else {
+                $selected_zone = "-01";
             }
 
             // echo $selected_zone; die();

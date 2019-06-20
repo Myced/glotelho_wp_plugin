@@ -7,7 +7,7 @@ class EnqueueFrontStyles
 
     public function register()
     {
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles'], 9000);
     }
 
     public function enqueue_styles()

@@ -2,6 +2,30 @@ body
 {
     margin: 10px;
 }
+.my-list
+{
+
+}
+
+#payment .payment_methods li > div.payment_box > ol
+{
+    margin-left: 20px;
+    padding: 5px;
+    font-style: italic;
+}
+
+#payment .payment_methods li > div.payment_box > ol > li
+{
+    list-style: decimal !important;
+    padding: 5px !important;
+}
+
+ol.my-list > li
+{
+    padding: 5px;
+    list-style: decimal;
+}
+
 .main
 {
     margin-top: 20px;

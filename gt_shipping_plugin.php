@@ -12,6 +12,7 @@ Author: Equip Technique Glotelho
 Author URI: https://glotelho.cm
 Licence: GPLv2 or later
 Text Domain: GT Plugin.
+Domain Path: /languages
 **/
 
 //forbid direct script access
