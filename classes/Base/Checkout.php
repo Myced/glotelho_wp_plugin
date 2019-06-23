@@ -91,7 +91,7 @@ class Checkout
         <div id="le-zone" class="white-popup mfp-hide" style="z-index: 8888;">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2 class="page-header m-t-10" >Choisir Votre zone</h2>
+                        <h2 class="page-header m-t-10" >Choisir Votre Zone</h2>
                     </div>
                 </div>
 
@@ -257,7 +257,7 @@ class Checkout
                                 Détails de zone
                             </p>
 
-                            <h4>
+                            <h4 class="checkout">
                                 <strong>Zone: </strong>
 
                                 <?php if ($this->zone_cookie_set): ?>
@@ -273,7 +273,7 @@ class Checkout
 
                             </h4>
 
-                            <h4>
+                            <h4 class="checkout">
                                 <strong>Coût: </strong>
 
                                 <?php if ($this->zone_cookie_set): ?>
@@ -285,7 +285,7 @@ class Checkout
                             </h4>
 
                             <br>
-                            <h4> <strong>Détails</strong> </h4>
+                            <h4 class="checkout"> <strong>Détails</strong> </h4>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div id="description">
@@ -306,7 +306,7 @@ class Checkout
                 <br><br>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="pull-right">
+                        <div class="float-right">
                             <button type="button" class="btn btn-flat btn-primary" name="button"
                                 id="close-btn">
                                 Choisir Cette Zone

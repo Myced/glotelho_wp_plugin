@@ -1,4 +1,18 @@
+h4.checkout
+{
+    font-size: 1.2em;
+}
 
+h2.page-header
+{
+    font-size: 1.5em;
+    font-weight: bold;
+    border-bottom: 1px solid #c4c4c4;
+}
+.float-right
+{
+    float: right;
+}
 .my-list
 {
 
