@@ -33,7 +33,7 @@ jQuery(document).ready(function(){
         jQuery.ajax({
             url : ajaxurl,
             method : "post",
-            data : { region_id : region_id, action: "cedplugin_get_towns" },
+            data : { region_id : region_id, action: "gtplugin_get_towns" },
             error : function(error)
             {
                 console.log(error.responseText);
@@ -181,7 +181,7 @@ function fetchQuarters(town_id)
     jQuery.ajax({
         url : ajaxurl,
         method : "post",
-        data : { town_id : town_id, action: "cedplugin_get_quarters" },
+        data : { town_id : town_id, action: "gtplugin_get_quarters" },
         error : function(error)
         {
             console.log(error.responseText);
@@ -227,7 +227,7 @@ function fetchZones(quarter_id)
     jQuery.ajax({
         url : ajaxurl,
         method : "post",
-        data : { quarter_id : quarter_id, action: "cedplugin_get_zones" },
+        data : { quarter_id : quarter_id, action: "gtplugin_get_zones" },
         error : function(error)
         {
             console.log(error.responseText);
@@ -249,7 +249,7 @@ function fetchAndSaveZones(quarter_id)
     jQuery.ajax({
         url : ajaxurl,
         method : "post",
-        data : { quarter_id : quarter_id, action: "cedplugin_get_zones" },
+        data : { quarter_id : quarter_id, action: "gtplugin_get_zones" },
         error : function(error)
         {
             console.log(error.responseText);

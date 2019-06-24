@@ -9,18 +9,25 @@ class CheckoutAjax
 
     public function register()
     {
+        //add a header for CORS
+        add_action('init', [$this,'add_cors_http_header']);
+
         //get the towns from a particular region
-        add_action( 'wp_ajax_cedplugin_get_towns',[$this, 'getTowns'] );
-        add_action( 'wp_ajax_nopriv_cedplugin_get_towns', [$this, 'getTowns']);
+        add_action( 'wp_ajax_gtplugin_get_towns',[$this, 'getTowns'] );
+        add_action( 'wp_ajax_nopriv_gtplugin_get_towns', [$this, 'getTowns']);
 
         //add actions to get the quarters.
-        add_action( 'wp_ajax_cedplugin_get_quarters',[$this, 'getQuarters'] );
-        add_action( 'wp_ajax_nopriv_cedplugin_get_quarters', [$this, 'getQuarters']);
+        add_action( 'wp_ajax_gtplugin_get_quarters',[$this, 'getQuarters'] );
+        add_action( 'wp_ajax_nopriv_gtplugin_get_quarters', [$this, 'getQuarters']);
 
         //get the zones from here
-        add_action( 'wp_ajax_cedplugin_get_zones',[$this, 'getZones'] );
-        add_action( 'wp_ajax_nopriv_cedplugin_get_zones', [$this, 'getZones']);
+        add_action( 'wp_ajax_gtplugin_get_zones',[$this, 'getZones'] );
+        add_action( 'wp_ajax_nopriv_gtplugin_get_zones', [$this, 'getZones']);
 
+    }
+
+    public function add_cors_http_header(){
+        header("Access-Control-Allow-Origin: *");
     }
 
     public function getTowns()
