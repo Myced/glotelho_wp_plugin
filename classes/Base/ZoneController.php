@@ -138,8 +138,9 @@ class ZoneController
 				<div class="ui-toggle inline">
                     <input type="checkbox" id="gt_plugin_zone_active_status"
                         name="gt_plugin_zone_active_status" value="1"
-                        <?php echo $active ? 'checked' : ''; ?>>
-					<label for="cedplugin_zone_active_status"><div></div></label>
+                        <?php echo $active ? 'checked' : ''; ?>
+                        <?php if($active == false) echo "checked"; ?> >
+					<label for="gt_plugin_zone_active_status"><div></div></label>
 				</div>
 			</div>
 		</div>

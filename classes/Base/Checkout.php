@@ -89,6 +89,10 @@ class Checkout
 
         <br><br>
         <div id="le-zone" class="white-popup mfp-hide" style="z-index: 8888;">
+            <div class="" id="gt-loading-image">
+                &nbsp;
+            </div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <h2 class="page-header m-t-10" >Choisir Votre Zone</h2>
@@ -250,7 +254,7 @@ class Checkout
                 <!-- end of next row -->
 
                 <!-- details row  -->
-                <div class="row">
+                <div class="row <?php if(empty($this->zone_id)) { echo "hide"; } ?>" id="zone_hide">
                     <div class="col-md-12">
                         <div class="details">
                             <p>
@@ -339,10 +343,10 @@ class Checkout
                 //get the zone data and set it
                 $data = $this->getZoneData($zone_id);
 
-                $this->region_id = $data['region'];
-                $this->town_id = $data['town'];
-                $this->quarter_id = $data['quarter'];
-                $this->price = $data['price'];
+                $this->region_id = isset($data['region']) ? $data['region'] : '';
+                $this->town_id = isset($data['town']) ? $data['town'] : '';
+                $this->quarter_id = isset($data['quarter']) ? $data['quarter'] : '';
+                $this->price = isset($data['price']) ? $data['price'] : '';
             }
         }
     }

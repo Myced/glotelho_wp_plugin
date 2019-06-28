@@ -1,3 +1,4 @@
+// var ajaxurl = "https://glotelho.cm/wp-admin/admin-ajax.php";
 var ajaxurl = "http://localhost/glotelho/wp-admin/admin-ajax.php";
 
 //variable to hold the actual zone for livraison
@@ -30,6 +31,8 @@ jQuery(document).ready(function(){
         //get the selected region and get the towns in that region
         var region_id = jQuery(this).val();
 
+        page_loading_on();
+
         jQuery.ajax({
             url : ajaxurl,
             method : "post",
@@ -38,9 +41,12 @@ jQuery(document).ready(function(){
             {
                 console.log(error.responseText);
                 alert("Encountered an error");
+                page_loading_off();
             },
             success: function(data)
             {
+                page_loading_off();
+
                 var towns  = jQuery.parseJSON(data);
 
                 showTowns(towns);
@@ -162,6 +168,10 @@ function showTowns(towns)
         $townSelect.append(option);
     }
     else {
+
+        //append the first select your zone option
+        $townSelect.append(getSelectOption("Ville"));
+
         for(var i = 0; i < towns.length; i++)
         {
             var currentTown = towns[i];
@@ -177,6 +187,8 @@ function showTowns(towns)
 
 function fetchQuarters(town_id)
 {
+    page_loading_on();
+
     //get the town in relation.
     jQuery.ajax({
         url : ajaxurl,
@@ -184,10 +196,12 @@ function fetchQuarters(town_id)
         data : { town_id : town_id, action: "gtplugin_get_quarters" },
         error : function(error)
         {
+            page_loading_off();
             console.log(error.responseText);
         },
         success: function(data)
         {
+            page_loading_off();
             var quarters  = jQuery.parseJSON(data);
             showQuarters(quarters);
         }
@@ -208,6 +222,10 @@ function showQuarters(quarters)
         $quartersElemement.append(option);
     }
     else {
+
+        //append the first select your zone option
+        $quartersElemement.append(getSelectOption("Quartier"));
+
         for(var i = 0; i < quarters.length; i++)
         {
             var currentQuarter = quarters[i];
@@ -223,6 +241,8 @@ function showQuarters(quarters)
 
 function fetchZones(quarter_id)
 {
+    page_loading_on();
+
     //get the town in relation.
     jQuery.ajax({
         url : ajaxurl,
@@ -230,10 +250,12 @@ function fetchZones(quarter_id)
         data : { quarter_id : quarter_id, action: "gtplugin_get_zones" },
         error : function(error)
         {
+            page_loading_off();
             console.log(error.responseText);
         },
         success: function(data)
         {
+            page_loading_off();
             var all_zones  = jQuery.parseJSON(data);
 
             zones = all_zones;
@@ -245,6 +267,7 @@ function fetchZones(quarter_id)
 
 function fetchAndSaveZones(quarter_id)
 {
+    page_loading_on();
     //get the town in relation.
     jQuery.ajax({
         url : ajaxurl,
@@ -252,10 +275,12 @@ function fetchAndSaveZones(quarter_id)
         data : { quarter_id : quarter_id, action: "gtplugin_get_zones" },
         error : function(error)
         {
+            page_loading_off();
             console.log(error.responseText);
         },
         success: function(data)
         {
+            page_loading_off();
             var all_zones  = jQuery.parseJSON(data);
 
             zones = all_zones;
@@ -276,6 +301,10 @@ function showZones(zones)
         $zonesElemement.append(option);
     }
     else {
+
+        //append the first select your zone option
+        $zonesElemement.append(getSelectOption("Zone"));
+
         for(var i = 0; i < zones.length; i++)
         {
             var currentZone = zones[i];
@@ -315,9 +344,29 @@ function displayZoneInfo(zone)
     $cost = jQuery("#cost");
     $description = jQuery("#description");
 
+    showZoneDetails();
+
     jQuery("#zone_title").text(zone.post_title);
     $cost.text(formatMoney(zone.post_author, 0));
     $description.html(zone.post_content);
+}
+
+function showZoneDetails()
+{
+    $zone_id = jQuery("#zone_hide");
+
+    if($zone_id.hasClass("hide"))
+        $zone_id.removeClass('hide');
+}
+
+//this function returns the string for a select option
+//which say select your "option name"
+function getSelectOption(name)
+{
+    var option = "<option value=\"-1\"> Sélectionner votre "
+                + name + "</option>";
+
+    return option;
 }
 
 
@@ -333,3 +382,12 @@ function formatMoney(n, c, d, t) {
             + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t)
             + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
+
+function page_loading_on()
+{
+    jQuery('#gt-loading-image').addClass("gt_loading");
+}
+
+function page_loading_off(){
+    jQuery('#gt-loading-image').removeClass("gt_loading");
+}

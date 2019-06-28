@@ -78,7 +78,7 @@ class CalculateShipping
             ?>
             <tr class="cart-subtotal">
     			<th>
-                    <?php echo $this->get_selected_shipping_method(); ?>
+                    <?php echo "Livraison:" . $this->get_selected_shipping_method(); ?>
                 </th>
     			<td>
                     <span class="woocommerce-Price-amount amount">
