@@ -41,7 +41,7 @@ class CalculateShipping
                 ?>
                 <tr class="cart-subtotal">
         			<th>
-                        Zone:- &nbsp; &nbsp; &nbsp; <?php echo $_SESSION[self::SHIPPING_DESTINATION]; ?>
+                        &nbsp; &nbsp; &nbsp; <?php echo $_SESSION[self::SHIPPING_DESTINATION]; ?>
                     </th>
         			<td>
                         <span class="woocommerce-Price-amount amount">
@@ -51,7 +51,7 @@ class CalculateShipping
                                 echo $_SESSION[self::SHIPPING_COST_MESSAGE];
                                 ?>
                                 <button type="button" name="button"
-                                    class="button btn-primary btn-flat mini_popup">
+                                    class="button btn-primary btn-small btn-flat mini_popup">
                                     Changer votre zone
                                 </button>
                                 <?php
@@ -59,7 +59,7 @@ class CalculateShipping
                             else {
                                 ?>
                                 <button type="button" name="button"
-                                    class="button alt btn-flat mini_popup">
+                                    class="button btn-primary btn-small btn-flat mini_popup">
                                     Choisir la Zone
                                 </button>
                                 <?php
@@ -140,7 +140,9 @@ class CalculateShipping
     {
         $zone_id = get_post_meta( $order->get_id(), $this->order_zone, true );
 
-        if($zone_id != "")
+        $shipping_method = $order->get_shipping_method();
+
+        if(strpos($shipping_method, 'livraison ') != false)
         {
             $zone = $this->get_zone($zone_id);
             $price = $this->get_shipping_cost($zone_id);
@@ -153,6 +155,7 @@ class CalculateShipping
                     . ' FCFA)'
                     . '</p>';
             echo '<br>';
+
         }
         else {
             echo '<p><strong>'.__('Livraison')
@@ -218,7 +221,7 @@ class CalculateShipping
                 //message displayed to user
                 if(is_checkout())
                 {
-                    $_SESSION[self::SHIPPING_DESTINATION] = "Sélectionner votre point de livraison";
+                    $_SESSION[self::SHIPPING_DESTINATION] = "Où voulez-vous &ecirc;tre livré ?";
                 }
                 else {
                     $_SESSION[self::SHIPPING_DESTINATION] = "";

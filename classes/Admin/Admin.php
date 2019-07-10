@@ -38,11 +38,11 @@ class Admin
     {
         $pages = [
             [
-                "title" => 'Glotelho Settings',
-                'menu_title' => "Glotelho Settings",
+                "title" => 'Glotelho Report',
+                'menu_title' => "Glotelho Report",
                 'capability' => "manage_options",
                 'slug' => "gt_plugin_settings",
-                "callback" => ['\App\Base\PagesController', 'admin_dashboard'],
+                "callback" => ['\App\Reports\ReportsController', 'admin_dashboard'],
                 "icon" => "",
                 "position" => null
             ]
@@ -58,19 +58,19 @@ class Admin
 
             [
                 "parent_slug" => $parent_slug,
-                "title" => 'Regions',
-                'menu_title' => "Regions",
+                "title" => 'Orders Report',
+                'menu_title' => "Orders Report",
                 'capability' => "manage_options",
-                'slug' => "gt_regions_settings",
-                "callback" => ['\App\Base\PagesController', 'regions']
+                'slug' => "gt_orders_report",
+                "callback" => ['\App\Reports\OrderReportController', 'show_orders']
             ],
             [
                 "parent_slug" => $parent_slug,
-                "title" => 'Towns',
-                'menu_title' => "Towns",
+                "title" => 'Operations Report',
+                'menu_title' => "Operations Report",
                 'capability' => "manage_options",
-                'slug' => "gt_towns_settings",
-                "callback" => ['\App\Base\PagesController', 'towns']
+                'slug' => "gt_operations_report",
+                "callback" => ['\App\Reports\OperationsReportController', 'show_report']
             ]
         ];
     }

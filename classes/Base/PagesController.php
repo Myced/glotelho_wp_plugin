@@ -4,7 +4,7 @@ namespace App\Base;
 
 class PagesController
 {
-    public function admin_dashboard()
+    public static function admin_dashboard()
     {
         return require_once BASE_DIRECTORY . '/templates/admin_dashboard.php';
     }

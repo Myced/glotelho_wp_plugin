@@ -71,16 +71,22 @@ class TownController
     public function edit_form_fields($term = null, $tt_id = null)
     {
 
-        $term_id = $term->term_id;
-        $key = "region_id";
+        if($term instanceof \WP_Term)
+        {
+            $term_id = $term->term_id;
+            $key = "region_id";
 
-        $unique = true;
+            $unique = true;
 
-        $selected_region = $region = get_term_meta($term_id, $key)[0];
+            $selected_region = $region = get_term_meta($term_id, $key)[0];
+        }
+        else {
+            $selected_region = "-1";
+        }
 
         $regions = get_terms('zone_region',
             array(
-            'hide_empty' => false,
+                'hide_empty' => false,
             )
         );
 

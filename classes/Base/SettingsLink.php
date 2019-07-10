@@ -24,7 +24,7 @@ class SettingsLink
 
     public function settings_link($links)
     {
-        $settings_link = '<a href="admin.php?page=ced_plugin_settings">Settings</a>';
+        $settings_link = '<a href="admin.php?page=gt_plugin_settings">Settings</a>';
 
         //add it to the array of links
         array_push($links, $settings_link);

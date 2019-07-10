@@ -168,9 +168,6 @@ class NewMomo extends \WC_Payment_Gateway {
 
         $amount = $order->get_total();
 
-        // Mark as on-hold (we're awaiting the cheque)
-        $order->update_status('on-hold', __( 'Awaiting MTN Mobile Money payment', 'woocommerce' ));
-
         //since the telephone has passed validation, make a mobile money payment
         $momoProcessor = new \App\Momo\MomoProcessor($tel, $amount, $this->momo_email);
 
@@ -180,6 +177,7 @@ class NewMomo extends \WC_Payment_Gateway {
 
         if($response == false)
         {
+            $this->delete_order($order_id);
             $this->place_error("Sorry we are having trouble processing payments at this time");
             return $this->send_error_response();
         }
@@ -204,12 +202,18 @@ class NewMomo extends \WC_Payment_Gateway {
             }
             else {
                 //send an error message
+                $this->delete_order($order_id);
                 $this->place_error($parser->message);
                 return $this->send_error_response();
             }
         }
 
 
+    }
+
+    private function delete_order($order_id)
+    {
+        wp_delete_post($order_id,true);
     }
 
     private function complete_order($order)

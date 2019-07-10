@@ -82,14 +82,21 @@ class QuarterController
     public function edit_form_fields($term = null, $tt_id = null)
     {
 
-        $term_id = $term->term_id;
-        $keyRegion = "region_id";
-        $keyTown = "town_id";
+        if($term instanceof \WP_Term)
+        {
+            $term_id = $term->term_id;
+            $keyRegion = "region_id";
+            $keyTown = "town_id";
 
-        $unique = true;
+            $unique = true;
 
-        $selected_region = $region = get_term_meta($term_id, $keyRegion)[0];
-        $selected_town = get_term_meta($term_id, $keyTown)[0];
+            $selected_region = $region = get_term_meta($term_id, $keyRegion)[0];
+            $selected_town = get_term_meta($term_id, $keyTown)[0];
+        }
+        else {
+            $selected_region = '-1';
+            $selected_town = '-1';
+        }
 
 
         $regions = get_terms('zone_region',

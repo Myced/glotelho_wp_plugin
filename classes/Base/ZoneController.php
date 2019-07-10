@@ -53,7 +53,6 @@ class ZoneController
     public function render_features_box($post)
 	{
 		wp_nonce_field( 'gt_plugin_zone', 'gt_plugin_zone_nonce' );
-
         //we need to get taxonomies for regions, towns and quarters
 
         //get the list of all the regions, towns and quarters
