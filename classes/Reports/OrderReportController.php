@@ -2,7 +2,7 @@
 namespace App\Reports;
 
 use App\Reports\OrderStatus;
-use App\Reports\OrderReportManager;
+use App\Reports\Managers\OrderReportManager;
 
 class OrderReportController
 {

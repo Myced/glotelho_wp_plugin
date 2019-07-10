@@ -1,12 +1,9 @@
 <?php
-namespace App\Reports;
-
-// include_once plugins_url() . '/woocommerce/includes/admin/reportss/class-wc-admin-report.php';
+namespace App\Reports\Managers;
 
 use App\Reports\OrderStatus;
 use App\Traits\ReportsTrait;
 
-use WC_Admin_Report;
 
 class ReportsManager
 {

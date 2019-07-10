@@ -19,10 +19,6 @@ trait ReportsTrait
                     THEN wp_postmeta.meta_value ELSE NULL END) AS shipping,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_payment_method')
                     THEN wp_postmeta.meta_value ELSE NULL END) AS payment_method,
-                MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_last_name')
-                    THEN wp_postmeta.meta_value ELSE NULL END) AS last_name,
-                MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_phone')
-                    THEN wp_postmeta.meta_value ELSE NULL END) AS tel,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
                     THEN wp_postmeta.meta_value ELSE NULL END) AS order_data
 

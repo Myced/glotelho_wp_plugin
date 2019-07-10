@@ -71,6 +71,22 @@ class Admin
                 'capability' => "manage_options",
                 'slug' => "gt_operations_report",
                 "callback" => ['\App\Reports\OperationsReportController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
+                "title" => 'Categories Report',
+                'menu_title' => "Categories Report",
+                'capability' => "manage_options",
+                'slug' => "gt_categories_report",
+                "callback" => ['\App\Reports\CategoriesReportController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
+                "title" => 'Monthly Report',
+                'menu_title' => "Monthly Report",
+                'capability' => "manage_options",
+                'slug' => "gt_monthly_report",
+                "callback" => ['\App\Reports\MonthlyReportController', 'show_report']
             ]
         ];
     }

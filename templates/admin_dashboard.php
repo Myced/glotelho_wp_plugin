@@ -241,7 +241,7 @@ else {
             <!-- AREA CHART -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Area Chart</h3>
+                        <h3 class="box-title">Orders Income Chart</h3>
                     </div>
 
                     <div class="box-body chart-responsive">

@@ -1,5 +1,5 @@
 <?php
-namespace App\Reports;
+namespace App\Reports\Managers;
 
 use App\Reports\OrderStatus;
 

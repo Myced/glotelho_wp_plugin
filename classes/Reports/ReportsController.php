@@ -1,7 +1,7 @@
 <?php
 namespace App\Reports;
 
-use App\Reports\ReportsManager;
+use App\Reports\Managers\ReportsManager;
 
 class ReportsController
 {

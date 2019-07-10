@@ -50,7 +50,7 @@ class OrderMetaBox
 
             <select class="form-controll" name="gt_seller" id="gt_plugin_seller"
                 style="width: 100px; ">
-                <option value="11">Select Seller</option>
+                <option value="-1">Select Seller</option>
 
                 <?php foreach ($this->getSellers() as $seller): ?>
                     <option value="<?php echo $seller->term_id; ?>"

@@ -26,6 +26,60 @@ jQuery(document).ready(function($){
     var barData = $.parseJSON($("#bar-data").val());
     var pieData = $.parseJSON($("#pie-data").val());
 
+    if(jQuery("#gt_monthly_data").val() != undefined)
+    {
+        //initaalise monthly data
+        $data = jQuery.parseJSON(jQuery("#gt_monthly_data").val());
+
+        var monthlyCount = [];
+        var monthlyIncome = [];
+
+        for(var i = 1; i <= 12; i++ )
+        {
+            var current = $data[i];
+
+            var currentMonthIncome = {
+                y: current.name,
+                a: current.total
+            }
+
+            var currentMonthCount = {
+                y: current.name,
+                a: current.count
+            }
+
+            monthlyCount.push(currentMonthCount);
+            monthlyIncome.push(currentMonthIncome);
+
+        }
+
+        //initialise the graphs.
+        //start with the count
+        new Morris.Bar({
+          element: 'sales-count-chart',
+          resize: true,
+          data: monthlyCount,
+          barColors: ['#3c8dbc'],
+          xkey: 'y',
+          ykeys: ['a'],
+          labels: ['Sales Count'],
+          hideHover: 'auto'
+        });
+
+
+        //intialise for income
+        new Morris.Bar({
+          element: 'sales-income-chart',
+          resize: true,
+          data: monthlyIncome,
+          barColors: ['#3c8dbc'],
+          xkey: 'y',
+          ykeys: ['a'],
+          labels: ['Sales Income'],
+          hideHover: 'auto'
+        });
+    }
+
     //DONUT CHART
     if(barData !== null)
     {
