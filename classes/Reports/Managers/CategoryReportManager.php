@@ -59,14 +59,20 @@ class CategoryReportManager
 
         return [
             'name' => $result[0]->post_title,
-            'cost_price' => 1000
+            'cost_price' => $result[0]->cost_price
         ];
 
     }
 
     private function getProductQuery($id)
     {
-        $sql = "SELECT `id`, `post_title` FROM `wp_posts`
+        $sql = "SELECT
+                    `id`, `post_title`,
+                    MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_cost_price')
+                        THEN wp_postmeta.meta_value ELSE NULL END) AS cost_price
+                FROM `wp_posts`
+                LEFT JOIN `wp_postmeta`
+                    ON wp_posts.ID = wp_postmeta.post_id
                 WHERE `ID` = '$id'
         ";
 

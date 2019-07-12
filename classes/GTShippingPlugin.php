@@ -28,6 +28,7 @@ class GTShippingPlugin
             \App\Base\TownController::class,
             \App\Base\RegionController::class,
             \App\Base\QuarterController::class,
+            \App\Base\AddProductCostPrice::class,
 
             //now control front end scripts
             \App\Base\EnqueueFrontStyles::class,

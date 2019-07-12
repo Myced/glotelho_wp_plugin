@@ -1,6 +1,6 @@
 <?php
 /**
-* @package Ced Plugin
+* @package GT Plugin
 **/
 
 /**
