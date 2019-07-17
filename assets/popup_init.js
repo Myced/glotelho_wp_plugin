@@ -1,5 +1,5 @@
-//var ajaxurl = "https://glotelho.cm/wp-admin/admin-ajax.php";
-var ajaxurl = "http://localhost/glotelho/wp-admin/admin-ajax.php";
+var ajaxurl = "https://glotelho.cm/wp-admin/admin-ajax.php";
+// var ajaxurl = "http://localhost/glotelho/wp-admin/admin-ajax.php";
 
 
 //variable to hold the actual zone for livraison

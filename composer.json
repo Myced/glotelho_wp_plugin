@@ -7,7 +7,9 @@
             "email": "tncedric@yahoo.com"
         }
     ],
-    "require": {},
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.8"
+    },
     "autoload": {
         "psr-4": {
             "App\\": "./classes"

@@ -91,7 +91,7 @@ class CategoryReportManager
 
         if(isset($_GET['end_date']))
         {
-            $this->end_date = $_GET['end_date'];
+            $this->end_date = $_GET['end_date'] . ' 23:59:59';
         }
         else {
             $this->end_date = date("Y-m-d h:i:s");
@@ -110,7 +110,8 @@ class CategoryReportManager
         $term_ids[]  = $category;
         $product_ids = get_objects_in_term( $term_ids, 'product_cat' );
 
-        $results = $this->get_order_report_data($this->get_args());
+        // $results = $this->get_order_report_data($this->get_args());
+        $results = $this->get_order_data($this->get_sql());
 
         foreach($results as $result)
         {
@@ -133,13 +134,13 @@ class CategoryReportManager
                 //now get the product details.
                 $product_info = $this->get_product_info($result->product_id);
 
-                $profit = ($result->item_total) - ($product_info['cost_price'] * $result->quantity);
+                $profit = ($result->item_total) - ($result->cost_price * $result->quantity);
 
 
                 $productDetails = [
                     'id' => $result->product_id,
                     'name' => $product_info['name'],
-                    'cost_price' => $product_info['cost_price'],
+                    'cost_price' => $result->cost_price,
                     'selling_price' => $result->item_total / $result->quantity,
                     'quantity' => $result->quantity,
                     'profit' => $profit
@@ -155,6 +156,70 @@ class CategoryReportManager
         return $data;
 
         //now lets process the order
+    }
+
+    private function get_sql()
+    {
+        return $sql = "SELECT
+                            order_item_meta__product_id.meta_value AS product_id,
+                            order_item_meta__qty.meta_value AS quantity,
+                            order_item_meta__line_subtotal.meta_value AS item_total,
+                            order_item_meta__gt_cost_price.meta_value AS cost_price,
+                            posts.post_date AS post_date,
+                            posts.id AS order_id
+                        FROM
+                            wp_posts AS posts
+                        INNER JOIN wp_woocommerce_order_items AS order_items
+                        ON
+                            (
+                                posts.ID = order_items.order_id
+                            )
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__product_id
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__product_id.order_item_id
+                            ) AND(
+                                order_item_meta__product_id.meta_key = '_product_id'
+                            )
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__qty
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__qty.order_item_id
+                            ) AND(
+                                order_item_meta__qty.meta_key = '_qty'
+                            )
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__line_subtotal
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__line_subtotal.order_item_id
+                            ) AND(
+                                order_item_meta__line_subtotal.meta_key = '_line_subtotal'
+                            )
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__gt_cost_price
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__gt_cost_price.order_item_id
+                            ) AND(
+                                order_item_meta__gt_cost_price.meta_key = '_gt_cost_price'
+                            )
+                        WHERE
+                            posts.post_type IN('shop_order', 'shop_order_refund') AND posts.post_status IN(
+                                'wc-completed',
+                                'wc-processing',
+                                'wc-on-hold',
+                                'wc-pending'
+                            )
+                            AND
+                                posts.post_date >= '$this->start_date'
+                            AND
+                                posts.post_date <= '$this->end_date'
+                            AND
+                                order_items.order_item_type <> 'shipping'
+                        GROUP BY
+                            ID,
+                            product_id,
+                            post_date
+                        ";
     }
 
     private function get_args()
@@ -177,6 +242,11 @@ class CategoryReportManager
                     'type'            => 'order_item_meta',
                     'function'        => '',
                     'name'            => 'item_total',
+                ),
+                '_gt_cost_price' => array(
+                    'type'            => 'order_item_meta',
+                    'function'        => '',
+                    'name'            => 'cost_price',
                 ),
                 'post_date'   => array(
                     'type'     => 'post_data',

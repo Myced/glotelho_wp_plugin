@@ -274,7 +274,7 @@ else {
                   <tr>
                     <th>S/N</th>
                     <th>Category</th>
-                    <th>No of Orders</th>
+                    <th>Qty Bought</th>
                     <th>Total</th>
                   </tr>
                   </thead>

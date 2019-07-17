@@ -13,9 +13,10 @@
                     <th>Date</th>
                     <th>Order</th>
                     <th style="width: 300px;">Product</th>
-                    <th>Quantity</th>
+                    <th style="width: 10px">Qty</th>
                     <th>Unit Cost</th>
                     <th>Selling Price</th>
+                    <th>Total</th>
                     <th>Profit <small>(Total)</small> </th>
                 </tr>
 
@@ -24,6 +25,7 @@
                 $periodQuantity = 0;
                 $periodCostPrice = 0;
                 $periodSellingPrice = 0;
+                $periodTotal = 0;
                 $periodProfits = 0;
 
                  ?>
@@ -31,13 +33,22 @@
                 <?php foreach ($data as $currentDate => $date): ?>
 
                     <?php
-                        $dateCount = count($date) + 1;
+                        $dateCount = 0;
                         $isDateRow = true;
+
+                        //set the order count
+                        foreach ($date as $order) {
+                            foreach ($order as $key => $product) {
+                                $dateCount += 1;
+                            }
+                        }
+                        ++$dateCount; // the column for totals
 
                         //get the totals
                         $quantityTotal = 0;
                         $cost_price_total = 0;
                         $selling_price_total = 0;
+                        $total_total= 0;
                         $total_profits = 0;
                     ?>
 
@@ -46,6 +57,8 @@
                         <?php
                             $isOrderRow = true;
                             $orderCount = count($order);
+
+
                         ?>
                         <?php foreach ($order as $product): ?>
                             <?php
@@ -54,11 +67,24 @@
                             $periodCostPrice += $product['cost_price'];
                             $periodSellingPrice += $product['selling_price'];
                             $periodProfits += $product['profit'];
+                            $periodTotal += $product['selling_price'] * $product['quantity'];
 
                             $quantityTotal += $product['quantity'];
                             $cost_price_total += $product['cost_price'];
                             $selling_price_total += $product['selling_price'];
+                            $total_total += $product['selling_price'] * $product['quantity'];
                             $total_profits += $product['profit'];
+
+                            //calculate the grand total only for multiple categories
+                            if($cat == '-1')
+                            {
+                                $grandQuantity += $product['quantity'];
+                                $grandCostPrice += $product['cost_price'];
+                                $grandTotalCost += $product['quantity'] * $product['cost_price'];
+                                $grandSellingPrice += $product['selling_price'];
+                                $grandTotal += $product['selling_price'] * $product['quantity'];
+                                $grandProfit += $product['profit'];
+                            }
 
                              ?>
                             <tr>
@@ -90,6 +116,7 @@
                                 <td> <?php echo $product['quantity']; ?> </td>
                                 <td> <?php echo number_format($product['cost_price']); ?> </td>
                                 <td> <?php echo number_format($product['selling_price']); ?> </td>
+                                <td> <?php echo number_format($product['quantity'] * $product['selling_price']); ?> </td>
                                 <td> <?php echo number_format($product['profit']); ?> </td>
                             </tr>
                         <?php endforeach; ?>
@@ -102,6 +129,7 @@
                         <th> <?php echo $quantityTotal; ?> </th>
                         <th> <?php echo number_format($cost_price_total); ?> </th>
                         <th> <?php echo number_format($selling_price_total); ?> </th>
+                        <th> <?php echo number_format($total_total); ?> </th>
                         <th> <?php echo number_format($total_profits); ?> </th>
                     </tr>
                 <?php endforeach; ?>
@@ -112,6 +140,7 @@
                     <th style="font-size: 18px;"> <?php echo $periodQuantity; ?> </th>
                     <th style="font-size: 18px;"> <?php echo number_format($periodCostPrice); ?> </th>
                     <th style="font-size: 18px;"> <?php echo number_format($periodSellingPrice); ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($periodTotal); ?> </th>
                     <th style="font-size: 18px;"> <?php echo number_format($periodProfits); ?> </th>
                 </tr>
 

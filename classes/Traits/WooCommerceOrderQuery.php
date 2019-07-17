@@ -3,6 +3,12 @@ namespace App\Traits;
 
 trait WooCommerceOrderQuery
 {
+    public function get_order_data($sql)
+    {
+        global $wpdb;
+
+        return $wpdb->get_results($sql);
+    }
     public function get_order_report_data( $args = array() ) {
 		global $wpdb;
 
@@ -256,7 +262,6 @@ trait WooCommerceOrderQuery
 		$query          = implode( ' ', $query );
 		$query_hash     = md5( $query_type . $query );
 		$cached_results = get_transient( strtolower( get_class( $this ) ) );
-
 
 		if ( $debug ) {
 			echo '<pre>';

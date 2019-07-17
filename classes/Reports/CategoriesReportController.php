@@ -1,14 +1,23 @@
 <?php
 namespace App\Reports;
 
+use App\Traits\ExcelTrait;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use App\Reports\Managers\CategoryReportManager;
 
 class CategoriesReportController
 {
+    use ExcelTrait;
+
     public static function show_report()
     {
         $manager = new CategoryReportManager;
-        
+
+
+        if(isset($_GET['download']))
+        {
+            $spreadsheet = new Spreadsheet;
+        }
 
         return require_once BASE_DIRECTORY . '/templates/categories_report.php';
     }
@@ -31,7 +40,6 @@ class CategoriesReportController
 
         return $categories;
     }
-
 
 }
  ?>

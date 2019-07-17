@@ -29,9 +29,12 @@ class AddProductCostPrice
 
     public function save_cost_price($post_id)
     {
-        $cost_price = $_POST['_gt_cost_price'];
+        if(isset($_POST['_gt_cost_price']))
+        {
+            $cost_price = $_POST['_gt_cost_price'];
 
-        update_post_meta( $post_id, "_gt_cost_price", $cost_price );
+            update_post_meta( $post_id, "_gt_cost_price", $cost_price );
+        }
     }
 
     public function get_old_value()

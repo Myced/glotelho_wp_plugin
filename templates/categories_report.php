@@ -17,7 +17,25 @@ else {
     $end_date = date("Y-m-d");
 }
 
+if(isset($_GET['category']))
+{
+    $cat = $_GET['category'];
+    if($cat == '-1')
+    {
+        $cat_name = "All Categories";
+    }
+    else {
+        $ct = get_term_by("id", $cat, "product_cat");
+        $cat_name = $ct->name;
+    }
+}
+
 $categories = self::getCategories();
+
+if(isset($_GET['download']))
+{
+    require_once BASE_DIRECTORY . '/templates/category_download.php';
+}
 ?>
 
 <div class="wrap">
@@ -34,16 +52,6 @@ $categories = self::getCategories();
         <?php
         if(isset($_GET['category']))
         {
-            $cat = $_GET['category'];
-            if($cat == '-1')
-            {
-                $cat_name = "All Categories";
-            }
-            else {
-                $ct = get_term_by("id", $cat, "product_cat");
-                $cat_name = $ct->name;
-            }
-
             echo ' - ' . $cat_name;
         }
          ?>
@@ -91,6 +99,14 @@ $categories = self::getCategories();
         </div>
     </div>
 
+    <?php
+    if(isset($_GET['category']))
+    {
+        //include download button
+        require BASE_DIRECTORY . '/templates/excel_download_btn.php';
+    }
+    ?>
+
     <br>
     <div class="row">
         <div class="col-md-12">
@@ -104,6 +120,13 @@ $categories = self::getCategories();
                 if($category == '-1')
                 {
                     //show the data for all categories
+                    $grandQuantity = 0;
+                    $grandCostPrice = 0;
+                    $grandTotalCost = 0;
+                    $grandSellingPrice = 0;
+                    $grandTotal = 0;
+                    $grandProfit = 0;
+
                     foreach ($categories as $cat)
                     {
                         $ct = get_term_by("id", $cat->term_id, "product_cat");
@@ -113,6 +136,9 @@ $categories = self::getCategories();
 
                         require BASE_DIRECTORY . '/templates/category_report_row.php';
                     }
+
+                    //now show the grand total space
+                    require_once BASE_DIRECTORY . '/templates/grand_total.php';
                 }
                 else {
                     $data = $manager->get_data($category);

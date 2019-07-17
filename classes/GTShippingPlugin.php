@@ -29,6 +29,8 @@ class GTShippingPlugin
             \App\Base\RegionController::class,
             \App\Base\QuarterController::class,
             \App\Base\AddProductCostPrice::class,
+            \App\Base\AfterOrderPlaced::class,
+            \App\Base\OrderCostMetabox::class,
 
             //now control front end scripts
             \App\Base\EnqueueFrontStyles::class,

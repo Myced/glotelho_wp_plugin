@@ -32,6 +32,24 @@ jQuery(document).ready(function($){
         window.location.href = finalUrl;
     });
 
+    $("#filter-operations").click(function(){
+        var url = $("#url").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+        var category = $("#gt_category option:selected").val();
+        var seller = $("#gt_seller option:selected").val();
+
+        console.log(category);
+
+        var finalUrl = url + "&start_date=" + start_date
+                            + "&end_date=" + end_date
+                            + "&category=" + category
+                            + "&seller=" + seller;
+
+        //redirec the user to the new url
+        window.location.href = finalUrl;
+    });
+
     //initialise datepicker
     //Date picker
     $('.datepicker').cdatepicker({
