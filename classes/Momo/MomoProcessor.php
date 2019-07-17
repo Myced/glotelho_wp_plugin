@@ -58,7 +58,7 @@ class MomoProcessor
 
 
 
-        // $response = '{"ReceiverNumber":"237673901939","StatusCode":"01",
+        // $response = '{"ReceiverNumber":"237673901939","StatusCode":"100",
         //             "Amount":"80500","TransactionID":"12343433",
         //             "ProcessingNumber":"152951799903033605854680843",
         //             "OpComment":"Transaction failed",

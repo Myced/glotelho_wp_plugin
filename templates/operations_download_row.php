@@ -3,7 +3,8 @@
 //add the table headings
 $headings = [
     "Date", "Order", "Product", "Quantity",
-    "Unit Cost", 'Selling Price', 'Total', "Profit"
+    "Unit Cost", 'Selling Price', 'Total', "Profit",
+    "Town"
 ];
 
 array_push($full_data, $headings);
@@ -74,7 +75,8 @@ foreach($data as $date => $dates)
                 $product['cost_price'],
                 $product['selling_price'],
                 $product['quantity'] * $product['selling_price'],
-                $product['profit']
+                $product['profit'],
+                $product['town']
             ];
 
             array_push($full_data, $row);

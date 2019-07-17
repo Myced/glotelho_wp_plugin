@@ -82,6 +82,14 @@ class Admin
             ],
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Income Report',
+                'menu_title' => "Income Report",
+                'capability' => "manage_options",
+                'slug' => "gt_income_report",
+                "callback" => ['\App\Reports\IncomeReportController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Monthly Report',
                 'menu_title' => "Monthly Report",
                 'capability' => "manage_options",

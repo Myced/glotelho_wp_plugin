@@ -113,7 +113,7 @@ class OperationsReportManager
             $this->end_date = $_GET['end_date'] . ' 23:59:59';
         }
         else {
-            $this->end_date = date("Y-m-d h:i:s");
+            $this->end_date = date("Y-m-d H:i:s");
         }
 
     }
