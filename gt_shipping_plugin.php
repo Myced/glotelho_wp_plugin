@@ -7,7 +7,7 @@
 Plugin Name: Glotelho Shipping Extension
 Plugin URI: https://glotelho.cm
 Description: This is a plugin to setup custom user checkout by zone and calculate prices based on zones
-Version: 1.1.0
+Version: 2.1.0
 Author: Equip Technique Glotelho
 Author URI: https://glotelho.cm
 Licence: GPLv2 or later
@@ -61,7 +61,7 @@ function init_payment()
 }
 
 /**
-* Add the TRANZCORE gateway to WooCommerce
+* Add the MTN Mobile Money payment gateway to WooCommerce
 **/
 function woocommerce_add_momo_gateway($methods) {
     $methods[] = 'NewMomo';
