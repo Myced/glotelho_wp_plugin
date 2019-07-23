@@ -41,6 +41,27 @@ use App\GTShippingPlugin;
 register_activation_hook(__FILE__, ['\App\Base\Activate', 'activate']);
 register_deactivation_hook(__FILE__, ['\App\Base\Deactivate', 'deactivate']);
 
+//make sure WooCommerce is installed before loading the PLUGIN.
+//this will avoid crashing the site.
+
+// if(!class_exists('\WooCommerce'))
+// {
+//     //WooCommerce plugin is active
+//
+// }
+// else {
+//     function gt_admin_notice__error()
+//     {
+//     	$class = 'notice notice-error';
+//     	$message = __( 'WooCommerce is Required to use GLotelho Plugin', 'gt_plugin' );
+//
+//     	printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+//     }
+//     add_action( 'admin_notices', 'gt_admin_notice__error' );
+//
+// }
+
+/// intialise this plugin
 if(class_exists('App\GTShippingPlugin'))
 {
     //register the plugin services
@@ -70,5 +91,7 @@ function woocommerce_add_momo_gateway($methods) {
 }
 
 add_filter('woocommerce_payment_gateways', 'woocommerce_add_momo_gateway' );
+
+
 
  ?>
