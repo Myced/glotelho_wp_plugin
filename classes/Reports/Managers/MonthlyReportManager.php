@@ -12,6 +12,8 @@ class MonthlyReportManager
     private $start_date;
     private $end_date;
 
+    private $year;
+
     private $months = [];
 
     private $items_gotten = false;
@@ -24,6 +26,7 @@ class MonthlyReportManager
         $this->wpdb = $wpdb;
 
         $this->init_months();
+        $this->year = date("Y");
 
     }
 
@@ -100,6 +103,7 @@ class MonthlyReportManager
                     AND wp_posts.post_status <> 'auto-draft'
                     AND wp_posts.post_status <> '$cancelled'
                     AND wp_posts.post_status <> '$failed'
+                    AND YEAR(wp_posts.post_date) = '$this->year'
 
                 GROUP BY wp_posts.ID
                 ORDER BY wp_posts.ID
