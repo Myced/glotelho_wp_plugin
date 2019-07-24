@@ -138,6 +138,7 @@ class CategoryReportManager
 
 
                 $productDetails = [
+                    'order_status' => $result->post_status,
                     'id' => $result->product_id,
                     'name' => $product_info['name'],
                     'cost_price' => $result->cost_price,
@@ -166,6 +167,7 @@ class CategoryReportManager
                             order_item_meta__line_subtotal.meta_value AS item_total,
                             order_item_meta__gt_cost_price.meta_value AS cost_price,
                             posts.post_date AS post_date,
+                            posts.post_status AS post_status,
                             posts.id AS order_id
                         FROM
                             wp_posts AS posts
