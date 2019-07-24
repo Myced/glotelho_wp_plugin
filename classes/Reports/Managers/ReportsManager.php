@@ -305,7 +305,7 @@ class ReportsManager
 
             foreach($order_items as $order_item)
             {
-                if(! array_key_exists($order_item->product_id, $this->order_items))
+                if(! array_key_exists($order_item->product_id, $product_ids))
                 {
                     $this->order_items[$order_item->product_id] = [
                         'count' => 0,
