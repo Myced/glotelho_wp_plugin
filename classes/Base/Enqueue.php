@@ -56,7 +56,7 @@ class Enqueue
                 wp_enqueue_script(PLUGIN_NAME . 'DatepickerJs', GT_ASSETS_URL . 'admin/plugins/datepicker/bootstrap-datepicker.js' );
                 wp_enqueue_script(PLUGIN_NAME . 'DataTableJs', GT_ASSETS_URL . 'admin/plugins/datatables/jquery.dataTables.js' );
                 wp_enqueue_script(PLUGIN_NAME . 'DatepickerBsJs', GT_ASSETS_URL . 'admin/plugins/datatables/dataTables.bootstrap.js' );
-                wp_enqueue_script(PLUGIN_NAME . 'AdminScript', GT_ASSETS_URL . 'admin/script.js' );
+                wp_enqueue_script(PLUGIN_NAME . 'AdminScript', GT_ASSETS_URL . 'admin/script2.js' );
             }
         }
 
