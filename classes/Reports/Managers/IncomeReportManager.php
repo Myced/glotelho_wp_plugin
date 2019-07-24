@@ -128,7 +128,7 @@ class IncomeReportManager
 
             //if the product name is empty and cost is null,
             //then do not add the product.
-            if($result->quantity == null || $result->selling_price == null)
+            if($result->quantity == null || $result->item_total == null)
             {
                 continue;
             }
