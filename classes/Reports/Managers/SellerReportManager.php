@@ -5,7 +5,7 @@ use App\Reports\OrderStatus;
 use App\Traits\WooCommerceOrderQuery;
 
 
-class IncomeReportManager
+class SellerReportManager
 {
 
     use WooCommerceOrderQuery;
@@ -17,6 +17,8 @@ class IncomeReportManager
 
     private $products = [];
 
+    private $result;
+
     private $items_gotten = false;
 
     function __construct()
@@ -27,7 +29,13 @@ class IncomeReportManager
         $this->wpdb = $wpdb;
 
         $this->init_dates();
+        $this->init_result();
 
+    }
+
+    public function init_result()
+    {
+        $this->results = $this->get_order_data($this->get_sql());
     }
 
     public function get_product($id)
@@ -99,15 +107,30 @@ class IncomeReportManager
 
     }
 
-    public function get_data()
+    public function get_user_data($seller)
     {
         $data = [];
 
         // $results = $this->get_order_report_data($this->get_args());
-        $results = $this->get_order_data($this->get_sql());
 
-        foreach($results as $result)
+        foreach($this->results as $result)
         {
+            //if the sellers information is not available, then
+            //don't process the current order
+            if($result->order_data == null)
+            {
+                continue;
+            }
+
+            //process the seller information
+            $sellerInfo = unserialize($result->order_data);
+
+
+            //if the seller info is not the current user
+            //then move to next
+            if($sellerInfo['gt_seller'] != $seller)
+                continue;
+
             $date = date("d/M/Y", strtotime($result->post_date));
             if(!array_key_exists($date, $data))
             {
@@ -155,14 +178,16 @@ class IncomeReportManager
 
     private function get_sql()
     {
-        return $sql = "SELECT
+        $sql = "SELECT
                             order_item_meta__product_id.meta_value AS product_id,
                             order_item_meta__qty.meta_value AS quantity,
                             order_item_meta__line_subtotal.meta_value AS item_total,
                             order_item_meta__gt_cost_price.meta_value AS cost_price,
                             posts.post_date AS post_date,
                             posts.id AS order_id,
-                            posts.post_status as order_status
+                            posts.post_status as order_status,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS order_data
                         FROM
                             wp_posts AS posts
                         INNER JOIN wp_woocommerce_order_items AS order_items
@@ -170,6 +195,8 @@ class IncomeReportManager
                             (
                                 posts.ID = order_items.order_id
                             )
+                        LEFT JOIN `wp_postmeta`
+                            ON posts.ID = wp_postmeta.post_id
                         LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__product_id
                         ON
                             (
@@ -216,6 +243,8 @@ class IncomeReportManager
                             product_id,
                             post_date
                         ";
+
+            return $sql;
 
     }
 
