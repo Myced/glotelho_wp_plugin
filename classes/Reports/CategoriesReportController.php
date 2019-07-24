@@ -46,5 +46,18 @@ class CategoriesReportController
         return OrderStatus::allNames();
     }
 
+    public static function order_status($status)
+    {
+        if($status == \App\Reports\OrderStatus::COMPLETED)
+        {
+            $statuss = '<i class="fa fa-check text-success"></i>';
+        }
+        else {
+            $statuss = '<i class="fa fa-clock text-warning"></i>';
+        }
+
+        return $statuss;
+    }
+
 }
  ?>

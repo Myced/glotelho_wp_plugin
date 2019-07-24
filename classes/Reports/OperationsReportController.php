@@ -47,5 +47,18 @@ class OperationsReportController
     {
         return get_terms("seller", ['hide_empty' => false ]);
     }
+
+    public static function order_status($status)
+    {
+        if($status == \App\Reports\OrderStatus::COMPLETED)
+        {
+            $statuss = '<i class="fa fa-check text-success"></i>';
+        }
+        else {
+            $statuss = '<i class="fa fa-clock text-warning"></i>';
+        }
+
+        return $statuss;
+    }
 }
  ?>

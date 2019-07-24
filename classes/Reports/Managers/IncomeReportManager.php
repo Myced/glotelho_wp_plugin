@@ -217,7 +217,6 @@ class IncomeReportManager
                             post_date
                         ";
 
-                var_dump($sql); die();
     }
 
 }
