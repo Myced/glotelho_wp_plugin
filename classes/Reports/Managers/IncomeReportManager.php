@@ -126,6 +126,12 @@ class IncomeReportManager
 
             $profit = ($result->item_total) - ($result->cost_price * $result->quantity);
 
+            //if the product name is empty and cost is null,
+            //then do not add the product.
+            if($result->quantity == null || $result->selling_price == null)
+            {
+                continue;
+            }
 
             $productDetails = [
                 "order_status" => $result->order_status,
