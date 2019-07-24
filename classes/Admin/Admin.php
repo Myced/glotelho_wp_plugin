@@ -40,7 +40,7 @@ class Admin
             [
                 "title" => 'Glotelho Report',
                 'menu_title' => "Glotelho Report",
-                'capability' => "manage_options",
+                'capability' => "manage_categories",
                 'slug' => "gt_plugin_settings",
                 "callback" => ['\App\Reports\ReportsController', 'admin_dashboard'],
                 "icon" => "",
@@ -60,7 +60,7 @@ class Admin
                 "parent_slug" => $parent_slug,
                 "title" => 'Orders Report',
                 'menu_title' => "Orders Report",
-                'capability' => "manage_options",
+                'capability' => "manage_categories",
                 'slug' => "gt_orders_report",
                 "callback" => ['\App\Reports\OrderReportController', 'show_orders']
             ],
@@ -68,7 +68,7 @@ class Admin
                 "parent_slug" => $parent_slug,
                 "title" => 'Operations Report',
                 'menu_title' => "Operations Report",
-                'capability' => "manage_options",
+                'capability' => "manage_categories",
                 'slug' => "gt_operations_report",
                 "callback" => ['\App\Reports\OperationsReportController', 'show_report']
             ],
@@ -76,7 +76,7 @@ class Admin
                 "parent_slug" => $parent_slug,
                 "title" => 'Categories Report',
                 'menu_title' => "Categories Report",
-                'capability' => "manage_options",
+                'capability' => "manage_categories",
                 'slug' => "gt_categories_report",
                 "callback" => ['\App\Reports\CategoriesReportController', 'show_report']
             ],
@@ -84,7 +84,7 @@ class Admin
                 "parent_slug" => $parent_slug,
                 "title" => 'Income Report',
                 'menu_title' => "Income Report",
-                'capability' => "manage_options",
+                'capability' => "manage_categories",
                 'slug' => "gt_income_report",
                 "callback" => ['\App\Reports\IncomeReportController', 'show_report']
             ],
@@ -92,7 +92,7 @@ class Admin
                 "parent_slug" => $parent_slug,
                 "title" => 'Monthly Report',
                 'menu_title' => "Monthly Report",
-                'capability' => "manage_options",
+                'capability' => "manage_categories",
                 'slug' => "gt_monthly_report",
                 "callback" => ['\App\Reports\MonthlyReportController', 'show_report']
             ]
