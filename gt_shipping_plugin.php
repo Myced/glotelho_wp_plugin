@@ -61,6 +61,10 @@ register_deactivation_hook(__FILE__, ['\App\Base\Deactivate', 'deactivate']);
 //
 // }
 
+//set the default timezone
+$timezone_identifier = "Africa/Douala";
+date_default_timezone_set ( $timezone_identifier );
+
 /// intialise this plugin
 if(class_exists('App\GTShippingPlugin'))
 {
@@ -78,8 +82,21 @@ add_action('plugins_loaded', 'init_payment');
 //intialise mobile money payment here
 function init_payment()
 {
-    require_once BASE_DIRECTORY . '/classes/Base/MomoPayment.php';
-    //end of class declaration
+    if(class_exists('\WooCommerce'))
+    {
+        require_once BASE_DIRECTORY . '/classes/Base/MomoPayment.php';
+    }
+    else {
+        function gt_admin_notice__error()
+        {
+        	$class = 'notice notice-error';
+        	$message = __( 'WooCommerce is Required to use GLotelho Plugin', 'gt_plugin' );
+
+        	printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+        }
+
+        add_action( 'admin_notices', 'gt_admin_notice__error' );
+    }
 }
 
 /**
