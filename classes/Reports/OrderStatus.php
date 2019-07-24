@@ -29,12 +29,12 @@ class OrderStatus
     {
         return [
             self::COMPLETED => 'COMPLETED',
-            self::FAILED => 'FAILED',
-            self::CANCELLED => 'CANCELLED',
             self::PROCESSING => 'PROCESSING',
             self::ON_HOLD => 'ON HOLD',
             self::PENDING => 'PENDING',
-            self::DRAFT => ''
+            self::CANCELLED => 'CANCELLED',
+            self::FAILED => 'FAILED',
+            self::DRAFT => 'DRAFT'
         ];
     }
 }

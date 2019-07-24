@@ -2,6 +2,7 @@
 namespace App\Reports;
 
 use App\Traits\ExcelTrait;
+use App\Reports\OrderStatus;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use App\Reports\Managers\CategoryReportManager;
 
@@ -12,7 +13,6 @@ class CategoriesReportController
     public static function show_report()
     {
         $manager = new CategoryReportManager;
-
 
         if(isset($_GET['download']))
         {
@@ -39,6 +39,11 @@ class CategoriesReportController
         }
 
         return $categories;
+    }
+
+    public static function orderStatuses()
+    {
+        return OrderStatus::allNames();
     }
 
 }

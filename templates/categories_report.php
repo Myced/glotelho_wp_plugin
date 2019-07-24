@@ -91,7 +91,7 @@ if(isset($_GET['download']))
             </select>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-3">
             <input type="submit" id="filter-category" class="btn btn-primary" value="Filter">
             <a href="<?php echo $defaultUrl; ?>" class="btn btn-success">
                 Reset
