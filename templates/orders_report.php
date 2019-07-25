@@ -48,6 +48,17 @@ else {
                  placeholder="End Date">
          </div>
 
+         <div class="col-md-2">
+             <select class="form-control" id="gt_order_type" >
+                 <option value="-1"
+                 <?php echo isset($_GET['order_type']) && ($_GET['order_type'] == '-1') ? 'selected' : '' ?>
+                 >Treated Today</option>
+                 <option value="1"
+                 <?php echo isset($_GET['order_type']) && ($_GET['order_type'] == '1') ? 'selected' : '' ?>
+                 >Ordered Today</option>
+             </select>
+         </div>
+
          <div class="col-md-5">
              <input type="submit" id="filter" class="btn btn-primary" value="Filter">
              <a href="<?php echo $defaultUrl; ?>" class="btn btn-success">

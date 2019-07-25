@@ -1,8 +1,7 @@
 <div class="box box-info">
     <div class="box-header with-border">
         <h3 class="box-title">
-            <?php if(isset($_GET['category'])) echo $cat_name; ?>
-            (<?php if(isset($_GET['start_date'])) echo $start_date . ' - ' . $end_date; ?>)
+            <?php if(isset($_GET['categories'])) echo $cat_name; ?>
         </h3>
     </div>
 

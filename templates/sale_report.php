@@ -1,5 +1,5 @@
 <?php
-$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_income_report";
+$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_sales_report";
 
 if(isset($_GET['start_date']))
 {
@@ -17,12 +17,32 @@ else {
     $end_date = date("Y-m-d");
 }
 
+//if the request is to download the document
+if(isset($_GET['download']))
+{
+    if($_GET['download'] == true)
+    {
+        require_once BASE_DIRECTORY . '/templates/sales_download.php';
+    }
+}
+
+function get_order_status($status)
+{
+    foreach(\App\Reports\OrderStatus::allNames() as $key => $value)
+    {
+        if($key == $status)
+            return $value;
+    }
+
+    return "";
+}
+
 
 ?>
 
 <div class="wrap">
     <h3>
-        Income Report
+        Sales Report
         (<?php
             if(isset($_GET['start_date']))
                 echo $start_date . ' - ' . $end_date;
@@ -69,6 +89,8 @@ else {
         </div>
     </div>
 
+    <?php require_once BASE_DIRECTORY . '/templates/excel_download_btn.php'; ?>
+
     <br>
     <div class="row">
         <div class="col-md-12">
@@ -88,18 +110,21 @@ else {
                                 <th>Order</th>
                                 <th style="width: 300px;">Product</th>
                                 <th style="width: 10px">Qty</th>
-                                <th>Unit Cost</th>
-                                <th>Selling Price</th>
-                                <th>Total</th>
-                                <th>Profit <small>(Total)</small> </th>
+                                <th>Unit Price (PU)</th>
+                                <th>Cost Price (PR)</th>
+                                <th>Total Price (PT)</th>
+                                <th>Profit</th>
+                                <th>Seller</th>
+                                <th>Town</th>
+                                <th>Comment</th>
                             </tr>
 
                             <?php
 
                             $periodQuantity = 0;
                             $periodCostPrice = 0;
+                            $periodTotalCost = 0;
                             $periodSellingPrice = 0;
-                            $periodTotal = 0;
                             $periodProfits = 0;
 
                              ?>
@@ -121,8 +146,8 @@ else {
                                     //get the totals
                                     $quantityTotal = 0;
                                     $cost_price_total = 0;
+                                    $total_cost_price_total = 0;
                                     $selling_price_total = 0;
-                                    $total_total= 0;
                                     $total_profits = 0;
                                 ?>
 
@@ -139,14 +164,14 @@ else {
 
                                         $periodQuantity += $product['quantity'];
                                         $periodCostPrice += $product['cost_price'];
-                                        $periodSellingPrice += $product['selling_price'];
+                                        $periodTotalCost += $product['quantity'] * $product['cost_price'];
+                                        $periodSellingPrice += $product['product_total'];
                                         $periodProfits += $product['profit'];
-                                        $periodTotal += $product['selling_price'] * $product['quantity'];
 
                                         $quantityTotal += $product['quantity'];
                                         $cost_price_total += $product['cost_price'];
-                                        $selling_price_total += $product['selling_price'];
-                                        $total_total += $product['selling_price'] * $product['quantity'];
+                                        $total_cost_price_total += $product['quantity'] * $product['cost_price'];
+                                        $selling_price_total += $product['product_total'];
                                         $total_profits += $product['profit'];
 
 
@@ -180,10 +205,13 @@ else {
 
                                             <td> <?php echo $product['name']; ?> </td>
                                             <td> <?php echo $product['quantity']; ?> </td>
-                                            <td> <?php echo number_format($product['cost_price']); ?> </td>
-                                            <td> <?php echo number_format($product['selling_price']); ?> </td>
-                                            <td> <?php echo number_format($product['quantity'] * $product['selling_price']); ?> </td>
+                                            <td> <?php echo $product['cost_price']; ?> </td>
+                                            <td> <?php echo number_format($product['quantity'] * $product['cost_price']); ?> </td>
+                                            <td> <?php echo number_format($product['product_total']); ?> </td>
                                             <td> <?php echo number_format($product['profit']); ?> </td>
+                                            <td> <?php echo $product['seller']; ?>  </td>
+                                            <td> <?php echo $product['town']; ?> </td>
+                                            <td> <?php echo $product['order_note']; ?> </td>
                                         </tr>
                                     <?php endforeach; ?>
 
@@ -194,9 +222,10 @@ else {
                                     <th style="text-align: center" colspan="2">Totals</th>
                                     <th> <?php echo $quantityTotal; ?> </th>
                                     <th> <?php echo number_format($cost_price_total); ?> </th>
+                                    <th> <?php echo number_format($total_cost_price_total); ?> </th>
                                     <th> <?php echo number_format($selling_price_total); ?> </th>
-                                    <th> <?php echo number_format($total_total); ?> </th>
                                     <th> <?php echo number_format($total_profits); ?> </th>
+                                    <th>  </th>
                                 </tr>
                             <?php endforeach; ?>
 
@@ -205,9 +234,10 @@ else {
                                 <th style="text-align: center; font-size: 18px;" colspan="3">Totals</th>
                                 <th style="font-size: 18px;"> <?php echo $periodQuantity; ?> </th>
                                 <th style="font-size: 18px;"> <?php echo number_format($periodCostPrice); ?> </th>
+                                <th style="font-size: 18px;"> <?php echo number_format($periodTotalCost); ?> </th>
                                 <th style="font-size: 18px;"> <?php echo number_format($periodSellingPrice); ?> </th>
-                                <th style="font-size: 18px;"> <?php echo number_format($periodTotal); ?> </th>
                                 <th style="font-size: 18px;"> <?php echo number_format($periodProfits); ?> </th>
+                                <th </th>
                             </tr>
 
                         </table>
