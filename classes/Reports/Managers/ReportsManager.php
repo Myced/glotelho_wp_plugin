@@ -17,6 +17,8 @@ class ReportsManager
     private $start_date;
     private $end_date;
 
+    private $post_date_field;
+
     private $order_items = [];
 
     private $items_gotten = false;
@@ -31,6 +33,7 @@ class ReportsManager
         $this->woocommerce = $woocommerce;
 
         $this->init_dates();
+        $this->init_post_date_field();
     }
 
     private function init_dates()
@@ -51,6 +54,26 @@ class ReportsManager
             $this->end_date = date("Y-m-d H:i:s");
         }
 
+    }
+
+    private function init_post_date_field()
+    {
+        if(isset($_GET['order_type']))
+        {
+            if($_GET['order_type'] == '-1')
+            {
+                //the date the post was modified
+                $this->post_date_field = 'post_modified';
+            }
+            else {
+                $this->post_date_field = "post_date";
+            }
+        }
+        else {
+
+            //by default get the post modified date
+            $this->post_date_field = "post_modified";
+        }
     }
 
     public function getOrderStats()
@@ -241,9 +264,9 @@ class ReportsManager
                     ON wp_posts.ID = wp_postmeta.post_id
                     AND wp_postmeta.meta_key = '_order_total'
                 where
-                    `post_date` >= '$this->start_date'
+                    `$this->post_date_field` >= '$this->start_date'
                     AND `post_status` <> 'auto-draft'
-                    AND `post_date` <= '$this->end_date'
+                    AND `$this->post_date_field` <= '$this->end_date'
                     and `post_type` = 'shop_order'
                 ";
 
@@ -259,9 +282,9 @@ class ReportsManager
                     ON wp_posts.ID = wp_postmeta.post_id
                     AND wp_postmeta.meta_key = '_order_shipping'
                 where
-                    `post_date` >= '$this->start_date'
+                    `$this->post_date_field` >= '$this->start_date'
                     AND `post_status` <> 'auto-draft'
-                    AND `post_date` <= '$this->end_date'
+                    AND `$this->post_date_field` <= '$this->end_date'
                     and `post_type` = 'shop_order'
                 ";
 

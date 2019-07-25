@@ -3,6 +3,10 @@ if($_GET['download'] == true)
 {
     ob_end_clean();
 
+    //get the selected categories
+    $selectedCategoreis = $_GET['categories'];
+    $selectedSellers = $_GET['sellers'];
+
     $full_data = [];
 
     //set the document properties.
@@ -27,14 +31,14 @@ if($_GET['download'] == true)
     }
 
     //push the headings
-    $h1 = [ "Glotelho Category Report" ];
+    $h1 = [ "Glotelho Operations Report" ];
     array_push($full_data, $h1);
 
-    $h1 = [ "Seller:", $seller_name];
-    array_push($full_data, $h1);
-
-    $h1 = [ "Category:", $cat_name];
-    array_push($full_data, $h1);
+    // $h1 = [ "Seller:", $seller_name];
+    // array_push($full_data, $h1);
+    //
+    // $h1 = [ "Category:", $cat_name];
+    // array_push($full_data, $h1);
 
     $h1 = ["Date Period:", $date_period];
     array_push($full_data, $h1);
@@ -45,7 +49,7 @@ if($_GET['download'] == true)
     //go through the results and put them into the array
     //get the data and loop through it.
 
-    if($selected_seller == '-1')
+    if(in_array('-1', $selectedSellers))
     {
         //loop through all the sellers.
         foreach($sellers as $seller)
@@ -63,7 +67,7 @@ if($_GET['download'] == true)
             $row = ["Seller:", $seller->name, "", "", "", ""];
             array_push($full_data, $row);
 
-            if($cat == "-1")
+            if(in_array('-1', $selectedCategoreis))
             {
                 //do this for all categories
                 $grandQuantity = 0;
@@ -110,64 +114,113 @@ if($_GET['download'] == true)
 
             }
             else {
-                $data = $manager->get_data($cat);
+                foreach($categories as $category)
+                {
+                    if(!in_array($category->term_id, $selectedCategoreis))
+                        continue;
 
-                require_once BASE_DIRECTORY . '/templates/operations_download_row.php';
+
+                    $row = [
+                        "Category",
+                        $category->name
+                    ];
+
+                    array_push($full_data, $row);
+
+                    $data = $manager->get_data($category->term_id, $seller->term_id);
+
+                    require BASE_DIRECTORY . '/templates/operations_download_row.php';
+                }
             }
         }
     }
     else {
 
-        if($cat == "-1")
+        //loop through and show only selected sellers
+        foreach($sellers as $seller)
         {
-            //do this for all categories
-            $grandQuantity = 0;
-            $grandCostPrice = 0;
-            $grandTotalCost = 0;
-            $grandSellingPrice = 0;
-            $grandTotalTotal = 0;
-            $grandProfit = 0;
+            if(! in_array($seller->term_id, $selectedSellers))
+                continue;
 
-            foreach($categories as $category)
+
+            //insert space before the seller
+            $row = ["", "", "", "", "", ""];
+            array_push($full_data, $row);
+
+            $row = ["", "", "", "", "", ""];
+            array_push($full_data, $row);
+
+            $row = ["", "", "", "", "", ""];
+            array_push($full_data, $row);
+
+            $row = ["Seller:", $seller->name, "", "", "", ""];
+            array_push($full_data, $row);
+
+            if(in_array('-1', $selectedCategoreis))
             {
+                //do this for all categories
+                $grandQuantity = 0;
+                $grandCostPrice = 0;
+                $grandTotalCost = 0;
+                $grandSellingPrice = 0;
+                $grandTotalTotal = 0;
+                $grandProfit = 0;
+
+                foreach($categories as $category)
+                {
+                    $row = [
+                        "Category",
+                        $category->name
+                    ];
+
+                    array_push($full_data, $row);
+
+                    $data = $manager->get_data($category->term_id, $seller->term_id);
+
+                    require BASE_DIRECTORY . '/templates/operations_download_row.php';
+                }
+
+                //now insert the Grand Total for all categories
+                $row = ["", "", ""];
+                array_push($full_data, $row);
+
+                $row = ["Grand Total", "", ""];
+                array_push($full_data, $row);
+
                 $row = [
-                    "Category",
-                    $category->name
+                    "Quantity", "Cost Price", "Total Cost Price",
+                    "Selling Price", "Total Income", "Profits"
+                ];
+                array_push($full_data, $row);
+
+                $row = [
+                    $grandQuantity, $grandCostPrice, $grandTotalCost,
+                    $grandSellingPrice, $grandTotalTotal, $grandProfit
                 ];
 
                 array_push($full_data, $row);
 
-                $data = $manager->get_data($category->term_id, $selected_seller);
 
-                require BASE_DIRECTORY . '/templates/operations_download_row.php';
             }
-
-            //now insert the Grand Total for all categories
-            $row = ["", "", ""];
-            array_push($full_data, $row);
-
-            $row = ["Grand Total", "", ""];
-            array_push($full_data, $row);
-
-            $row = [
-                "Quantity", "Cost Price", "Total Cost Price",
-                "Selling Price", "Total Income", "Profits"
-            ];
-            array_push($full_data, $row);
-
-            $row = [
-                $grandQuantity, $grandCostPrice, $grandTotalCost,
-                $grandSellingPrice, $grandTotalTotal, $grandProfit
-            ];
-
-            array_push($full_data, $row);
+            else {
+                foreach($categories as $category)
+                {
+                    if(!in_array($category->term_id, $selectedCategoreis))
+                        continue;
 
 
-        }
-        else {
-            $data = $manager->get_data($cat, $selected_seller);
+                    $row = [
+                        "Category",
+                        $category->name
+                    ];
 
-            require_once BASE_DIRECTORY . '/templates/operations_download_row.php';
+                    array_push($full_data, $row);
+
+                    $data = $manager->get_data($category->term_id, $seller->term_id);
+
+                    require BASE_DIRECTORY . '/templates/operations_download_row.php';
+                }
+            }
         }
 
     }

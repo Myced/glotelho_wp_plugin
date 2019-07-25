@@ -17,37 +17,7 @@ else {
     $end_date = date("Y-m-d");
 }
 
-$cat = "";
-if(isset($_GET['category']))
-{
-    $cat = $_GET['category'];
-    if($cat == '-1')
-    {
-        $cat_name = "All Categories";
-    }
-    else {
-        $ct = get_term_by("id", $cat, "product_cat");
-        $cat_name = $ct->name;
-    }
-}
 
-
-$selected_seller = '-1';
-$seller_name = "";
-if(isset($_GET['seller']))
-{
-    $selected_seller = $_GET['seller'];
-
-    if($_GET['seller'] == '-1')
-    {
-        $seller_name = "All Sellers";
-    }
-    else {
-        $seller = get_term_by('id', $_GET['seller'], "seller");
-
-        $seller_name = $seller->name;
-    }
-}
 
 $categories = self::getCategories();
 $sellers = self::getSellers();
@@ -70,17 +40,6 @@ if(isset($_GET['download']))
             }
         ?>)
 
-        <br><br>
-        <?php
-            echo $seller_name;
-         ?>
-
-        <?php
-        if(isset($_GET['category']))
-        {
-            echo ' - ' . $cat_name;
-        }
-         ?>
     </h3>
 </div>
 
@@ -88,24 +47,47 @@ if(isset($_GET['download']))
     <input type="hidden" id="url" value="<?php echo $defaultUrl; ?>">
 
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <input type="text" name="start_date" value="<?php echo $start_date; ?>"
                 class="form-control datepicker" id="start_date"
                 placeholder="Start Date">
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-3">
             <input type="text" name="end_date" value="<?php echo $end_date; ?>"
                 class="form-control datepicker" id="end_date"
                 placeholder="End Date">
         </div>
 
         <div class="col-md-2">
-            <select class="form-control" name="" id="gt_seller">
-                <option value="-1">All Sellers</option>
+            <select class="form-control" id="gt_order_type" >
+                <option value="-1"
+                <?php echo isset($_GET['order_type']) && ($_GET['order_type'] == '-1') ? 'selected' : '' ?>
+                >Treated Today</option>
+                <option value="1"
+                <?php echo isset($_GET['order_type']) && ($_GET['order_type'] == '1') ? 'selected' : '' ?>
+                >Ordered Today</option>
+            </select>
+        </div>
+
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-5">
+            <select class="form-control chosen" multiple name="" id="gt_seller"
+                data-placeholder="Select the Sellers you want">
+                <option value="-1"
+                    <?php echo isset($_GET['sellers']) && in_array('-1', $_GET['sellers']) ? "selected" : '' ?>
+                    >All Sellers</option>
                 <?php foreach (self::getSellers() as $seller): ?>
                     <option value="<?php echo $seller->term_id; ?>"
-                        <?php if($selected_seller == $seller->term_id) echo 'selected'; ?>
+                        <?php
+                        if(isset($_GET['sellers']))
+                        {
+                            if(in_array($seller->term_id, $_GET['sellers']))
+                                echo 'selected';
+                        }  ?>
                         >
                         <?php echo $seller->name; ?>
                     </option>
@@ -113,15 +95,18 @@ if(isset($_GET['download']))
             </select>
         </div>
 
-        <div class="col-md-2">
-            <select class="form-control" id="gt_category">
-                <option value="-1">All Categories</option>
+        <div class="col-md-5">
+            <select class="form-control chosen" multiple id="gt_category"
+                data-placeholder="Choose the categories needed">
+                <option value="-1"
+                    <?php echo isset($_GET['categories']) && in_array('-1', $_GET['categories']) ? "selected" : '' ?>
+                    >All Categories</option>
                 <?php foreach ($categories as $category): ?>
                     <option value="<?php echo $category->term_id ?>"
                         <?php
-                        if(isset($_GET['category']))
+                        if(isset($_GET['categories']))
                         {
-                            if($_GET['category'] == $category->term_id)
+                            if(in_array($category->term_id, $_GET['categories']))
                                 echo 'selected';
                         }  ?>>
                         <?php echo $category->name; ?>
@@ -130,7 +115,7 @@ if(isset($_GET['download']))
             </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
             <input type="submit" id="filter-operations" class="btn btn-primary" value="Filter">
             <a href="<?php echo $defaultUrl; ?>" class="btn btn-success">
                 Reset
@@ -139,7 +124,7 @@ if(isset($_GET['download']))
     </div>
 
     <?php
-    if(isset($_GET['category']))
+    if(isset($_GET['categories']))
     {
         //include download button
         require BASE_DIRECTORY . '/templates/excel_download_btn.php';
@@ -152,10 +137,13 @@ if(isset($_GET['download']))
 
             <?php
 
-            if(isset($_GET['category']))
+            if(isset($_GET['categories']))
             {
-                $category = $_GET['category'];
-                if($selected_seller == '-1')
+                $urlcategories = $_GET['categories'];
+                $urlsellers = $_GET['sellers'];
+
+
+                if(in_array('-1', $urlsellers))
                 {
                     //show results for each seller
                     foreach($sellers as $seller)
@@ -166,7 +154,66 @@ if(isset($_GET['download']))
                         <h3>Seller - <?php echo $seller->name; ?></h3>
 
                         <?php
-                        if($category == '-1')
+                        if(in_array('-1', $urlcategories))
+                        {
+                            //show the data for all categories
+                            $grandQuantity = 0;
+                            $grandCostPrice = 0;
+                            $grandTotalCost = 0;
+                            $grandSellingPrice = 0;
+                            $grandTotal = 0;
+                            $grandProfit = 0;
+
+                            //show the data for all categories
+                            foreach ($categories as $cat)
+                            {
+                                $cat_name = $cat->name;
+
+                                $data = $manager->get_data($ct->term_id, $seller->term_id);
+
+                                require BASE_DIRECTORY . '/templates/operations_report_row.php';
+                            }
+
+                            //now show the grand total space
+                            require BASE_DIRECTORY . '/templates/grand_total.php';
+                        }
+                        else {
+
+                            //show the data only for selected categories
+
+                            foreach ($categories as $cat)
+                            {
+                                if(! in_array($cat->term_id, $urlcategories))
+                                    continue;
+
+                                $ct = get_term_by("id", $cat->term_id, "product_cat");
+
+                                $cat_name = $ct->name;
+
+                                $data = $manager->get_data($ct->term_id, $seller->term_id);
+
+                                require BASE_DIRECTORY . '/templates/operations_report_row.php';
+                            }
+
+                        }
+                    }
+                }
+                else {
+
+                    //show only for selected sellers
+                    foreach($sellers as $seller)
+                    {
+                        if(! in_array($seller->term_id, $urlsellers))
+                            continue;
+
+
+                        ?>
+                        <br>
+                        <br>
+                        <h3>Seller - <?php echo $seller->name; ?></h3>
+
+                        <?php
+                        if(in_array('-1', $urlcategories))
                         {
                             //show the data for all categories
                             $grandQuantity = 0;
@@ -191,39 +238,22 @@ if(isset($_GET['download']))
                             require BASE_DIRECTORY . '/templates/grand_total.php';
                         }
                         else {
-                            $data = $manager->get_data($category, $seller->term_id);
-                            require BASE_DIRECTORY . '/templates/operations_report_row.php';
+
+                            //show the data for all categories
+                            foreach ($categories as $cat)
+                            {
+                                if(! in_array($cat->term_id, $urlcategories))
+                                    continue;
+
+                                $cat_name = $cat->name;
+
+
+                                $data = $manager->get_data($cat->term_id, $seller->term_id);
+
+                                require BASE_DIRECTORY . '/templates/operations_report_row.php';
+                            }
+
                         }
-                    }
-                }
-                else {
-                    if($category == '-1')
-                    {
-                        //show the data for all categories
-                        //show the data for all categories
-                        $grandQuantity = 0;
-                        $grandCostPrice = 0;
-                        $grandTotalCost = 0;
-                        $grandSellingPrice = 0;
-                        $grandTotal = 0;
-                        $grandProfit = 0;
-
-                        foreach ($categories as $cat)
-                        {
-                            $ct = get_term_by("id", $cat->term_id, "product_cat");
-                            $cat_name = $ct->name;
-
-                            $data = $manager->get_data($ct->term_id, $selected_seller);
-
-                            require BASE_DIRECTORY . '/templates/operations_report_row.php';
-                        }
-
-                        //now show the grand total space
-                        require BASE_DIRECTORY . '/templates/grand_total.php';
-                    }
-                    else {
-                        $data = $manager->get_data($category, $selected_seller);
-                        require BASE_DIRECTORY . '/templates/operations_report_row.php';
                     }
                 }
             }

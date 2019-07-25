@@ -57,7 +57,7 @@ foreach($data as $date => $dates)
             $dateTotal[6] += $product['quantity'] * $product['selling_price'];
             $dateTotal[7] += $product['profit'];
 
-            if($cat == '-1')
+            if(in_array('-1', $selectedCategoreis))
             {
                 $grandQuantity += $product['quantity'];
                 $grandCostPrice += $product['cost_price'];

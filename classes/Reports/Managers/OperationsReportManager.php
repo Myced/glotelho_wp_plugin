@@ -13,6 +13,8 @@ class OperationsReportManager
     private $start_date;
     private $end_date;
 
+    private $post_date_field;
+
     private $towns = [];
 
     private $products = [];
@@ -25,6 +27,7 @@ class OperationsReportManager
         $this->wpdb = $wpdb;
 
         $this->init_dates();
+        $this->init_post_date_field();
         $this->init_towns();
 
     }
@@ -36,6 +39,26 @@ class OperationsReportManager
         foreach($towns as $town)
         {
             $this->towns[$town->term_id] = $town->name;
+        }
+    }
+
+    private function init_post_date_field()
+    {
+        if(isset($_GET['order_type']))
+        {
+            if($_GET['order_type'] == '-1')
+            {
+                //the date the post was modified
+                $this->post_date_field = 'post_modified';
+            }
+            else {
+                $this->post_date_field = "post_date";
+            }
+        }
+        else {
+
+            //by default get the post modified date
+            $this->post_date_field = "post_modified";
         }
     }
 
@@ -255,9 +278,9 @@ class OperationsReportManager
                         'wc-pending'
                     )
                     AND
-                        posts.post_date >= '$this->start_date'
+                        posts.$this->post_date_field >= '$this->start_date'
                     AND
-                        posts.post_date < '$this->end_date'
+                        posts.$this->post_date_field < '$this->end_date'
                     AND
                         order_items.order_item_type <> 'shipping'
                 GROUP BY

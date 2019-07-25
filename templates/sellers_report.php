@@ -17,31 +17,13 @@ else {
     $end_date = date("Y-m-d");
 }
 
-
-$selected_seller = '-1';
-$seller_name = "";
-if(isset($_GET['seller']))
-{
-    $selected_seller = $_GET['seller'];
-
-    if($_GET['seller'] == '-1')
-    {
-        $seller_name = "All Sellers";
-    }
-    else {
-        $seller = get_term_by('id', $_GET['seller'], "seller");
-
-        $seller_name = $seller->name;
-    }
-}
-
 $sellers  = self::getSellers();
 
 ?>
 
 <div class="wrap">
     <h3>
-        Income Report
+        Sellers Report
         (<?php
             if(isset($_GET['start_date']))
                 echo $start_date . ' - ' . $end_date;
@@ -51,15 +33,6 @@ $sellers  = self::getSellers();
         ?>)
 
     </h3>
-
-    <?php
-    if(isset($_GET['seller']))
-    {
-        ?>
-        <h3><?php echo $seller_name; ?></h3>
-        <?php
-    }
-     ?>
 </div>
 
 <div class="content">
@@ -79,11 +52,24 @@ $sellers  = self::getSellers();
         </div>
 
         <div class="col-md-2">
-            <select class="form-control" name="" id="gt_seller">
-                <option value="-1">All Sellers</option>
+            <select class="form-control" id="gt_order_type" >
+                <option value="-1"
+                <?php echo isset($_GET['order_type']) && ($_GET['order_type'] == '-1') ? 'selected' : '' ?>
+                >Treated Today</option>
+                <option value="1"
+                <?php echo isset($_GET['order_type']) && ($_GET['order_type'] == '1') ? 'selected' : '' ?>
+                >Ordered Today</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <select class="form-control chosen" multiple id="gt_seller"
+                data-placeholder="Select The Sellers..." >
+                <option value="-1"
+                    <?php echo isset($_GET['sellers'])  && in_array('-1', $_GET['sellers']) ? 'selected' : '' ?> >All Sellers</option>
                 <?php foreach (self::getSellers() as $seller): ?>
                     <option value="<?php echo $seller->term_id; ?>"
-                        <?php if($selected_seller == $seller->term_id) echo 'selected'; ?>
+                        <?php echo isset($_GET['sellers'])  && in_array($seller->term_id, $_GET['sellers']) ? 'selected' : '' ?>
                         >
                         <?php echo $seller->name; ?>
                     </option>
@@ -91,7 +77,7 @@ $sellers  = self::getSellers();
             </select>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-3">
             <input type="submit" id="filter-sellers" class="btn btn-primary" value="Filter">
             <a href="<?php echo $defaultUrl; ?>" class="btn btn-success">
                 Reset
@@ -101,8 +87,10 @@ $sellers  = self::getSellers();
 
     <?php
     //get the data for the seller
-    if($selected_seller == '-1')
+    if(!isset($_GET['sellers']))
     {
+        //show for all sellers, since its not been filtered
+
         foreach ($sellers as $seller) {
 
             $data = $manager->get_user_data($seller->term_id);
@@ -112,9 +100,31 @@ $sellers  = self::getSellers();
         }
     }
     else {
-        $data = $manager->get_user_data($selected_seller);
+        //filter is on.
+        //make sure all users is not included in the list
+        if(in_array('-1', $_GET['sellers']))
+        {
+            foreach ($sellers as $seller) {
 
-        require_once BASE_DIRECTORY . '/templates/sellers_report_row.php';
+                $data = $manager->get_user_data($seller->term_id);
+                $seller_name = $seller->name;
+
+                require BASE_DIRECTORY . '/templates/sellers_report_row.php';
+            }
+        }
+        else {
+
+            foreach ($sellers as $seller) {
+
+                if(in_array($seller->term_id, $_GET['sellers']))
+                {
+                    $data = $manager->get_user_data($seller->term_id);
+                    $seller_name = $seller->name;
+
+                    require BASE_DIRECTORY . '/templates/sellers_report_row.php';
+                }
+            }
+        }
     }
      ?>
 

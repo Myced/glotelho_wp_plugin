@@ -161,8 +161,8 @@ trait WooCommerceOrderQuery
 
 		if ( $filter_range ) {
 			$query['where'] .= "
-				AND 	posts.post_date >= '" . $this->start_date . "'
-				AND 	posts.post_date < '" . $this->end_date . "'
+				AND 	posts.$this->post_date_field >= '" . $this->start_date . "'
+				AND 	posts.$this->post_date_field < '" . $this->end_date . "'
 			";
 		}
 

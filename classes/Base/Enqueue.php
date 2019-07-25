@@ -31,7 +31,8 @@ class Enqueue
             "gt_categories_report",
             "gt_monthly_report",
             "gt_income_report",
-            "gt_sellers_report"
+            "gt_sellers_report",
+            "gt_sales_report"
         ];
 
         if(isset($_GET['page']))
@@ -49,6 +50,9 @@ class Enqueue
 
                 wp_enqueue_style(PLUGIN_NAME . 'AdminLTE', GT_ASSETS_URL . 'admin/AdminLTE.css' );
 
+                //enqueue chosen js
+                wp_enqueue_style(PLUGIN_NAME . 'ChosenCss', GT_ASSETS_URL . 'admin/plugins/chosen/chosen.css' );
+                wp_enqueue_script(PLUGIN_NAME . 'ChosenJs', GT_ASSETS_URL . 'admin/plugins/chosen/chosen.jquery.js' );
 
                 //enqueue the final script and css for the page
                 wp_enqueue_script(PLUGIN_NAME . 'RaphaelJs', GT_ASSETS_URL . 'admin/plugins/raphael/raphael.min.js' );
