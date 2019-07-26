@@ -23,13 +23,24 @@ jQuery(document).ready(function($){
         var url = $("#url").val();
         var start_date = $("#start_date").val();
         var end_date = $("#end_date").val();
-        var category = $("#gt_category option:selected").val();
-
-        console.log(category);
+        var order_type = $("#gt_order_type").val();
+        var categories = $("#gt_category").val();
 
         var finalUrl = url + "&start_date=" + start_date
                             + "&end_date=" + end_date
-                            + "&category=" + category;
+                            + "&order_type=" + order_type;
+
+        if(categories === null)
+        {
+            alert("Please select the required categories");
+            return false;
+        }
+
+        //form the url with the sellers and categories.
+        for(var i = 0; i < categories.length; i++)
+        {
+            finalUrl += "&categories%5B%5D=" + categories[i];
+        }
 
         //redirec the user to the new url
         window.location.href = finalUrl;

@@ -32,7 +32,8 @@ class Enqueue
             "gt_monthly_report",
             "gt_income_report",
             "gt_sellers_report",
-            "gt_sales_report"
+            "gt_sales_report",
+            "gt_eod_report"
         ];
 
         if(isset($_GET['page']))

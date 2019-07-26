@@ -5,7 +5,7 @@ use App\Reports\OrderStatus;
 use App\Traits\WooCommerceOrderQuery;
 
 
-class CategoryReportManager
+class EndOfDayReportManager
 {
 
     use WooCommerceOrderQuery;
@@ -19,6 +19,10 @@ class CategoryReportManager
 
     private $products = [];
 
+    //initialise the towns
+    private $towns;
+    private $sellers;
+
     private $items_gotten = false;
 
     function __construct()
@@ -30,6 +34,8 @@ class CategoryReportManager
 
         $this->init_dates();
         $this->init_post_date_field();
+        $this->init_towns();
+        $this->init_sellers();
 
     }
 
@@ -51,6 +57,46 @@ class CategoryReportManager
             //by default get the post modified date
             $this->post_date_field = "post_modified";
         }
+    }
+
+    private function init_towns()
+    {
+        $towns = get_terms("zone_town", ['hide_empty' => false ]);
+
+        foreach($towns as $town)
+        {
+            $this->towns[$town->term_id] = $town->name;
+        }
+    }
+
+    private function init_sellers()
+    {
+        $sellers = get_terms("seller", ['hide_empty' => false ]);
+
+        foreach($sellers as $seller)
+        {
+            $this->sellers[$seller->term_id] = $seller->name;
+        }
+    }
+
+    private function getTown($id)
+    {
+        if(array_key_exists($id, $this->towns))
+        {
+            return $this->towns[$id];
+        }
+
+        return false;
+    }
+
+    private function getSeller($id)
+    {
+        if(array_key_exists($id, $this->sellers))
+        {
+            return $this->sellers[$id];
+        }
+
+        return false;
     }
 
     public function get_product($id)
@@ -122,58 +168,67 @@ class CategoryReportManager
 
     }
 
-    public function get_data($category)
+    public function get_data()
     {
         $data = [];
-
-        //get the products in this category
-        //do all the processing
-        //get all the products in this category
-        $term_ids    = get_term_children( $category, 'product_cat' );
-        $term_ids[]  = $category;
-        $product_ids = get_objects_in_term( $term_ids, 'product_cat' );
 
         // $results = $this->get_order_report_data($this->get_args());
         $results = $this->get_order_data($this->get_sql());
 
         foreach($results as $result)
         {
-            //check that the product is in the product ids of this category
-            if(in_array($result->product_id, $product_ids))
+            if($result->order_data == null)
             {
-                $date = date("d/M/Y", strtotime($result->post_date));
-                if(!array_key_exists($date, $data))
-                {
-                    $data[$date] = [];
-                }
-
-                //now get the order
-                $order = $result->order_id;
-                if(!array_key_exists($order, $data[$date]))
-                {
-                    $data[$date][$order] = [];
-                }
-
-                //now get the product details.
-                $product_info = $this->get_product_info($result->product_id);
-
-                $profit = ($result->item_total) - ($result->cost_price * $result->quantity);
-
-
-                $productDetails = [
-                    'order_status' => $result->post_status,
-                    'id' => $result->product_id,
-                    'name' => $product_info['name'],
-                    'cost_price' => $result->cost_price,
-                    'selling_price' => $result->item_total / $result->quantity,
-                    'quantity' => $result->quantity,
-                    'profit' => $profit
-                ];
-
-                //push it into the order
-                array_push($data[$date][$order], $productDetails);
+                $seller_name = "";
+                $town_name = "";
+            }
+            else {
+                $orderInfo = unserialize($result->order_data);
+                $seller_name = $this->getSeller($orderInfo['gt_seller']);
+                $town_name = $this->getTown($orderInfo['gt_town']);
             }
 
+            $date = date("d/M/Y", strtotime($result->post_date));
+            if(!array_key_exists($date, $data))
+            {
+                $data[$date] = [];
+            }
+
+            //now get the order
+            $order = $result->order_id;
+            if(!array_key_exists($order, $data[$date]))
+            {
+                $data[$date][$order] = [];
+            }
+
+            //now get the product details.
+            $product_info = $this->get_product_info($result->product_id);
+
+            $profit = ($result->item_total) - ($result->cost_price * $result->quantity);
+
+            //if the product name is empty and cost is null,
+            //then do not add the product.
+            if($result->quantity == null || $result->item_total == null)
+            {
+                continue;
+            }
+
+            $productDetails = [
+                "order_status" => $result->order_status,
+                'id' => $result->product_id,
+                'name' => $product_info['name'],
+                'cost_price' => $result->cost_price,
+                'selling_price' => $result->item_total / $result->quantity,
+                'product_total' => $result->item_total,
+                'quantity' => $result->quantity,
+                'profit' => $profit,
+                'seller' => $seller_name,
+                'town' => $town_name,
+                'order_note' => $result->order_note
+            ];
+
+            //push it into the order
+            array_push($data[$date][$order], $productDetails);
 
         }
 
@@ -190,10 +245,15 @@ class CategoryReportManager
                             order_item_meta__line_subtotal.meta_value AS item_total,
                             order_item_meta__gt_cost_price.meta_value AS cost_price,
                             posts.post_date AS post_date,
-                            posts.post_status AS post_status,
-                            posts.id AS order_id
+                            posts.id AS order_id,
+                            posts.post_status as order_status,
+                            posts.post_excerpt as order_note,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS order_data
                         FROM
                             wp_posts AS posts
+                        INNER JOIN `wp_postmeta`
+                            ON posts.ID = wp_postmeta.post_id
                         INNER JOIN wp_woocommerce_order_items AS order_items
                         ON
                             (
@@ -245,49 +305,7 @@ class CategoryReportManager
                             product_id,
                             post_date
                         ";
-    }
 
-    private function get_args()
-    {
-        return $args = array(
-            'data'  => array(
-                '_product_id' => array(
-                    'type'            => 'order_item_meta',
-                    'order_item_type' => 'line_item',
-                    'function'        => '',
-                    'name'            => 'product_id',
-                ),
-
-                '_qty' => array(
-                    'type'            => 'order_item_meta',
-                    'function'        => '',
-                    'name'            => 'quantity',
-                ),
-                '_line_subtotal' => array(
-                    'type'            => 'order_item_meta',
-                    'function'        => '',
-                    'name'            => 'item_total',
-                ),
-                '_gt_cost_price' => array(
-                    'type'            => 'order_item_meta',
-                    'function'        => '',
-                    'name'            => 'cost_price',
-                ),
-                'post_date'   => array(
-                    'type'     => 'post_data',
-                    'function' => '',
-                    'name'     => 'post_date',
-                ),
-                'ID'   => array(
-                    'type'     => 'post_data',
-                    'function' => '',
-                    'name'     => 'order_id',
-                )
-            ),
-            'group_by'     => 'ID, product_id, post_date',
-            'query_type'   => 'get_results',
-            'filter_range' => true,
-        );
     }
 
 }

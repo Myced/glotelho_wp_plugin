@@ -1,5 +1,5 @@
 <?php
-$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_sales_report";
+$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_eod_report";
 
 if(isset($_GET['start_date']))
 {
@@ -22,7 +22,7 @@ if(isset($_GET['download']))
 {
     if($_GET['download'] == true)
     {
-        require_once BASE_DIRECTORY . '/templates/sales_download.php';
+        require_once BASE_DIRECTORY . '/templates/end_of_day_download.php';
     }
 }
 
@@ -104,16 +104,13 @@ function get_order_status($status)
 
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" style="width: 2000px;">
+                        <table class="table table-bordered" style="width: 1500px;">
                             <tr>
                                 <th style="min-width: 100px;">Date</th>
                                 <th style="min-width: 150px;">Order</th>
-                                <th style="min-width: 400px;">Product</th>
+                                <th style="min-width: 300px;">Product</th>
                                 <th style="min-width: 40px">Qty</th>
-                                <th style="min-width: 120px;">Unit Price (PU)</th>
-                                <th style="min-width: 120px;">Cost Price (PR)</th>
                                 <th style="min-width: 120px;">Total Price (PT)</th>
-                                <th style="min-width: 100px;">Profit</th>
                                 <th style="min-width: 150px;">Seller</th>
                                 <th style="min-width: 120px;">Town</th>
                                 <th style="min-width: 600px;">Comment</th>
@@ -205,10 +202,7 @@ function get_order_status($status)
 
                                             <td> <?php echo $product['name']; ?> </td>
                                             <td> <?php echo $product['quantity']; ?> </td>
-                                            <td> <?php echo $product['cost_price']; ?> </td>
-                                            <td> <?php echo number_format($product['quantity'] * $product['cost_price']); ?> </td>
                                             <td> <?php echo number_format($product['product_total']); ?> </td>
-                                            <td> <?php echo number_format($product['profit']); ?> </td>
                                             <td> <?php echo $product['seller']; ?>  </td>
                                             <td> <?php echo $product['town']; ?> </td>
                                             <td> <?php echo $product['order_note']; ?> </td>
@@ -221,10 +215,7 @@ function get_order_status($status)
                                 <tr>
                                     <th style="text-align: center" colspan="2">Totals</th>
                                     <th> <?php echo $quantityTotal; ?> </th>
-                                    <th> <?php echo number_format($cost_price_total); ?> </th>
-                                    <th> <?php echo number_format($total_cost_price_total); ?> </th>
                                     <th> <?php echo number_format($selling_price_total); ?> </th>
-                                    <th> <?php echo number_format($total_profits); ?> </th>
                                     <th>  </th>
                                 </tr>
                             <?php endforeach; ?>
@@ -233,10 +224,7 @@ function get_order_status($status)
                             <tr>
                                 <th style="text-align: center; font-size: 18px;" colspan="3">Totals</th>
                                 <th style="font-size: 18px;"> <?php echo $periodQuantity; ?> </th>
-                                <th style="font-size: 18px;"> <?php echo number_format($periodCostPrice); ?> </th>
-                                <th style="font-size: 18px;"> <?php echo number_format($periodTotalCost); ?> </th>
                                 <th style="font-size: 18px;"> <?php echo number_format($periodSellingPrice); ?> </th>
-                                <th style="font-size: 18px;"> <?php echo number_format($periodProfits); ?> </th>
                                 <th </th>
                             </tr>
 
