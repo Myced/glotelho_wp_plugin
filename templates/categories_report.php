@@ -17,17 +17,12 @@ else {
     $end_date = date("Y-m-d");
 }
 
-if(isset($_GET['category']))
+if(isset($_GET['categories']))
 {
-    $cat = $_GET['category'];
-    if($cat == '-1')
-    {
-        $cat_name = "All Categories";
-    }
-    else {
-        $ct = get_term_by("id", $cat, "product_cat");
-        $cat_name = $ct->name;
-    }
+    $selectedCategories = $_GET['categories'];
+}
+else {
+    $selectedCategories = [];
 }
 
 $categories = self::getCategories();
@@ -49,12 +44,6 @@ if(isset($_GET['download']))
             }
         ?>)
 
-        <?php
-        if(isset($_GET['category']))
-        {
-            echo ' - ' . $cat_name;
-        }
-         ?>
     </h3>
 </div>
 
@@ -75,14 +64,28 @@ if(isset($_GET['download']))
         </div>
 
         <div class="col-md-2">
-            <select class="form-control" id="gt_category">
-                <option value="-1">All Categories</option>
+            <select class="form-control" id="gt_order_type" >
+                <option value="-1"
+                <?php echo isset($_GET['order_type']) && ($_GET['order_type'] == '-1') ? 'selected' : '' ?>
+                >Treated Today</option>
+                <option value="1"
+                <?php echo isset($_GET['order_type']) && ($_GET['order_type'] == '1') ? 'selected' : '' ?>
+                >Ordered Today</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <select class="form-control chosen" multiple id="gt_category"
+                data-placeholder="Choose the categories needed">
+                <option value="-1"
+                    <?php echo isset($_GET['categories']) && in_array('-1', $_GET['categories']) ? "selected" : '' ?>
+                    >All Categories</option>
                 <?php foreach ($categories as $category): ?>
                     <option value="<?php echo $category->term_id ?>"
                         <?php
-                        if(isset($_GET['category']))
+                        if(isset($_GET['categories']))
                         {
-                            if($_GET['category'] == $category->term_id)
+                            if(in_array($category->term_id, $_GET['categories']))
                                 echo 'selected';
                         }  ?>>
                         <?php echo $category->name; ?>
@@ -91,7 +94,7 @@ if(isset($_GET['download']))
             </select>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <input type="submit" id="filter-category" class="btn btn-primary" value="Filter">
             <a href="<?php echo $defaultUrl; ?>" class="btn btn-success">
                 Reset
@@ -100,7 +103,7 @@ if(isset($_GET['download']))
     </div>
 
     <?php
-    if(isset($_GET['category']))
+    if(isset($_GET['categories']))
     {
         //include download button
         require BASE_DIRECTORY . '/templates/excel_download_btn.php';
@@ -113,26 +116,23 @@ if(isset($_GET['download']))
 
             <?php
 
-            if(isset($_GET['category']))
+            if(isset($_GET['categories']))
             {
-                $category = $_GET['category'];
 
-                if($category == '-1')
+                if(in_array('-1', $selectedCategories))
                 {
                     //show the data for all categories
                     $grandQuantity = 0;
                     $grandCostPrice = 0;
                     $grandTotalCost = 0;
                     $grandSellingPrice = 0;
-                    $grandTotal = 0;
                     $grandProfit = 0;
 
                     foreach ($categories as $cat)
                     {
-                        $ct = get_term_by("id", $cat->term_id, "product_cat");
-                        $cat_name = $ct->name;
+                        $cat_name = $cat->name;
 
-                        $data = $manager->get_data($ct->term_id);
+                        $data = $manager->get_data($cat->term_id);
 
                         require BASE_DIRECTORY . '/templates/category_report_row.php';
                     }
@@ -141,8 +141,20 @@ if(isset($_GET['download']))
                     require_once BASE_DIRECTORY . '/templates/grand_total.php';
                 }
                 else {
-                    $data = $manager->get_data($category);
-                    require BASE_DIRECTORY . '/templates/category_report_row.php';
+
+                    foreach ($categories as $cat)
+                    {
+                        //if not a selected category then continue;
+                        if(! in_array($cat->term_id, $selectedCategories))
+                            continue;
+
+
+                        $cat_name = $cat->name;
+
+                        $data = $manager->get_data($cat->term_id);
+
+                        require BASE_DIRECTORY . '/templates/category_report_row.php';
+                    }
                 }
             }
 

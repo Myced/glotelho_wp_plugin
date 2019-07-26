@@ -27,7 +27,7 @@ if($_GET['download'] == true)
     }
 
     //push the headings
-    $h1 = [ "Glotelho End Of Day Report" ];
+    $h1 = [ "Glotelho Sales Report" ];
     array_push($full_data, $h1);
 
     $h1 = ["Date Period:", $date_period];
@@ -39,7 +39,7 @@ if($_GET['download'] == true)
     //set the headers
     $row = [
         "Date", "Order #", "Status", "Product", "Quantity",
-        "Unit Price (PU)", "Cost Price (PR)", "Total Price (PT)", "Profit",
+        "Total Price (PT)",
         "Seller", "Town", "Comment"
     ];
     array_push($full_data, $row);
@@ -57,7 +57,7 @@ if($_GET['download'] == true)
     foreach($data as $date => $dates)
     {
         $dateUsed = false;
-        $dateTotal = ["", "", "Date Total", "", 0, 0, 0, 0, 0];
+        $dateTotal = ["", "", "Date Total", "", 0, 0];
         $currentDate = $date;
         $currentOrder = "";
 
@@ -80,18 +80,15 @@ if($_GET['download'] == true)
                 {
                     $orderUsed = true;
                     $myorder = $order;
-                    $myorderstatus = get_order_status($product['order_status']);
+                    $myorderstatus = $statuss = get_order_status($product['order_status']);
                 }
                 else {
-                    $myorder = "";
-                    $myorderstatus = "";
+                    $myorder = $order;
+                    $myorderstatus = $statuss;
                 }
 
                 $dateTotal[4] += $product['quantity'];
-                $dateTotal[5] += $product['cost_price'];
-                $dateTotal[6] += $product['cost_price'] * $product['quantity'];
-                $dateTotal[7] += $product['product_total'];
-                $dateTotal[8] += $product['profit'];
+                $dateTotal[5] += $product['product_total'];
 
                 $grandQuantity += $product['quantity'];
                 $grandCostPrice += $product['cost_price'];
@@ -105,10 +102,7 @@ if($_GET['download'] == true)
                     $myorderstatus,
                     $product['name'],
                     $product['quantity'],
-                    $product['cost_price'],
-                    $product['quantity'] * $product['cost_price'],
                     $product['product_total'],
-                    $product['profit'],
                     $product['seller'],
                     $product['town'],
                     $product['order_note']
@@ -118,27 +112,18 @@ if($_GET['download'] == true)
             }
         }
 
-        //load the date total here
-        array_push($full_data, $dateTotal);
-        $row = ["", "", "", "", "", ""];
-        array_push($full_data, $row);
-        $row = ["", "", "", "", "", ""];
-        array_push($full_data, $row);
     }
 
-    $row = [ "", "GRAND TOTAL", "", "",
-        $grandQuantity, $grandCostPrice, $grandTotalCost,
-         $grandTotalTotal, $grandProfit
-    ];
 
-    array_push($full_data, $row);
 
     //Load the data from an array
     $sheet->fromArray($full_data, null, 'A1');
 
+    $file_name = "EndOfDay-" . date("Y-m-d") . '.xlsx';
+
     // Redirect output to a client’s web browser (Xlsx)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="SalesReport.xlsx"');
+    header('Content-Disposition: attachment;filename="' . $file_name . '"');
     header('Cache-Control: max-age=0');
     // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');

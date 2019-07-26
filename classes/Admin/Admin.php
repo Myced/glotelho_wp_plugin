@@ -65,6 +65,14 @@ class Admin
             ],
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'End OF Day Report',
+                'menu_title' => "End OF Day Report",
+                'capability' => "manage_categories",
+                'slug' => "gt_eod_report",
+                "callback" => ['\App\Reports\EndOfDayReportController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Orders Report',
                 'menu_title' => "Orders Report",
                 'capability' => "manage_categories",
