@@ -27,7 +27,7 @@ if($_GET['download'] == true)
     }
 
     //push the headings
-    $h1 = [ "Glotelho End Of Day Report" ];
+    $h1 = [ "Glotelho Sales Report" ];
     array_push($full_data, $h1);
 
     $h1 = ["Date Period:", $date_period];
