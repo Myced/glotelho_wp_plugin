@@ -38,8 +38,8 @@ if($_GET['download'] == true)
 
     //set the headers
     $row = [
-        "Date", "Order #", "Status", "Product", "Quantity",
-        "Total Price (PT)",
+        "Date", "Order #", "Status", "Client",
+        "Product", "Quantity", "Total Price (PT)",
         "Seller", "Town", "Comment"
     ];
     array_push($full_data, $row);
@@ -100,6 +100,7 @@ if($_GET['download'] == true)
                     $mydate,
                     $myorder,
                     $myorderstatus,
+                    $product['full_name'],
                     $product['name'],
                     $product['quantity'],
                     $product['product_total'],

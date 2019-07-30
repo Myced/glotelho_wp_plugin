@@ -38,7 +38,7 @@ if($_GET['download'] == true)
 
     //set the headers
     $row = [
-        "Date", "Order #", "Status", "Product", "Quantity",
+        "Date", "Order #", "Status", "Client", "Product", "Quantity",
         "Unit Price (PU)", "Cost Price (PR)", "Total Price (PT)", "Profit",
         "Seller", "Town", "Comment"
     ];
@@ -57,7 +57,7 @@ if($_GET['download'] == true)
     foreach($data as $date => $dates)
     {
         $dateUsed = false;
-        $dateTotal = ["", "", "Date Total", "", 0, 0, 0, 0, 0];
+        $dateTotal = ["", "", "", "Date Total", "", 0, 0, 0, 0, 0];
         $currentDate = $date;
         $currentOrder = "";
 
@@ -80,18 +80,20 @@ if($_GET['download'] == true)
                 {
                     $orderUsed = true;
                     $myorder = $order;
+                    $full_name = $product['full_name'];
                     $myorderstatus = get_order_status($product['order_status']);
                 }
                 else {
                     $myorder = "";
+                    $full_name = "";
                     $myorderstatus = "";
                 }
 
-                $dateTotal[4] += $product['quantity'];
-                $dateTotal[5] += $product['cost_price'];
-                $dateTotal[6] += $product['cost_price'] * $product['quantity'];
-                $dateTotal[7] += $product['product_total'];
-                $dateTotal[8] += $product['profit'];
+                $dateTotal[5] += $product['quantity'];
+                $dateTotal[6] += $product['cost_price'];
+                $dateTotal[7] += $product['cost_price'] * $product['quantity'];
+                $dateTotal[8] += $product['product_total'];
+                $dateTotal[9] += $product['profit'];
 
                 $grandQuantity += $product['quantity'];
                 $grandCostPrice += $product['cost_price'];
@@ -103,6 +105,7 @@ if($_GET['download'] == true)
                     $mydate,
                     $myorder,
                     $myorderstatus,
+                    $full_name,
                     $product['name'],
                     $product['quantity'],
                     $product['cost_price'],
@@ -126,7 +129,7 @@ if($_GET['download'] == true)
         array_push($full_data, $row);
     }
 
-    $row = [ "", "GRAND TOTAL", "", "",
+    $row = [ "", "", "GRAND TOTAL", "", "",
         $grandQuantity, $grandCostPrice, $grandTotalCost,
          $grandTotalTotal, $grandProfit
     ];

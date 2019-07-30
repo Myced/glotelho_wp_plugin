@@ -213,7 +213,10 @@ class EndOfDayReportManager
                 continue;
             }
 
+            $full_name = $result->first_name . ' ' . $result->last_name;
+
             $productDetails = [
+                'full_name' => $full_name,
                 "order_status" => $result->order_status,
                 'id' => $result->product_id,
                 'name' => $product_info['name'],
@@ -249,7 +252,11 @@ class EndOfDayReportManager
                             posts.post_status as order_status,
                             posts.post_excerpt as order_note,
                             MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
-                                THEN wp_postmeta.meta_value ELSE NULL END) AS order_data
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS order_data,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_first_name')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS first_name,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_last_name')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS last_name
                         FROM
                             wp_posts AS posts
                         INNER JOIN `wp_postmeta`
