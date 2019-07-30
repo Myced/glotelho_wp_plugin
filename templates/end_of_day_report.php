@@ -42,7 +42,7 @@ function get_order_status($status)
 
 <div class="wrap">
     <h3>
-        Sales Report
+        End of Day Report
         (<?php
             if(isset($_GET['start_date']))
                 echo $start_date . ' - ' . $end_date;
