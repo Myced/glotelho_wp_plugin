@@ -71,7 +71,7 @@
                             $quantityTotal += $product['quantity'];
                             $cost_price_total += $product['cost_price'];
                             $selling_price_total += $product['quantity'] * $product['selling_price'];
-                            $total_cost_price_total += $product['selling_price'] * $product['quantity'];
+                            $total_cost_price_total += $product['cost_price'] * $product['quantity'];
                             $total_profits += $product['profit'];
 
                             //calculate the grand total only for multiple categories
