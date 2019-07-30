@@ -108,7 +108,8 @@ function get_order_status($status)
                             <tr>
                                 <th style="min-width: 100px;">Date</th>
                                 <th style="min-width: 150px;">Order</th>
-                                <th style="min-width: 400px;">Product</th>
+                                <th style="min-width: 200px;">Client</th>
+                                <th style="min-width: 300px;">Product</th>
                                 <th style="min-width: 40px">Qty</th>
                                 <th style="min-width: 120px;">Unit Price (PU)</th>
                                 <th style="min-width: 120px;">Cost Price (PR)</th>
@@ -199,6 +200,10 @@ function get_order_status($status)
                                                     Ord #<?php echo $currentOrder; ?>
                                                     <?php echo self::order_status($product['order_status']); ?>
                                                  </td>
+
+                                                 <td rowspan="<?php echo $orderCount; ?>">
+                                                     <?php echo $product['full_name']; ?>
+                                                 </td>
                                                  <?php
                                              }
                                               ?>
@@ -219,7 +224,7 @@ function get_order_status($status)
 
                                 <!-- //show the details for the date -->
                                 <tr>
-                                    <th style="text-align: center" colspan="2">Totals</th>
+                                    <th style="text-align: center" colspan="3">Totals</th>
                                     <th> <?php echo $quantityTotal; ?> </th>
                                     <th> <?php echo number_format($cost_price_total); ?> </th>
                                     <th> <?php echo number_format($total_cost_price_total); ?> </th>
@@ -231,7 +236,7 @@ function get_order_status($status)
 
                             <!-- //show the details for the date -->
                             <tr>
-                                <th style="text-align: center; font-size: 18px;" colspan="3">Totals</th>
+                                <th style="text-align: center; font-size: 18px;" colspan="4">Totals</th>
                                 <th style="font-size: 18px;"> <?php echo $periodQuantity; ?> </th>
                                 <th style="font-size: 18px;"> <?php echo number_format($periodCostPrice); ?> </th>
                                 <th style="font-size: 18px;"> <?php echo number_format($periodTotalCost); ?> </th>

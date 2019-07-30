@@ -21,6 +21,8 @@ class ReportsManager
 
     private $order_items = [];
 
+    private $results;
+
     private $items_gotten = false;
 
     function __construct()
@@ -216,6 +218,19 @@ class ReportsManager
             'total' => 0
         ];
 
+        //also for sellers
+        //for now create a non existent key
+        $report['sellers']['-1'] = [
+            'count' => 0,
+            'total' => 0
+        ];
+
+        //for now create a non existent key
+        $report['regions']['-1'] = [
+            'count' => 0,
+            'total' => 0
+        ];
+
 
         //now loop through the results and save the data
         foreach ($data as $key ) {
@@ -297,75 +312,104 @@ class ReportsManager
 		$term_ids[]  = $category_id;
 		$product_ids = get_objects_in_term( $term_ids, 'product_cat' );
 
+        //if the data has not been gotten
+        //then fetch it and save it.
+        //to reduce the number of queries.
         if($this->items_gotten == false)
         {
-            $order_items = $this->get_order_report_data(
-                array(
-                    'data'         => array(
-                        '_product_id' => array(
-                            'type'            => 'order_item_meta',
-                            'order_item_type' => 'line_item',
-                            'function'        => '',
-                            'name'            => 'product_id',
-                        ),
-                        '_line_total' => array(
-                            'type'            => 'order_item_meta',
-                            'order_item_type' => 'line_item',
-                            'function'        => 'SUM',
-                            'name'            => 'order_item_amount',
-                        ),
-                        'post_date'   => array(
-                            'type'     => 'post_data',
-                            'function' => '',
-                            'name'     => 'post_date',
-                        ),
-                    ),
-                    'group_by'     => 'ID, product_id, post_date',
-                    'query_type'   => 'get_results',
-                    'filter_range' => true,
-                )
-            );
+            $results = $this->get_order_data($this->get_sql());
 
-            foreach($order_items as $order_item)
-            {
-                if(! array_key_exists($order_item->product_id, $this->order_items))
-                {
-                    $this->order_items[$order_item->product_id] = [
-                        'count' => 0,
-                        'total' => 0
-                    ];
-                }
-
-                //now add the items
-                $this->order_items[$order_item->product_id]['count'] += 1;
-                $this->order_items[$order_item->product_id]['total'] += $order_item->order_item_amount;
-            }
-
+            $this->results = $results;
             $this->items_gotten = true;
         }
 
+        $quantityCount = 0;
+        $totalAmount = 0;
 
+        foreach($this->results as $result)
+        {
+            //check that the product is in the product ids of this category
+            if(in_array($result->product_id, $product_ids))
+            {
 
-        $total = 0;
-        $count = 0;
-
-        //now filter only the products in the required category
-        foreach ( $product_ids as $id ) {
-            // var_dump($id); die();
-
-            if ( isset( $this->order_items[ $id ] ) ) {
-                $count += $this->order_items[ $id ]['count'];
-                $total += $this->order_items[ $id ]['total'];
+                $quantityCount += $result->quantity;
+                $totalAmount += $result->item_total;
             }
+
+
         }
 
+
         return [
-            'order_count' => $count,
-            'order_total' => $total
+            'order_count' => $quantityCount,
+            'order_total' => $totalAmount
         ];
     }
 
-
+    private function get_sql()
+    {
+        return $sql = "SELECT
+                            order_item_meta__product_id.meta_value AS product_id,
+                            order_item_meta__qty.meta_value AS quantity,
+                            order_item_meta__line_subtotal.meta_value AS item_total,
+                            order_item_meta__gt_cost_price.meta_value AS cost_price,
+                            posts.post_date AS post_date,
+                            posts.post_status AS post_status,
+                            posts.id AS order_id
+                        FROM
+                            wp_posts AS posts
+                        INNER JOIN wp_woocommerce_order_items AS order_items
+                        ON
+                            (
+                                posts.ID = order_items.order_id
+                            )
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__product_id
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__product_id.order_item_id
+                            ) AND(
+                                order_item_meta__product_id.meta_key = '_product_id'
+                            )
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__qty
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__qty.order_item_id
+                            ) AND(
+                                order_item_meta__qty.meta_key = '_qty'
+                            )
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__line_subtotal
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__line_subtotal.order_item_id
+                            ) AND(
+                                order_item_meta__line_subtotal.meta_key = '_line_subtotal'
+                            )
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__gt_cost_price
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__gt_cost_price.order_item_id
+                            ) AND(
+                                order_item_meta__gt_cost_price.meta_key = '_gt_cost_price'
+                            )
+                        WHERE
+                            posts.post_type IN('shop_order', 'shop_order_refund') AND posts.post_status IN(
+                                'wc-completed',
+                                'wc-processing',
+                                'wc-on-hold',
+                                'wc-pending'
+                            )
+                            AND
+                                posts.$this->post_date_field >= '$this->start_date'
+                            AND
+                                posts.$this->post_date_field <= '$this->end_date'
+                            AND
+                                order_items.order_item_type <> 'shipping'
+                        GROUP BY
+                            ID,
+                            product_id,
+                            post_date
+                        ";
+    }
 
 }
 
