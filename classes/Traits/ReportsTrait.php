@@ -28,8 +28,8 @@ trait ReportsTrait
                 WHERE
                     wp_posts.post_type = 'shop_order'
                     AND wp_posts.post_status <> 'auto-draft'
-                    AND wp_posts.post_date >= '$this->start_date'
-                    AND wp_posts.post_date <= '$this->end_date'
+                    AND wp_posts.$this->post_date_field >= '$this->start_date'
+                    AND wp_posts.$this->post_date_field <= '$this->end_date'
                 GROUP BY wp_posts.ID
                 ORDER BY wp_posts.ID DESC
         ";
