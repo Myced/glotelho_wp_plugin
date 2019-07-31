@@ -11,6 +11,7 @@ class OrderStatus
     const ON_HOLD = 'wc-on-hold';
     const PENDING = 'wc-pending';
     const DRAFT = 'auto-draft';
+    const TRASHED = 'trash';
 
     public static function allClasses()
     {
@@ -21,6 +22,7 @@ class OrderStatus
             self::PROCESSING => 'label label-info',
             self::ON_HOLD => 'label label-primary',
             self::PENDING => 'label label-primary',
+            self::TRASHED => 'label label-danger',
             self::DRAFT => ''
         ];
     }
@@ -34,7 +36,8 @@ class OrderStatus
             self::PENDING => 'PENDING',
             self::CANCELLED => 'CANCELLED',
             self::FAILED => 'FAILED',
-            self::DRAFT => 'DRAFT'
+            self::DRAFT => 'DRAFT',
+            self::TRASHED => 'TRASHED'
         ];
     }
 }
