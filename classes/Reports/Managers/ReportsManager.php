@@ -321,8 +321,6 @@ class ReportsManager
         {
             $results = $this->get_order_data($this->get_sql());
 
-            var_dump($results); die();
-
             $this->results = $results;
             $this->items_gotten = true;
         }
