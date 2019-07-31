@@ -27,6 +27,19 @@
                 $periodSellingPrice = 0; //total price;
                 $periodProfits = 0;
 
+                $pendingGrandQuantity = 0;
+                $pendingGrandCostPrice = 0;
+                $pendingGrandTotalCost = 0;
+                $pendingGrandSellingPrice = 0;
+                $pendingGrandProfit = 0;
+
+                //now for completed commands.
+                $completedGrandQuantity = 0;
+                $completedGrandCostPrice = 0;
+                $completedGrandTotalCost = 0;
+                $completedGrandSellingPrice = 0;
+                $completedGrandProfit = 0;
+
                  ?>
 
                 <?php foreach ($data as $currentDate => $date): ?>
@@ -73,6 +86,23 @@
                             $selling_price_total += $product['quantity'] * $product['selling_price'];
                             $total_cost_price_total += $product['cost_price'] * $product['quantity'];
                             $total_profits += $product['profit'];
+
+                            //add the completed and not completed counts.
+                            if($product['order_status'] == \App\Reports\OrderStatus::COMPLETED)
+                            {
+                                $completedGrandQuantity += $product['quantity'];
+                                $completedGrandCostPrice += $product['cost_price'];
+                                $completedGrandTotalCost += $product['cost_price'] * $product['quantity'];
+                                $completedGrandSellingPrice += $product['quantity'] * $product['selling_price'];
+                                $completedGrandProfit += $product['profit'];
+                            }
+                            else {
+                                $pendingGrandQuantity += $product['quantity'];
+                                $pendingGrandCostPrice += $product['cost_price'];
+                                $pendingGrandTotalCost += $product['cost_price'] * $product['quantity'];
+                                $pendingGrandSellingPrice += $product['quantity'] * $product['selling_price'];
+                                $pendingGrandProfit += $product['profit'];
+                            }
 
                             //calculate the grand total only for multiple categories
                             if(in_array('-1', $selectedCategories))
@@ -141,6 +171,24 @@
                     <th style="font-size: 18px;"> <?php echo number_format($periodTotalCost); ?> </th>
                     <th style="font-size: 18px;"> <?php echo number_format($periodSellingPrice); ?> </th>
                     <th style="font-size: 18px;"> <?php echo number_format($periodProfits); ?> </th>
+                </tr>
+
+                <tr style="color: #13e216;">
+                    <th style="text-align: center; font-size: 18px;" colspan="3">Completed Total</th>
+                    <th style="font-size: 18px;"> <?php echo $completedGrandQuantity; ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($completedGrandCostPrice); ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($completedGrandTotalCost); ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($completedGrandSellingPrice); ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($completedGrandProfit); ?> </th>
+                </tr>
+
+                <tr style="color: #e2d313;">
+                    <th style="text-align: center; font-size: 18px;" colspan="3">Pending Total</th>
+                    <th style="font-size: 18px;"> <?php echo $pendingGrandQuantity; ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($pendingGrandCostPrice); ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($pendingGrandTotalCost); ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($pendingGrandSellingPrice); ?> </th>
+                    <th style="font-size: 18px;"> <?php echo number_format($pendingGrandProfit); ?> </th>
                 </tr>
 
             </table>

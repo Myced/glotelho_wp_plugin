@@ -138,7 +138,7 @@ if(isset($_GET['download']))
                     }
 
                     //now show the grand total space
-                    require_once BASE_DIRECTORY . '/templates/grand_total.php';
+                    //require_once BASE_DIRECTORY . '/templates/grand_total.php';
                 }
                 else {
 

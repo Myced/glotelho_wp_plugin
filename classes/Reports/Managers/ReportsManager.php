@@ -148,7 +148,9 @@ class ReportsManager
                 $withoutShipping['pending']['total'] += ($post->order_total - $shipping->shipping);
             }
 
-            if($post->post_status == OrderStatus::FAILED || $post->post_status == OrderStatus::CANCELLED)
+            if($post->post_status == OrderStatus::FAILED
+                || $post->post_status == OrderStatus::CANCELLED
+                || $post->post_status == OrderStatus::TRASHED)
             {
                 $response['cancelled']['count'] += 1;
                 $response['cancelled']['total'] += $post->order_total;
@@ -280,7 +282,7 @@ class ReportsManager
                     AND wp_postmeta.meta_key = '_order_total'
                 where
                     `$this->post_date_field` >= '$this->start_date'
-                    AND `post_status` <> 'auto-draft'
+                    AND `post_status` NOT IN ('auto-draft', 'trash')
                     AND `$this->post_date_field` <= '$this->end_date'
                     and `post_type` = 'shop_order'
                 ";
@@ -298,7 +300,7 @@ class ReportsManager
                     AND wp_postmeta.meta_key = '_order_shipping'
                 where
                     `$this->post_date_field` >= '$this->start_date'
-                    AND `post_status` <> 'auto-draft'
+                    AND `post_status` NOT IN ('auto-draft', 'trash')
                     AND `$this->post_date_field` <= '$this->end_date'
                     and `post_type` = 'shop_order'
                 ";
@@ -318,6 +320,8 @@ class ReportsManager
         if($this->items_gotten == false)
         {
             $results = $this->get_order_data($this->get_sql());
+
+            var_dump($results); die();
 
             $this->results = $results;
             $this->items_gotten = true;
@@ -392,7 +396,7 @@ class ReportsManager
                                 order_item_meta__gt_cost_price.meta_key = '_gt_cost_price'
                             )
                         WHERE
-                            posts.post_type IN('shop_order', 'shop_order_refund') AND posts.post_status IN(
+                            posts.post_type IN('shop_order') AND posts.post_status IN(
                                 'wc-completed',
                                 'wc-processing',
                                 'wc-on-hold',
