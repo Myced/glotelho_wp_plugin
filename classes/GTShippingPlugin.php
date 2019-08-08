@@ -39,6 +39,14 @@ class GTShippingPlugin
             \App\Base\CalculateShipping::class,
             // \App\Base\MomoController::class
             //clasess now for reports.
+
+            //now add classes for google analytics
+            \App\Google\GAAnalytics::class,
+            \App\Google\PurchaseEvent::class,
+            \App\Google\ViewItemEvent::class,
+            \App\Google\AddToCartEvent::class,
+            \App\Google\BeginCheckoutEvent::class,
+            \App\Google\CheckoutStepsEvent::class,
         ];
     }
 
