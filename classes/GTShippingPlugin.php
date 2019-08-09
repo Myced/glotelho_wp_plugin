@@ -48,6 +48,10 @@ class GTShippingPlugin
             // \App\Google\RemoveFromCartEvent::class,
             \App\Google\BeginCheckoutEvent::class,
             \App\Google\CheckoutStepsEvent::class,
+
+
+            //Fix Edit category problem on site
+            \App\Base\FixCategoryEditProblem::class,
         ];
     }
 
