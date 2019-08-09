@@ -44,7 +44,8 @@ class GTShippingPlugin
             \App\Google\GAAnalytics::class,
             \App\Google\PurchaseEvent::class,
             \App\Google\ViewItemEvent::class,
-            \App\Google\AddToCartEvent::class,
+            // \App\Google\AddToCartEvent::class,
+            // \App\Google\RemoveFromCartEvent::class,
             \App\Google\BeginCheckoutEvent::class,
             \App\Google\CheckoutStepsEvent::class,
         ];

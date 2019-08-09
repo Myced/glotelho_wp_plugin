@@ -10,7 +10,10 @@ class AddToCartEvent
     public function register()
     {
         //register the event after the product details has been show
-        add_action('woocommerce_add_to_cart', [$this, 'register_add_to_cart']);
+        // add_action('woocommerce_add_to_cart', [$this, 'register_add_to_cart']);
+
+        //filter for refreshing fragment
+        add_filter('woocommerce_add_to_cart_fragments', [$this, 'add_analytics_code'], 10, 1);
     }
 
     public function register_add_to_cart($key)
@@ -46,6 +49,10 @@ class AddToCartEvent
 
         array_push($items, $item);
 
+        //set the session to initidate the items removed.
+        $_SESSION['add_item'] = true;
+        $_SESSION['items'] = $items;
+
         $this->send_analytics($items);
 
     }
@@ -55,12 +62,39 @@ class AddToCartEvent
         $analytics = [];
         $analytics['items'] = $items;
 
-        ?>
-        <script type="text/javascript">
-            gtag('event', 'add_to_cart', <?php echo json_encode($analytics); ?>)
-        </script>
+        $script =  '<script type="text/javascript">'
+                    . 'alert("javascript adding to cart");'
+                    . 'gtag("event", "add_to_cart", ' . json_encode($analytics) . ')'
+                    . '</script>';
 
-        <?php
+        echo $script;
+    }
+
+    public function add_analytics_code($fragments)
+    {
+
+        if(isset($_SESSION['add_item']))
+        {
+            if($_SESSION['add_item'] == true)
+            {
+                $items = $_SESSION['items'];
+
+                $_SESSION['add_item'] = false;
+
+                $analytics = [];
+                $analytics['items'] = $items;
+
+                $script =  '<script type="text/javascript">'
+                            . 'alert("javascript adding to cart");'
+                            . 'gtag("event", "add_to_cart", ' . json_encode($analytics) . ')'
+                            . '</script>';
+
+                $fragments['script']  = $script;
+                $fragments['me'] = "4";
+
+                return $fragments;
+            }
+        }
     }
 
     private function get_cart_item($key)
