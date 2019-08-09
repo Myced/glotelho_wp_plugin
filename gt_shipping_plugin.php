@@ -7,7 +7,7 @@
 Plugin Name: Glotelho Shipping Extension
 Plugin URI: https://glotelho.cm
 Description: This is a plugin to setup custom user checkout by zone and calculate prices based on zones
-Version: 2.1.0
+Version: 2.2.0
 Author: Equip Technique Glotelho
 Author URI: https://glotelho.cm
 Licence: GPLv2 or later
