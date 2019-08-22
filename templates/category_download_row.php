@@ -3,7 +3,7 @@
 //add the table headings
 $headings = [
     "Date", "Order", "Product", "Quantity",
-    "Unit Cost", 'Selling Price', 'Total', "Profit"
+    "Unit Price (PU)", 'Cost Price (PR)', 'Selling Price (PT)', "Profit (Marge)"
 ];
 
 array_push($full_data, $headings);
@@ -47,24 +47,26 @@ foreach($data as $date => $dates)
 
             $categoryTotal[3] += $product['quantity'];
             $categoryTotal[4] += $product['cost_price'];
-            $categoryTotal[5] += $product['selling_price'];
+            $categoryTotal[5] += $product['cost_price'] * $product['quantity'];
+            // $categoryTotal[5] += $product['selling_price'];
             $categoryTotal[6] += $product['quantity'] * $product['selling_price'];
             $categoryTotal[7] += $product['profit'];
 
             $dateTotal[3] += $product['quantity'];
             $dateTotal[4] += $product['cost_price'];
-            $dateTotal[5] += $product['selling_price'];
+            $dateTotal[5] += $product['cost_price'] * $product['quantity'];
+            // $dateTotal[5] += $product['selling_price'];
             $dateTotal[6] += $product['quantity'] * $product['selling_price'];
             $dateTotal[7] += $product['profit'];
 
             //calculate the grand total only for multiple categories.
-            if($cat == '-1')
+            if(in_array('-1', $selectedCategories))
             {
                 $grandQuantity += $product['quantity'];
                 $grandCostPrice += $product['cost_price'];
                 $grandTotalCost += $product['quantity'] * $product['cost_price'];
-                $grandSellingPrice += $product['selling_price'];
-                $grandTotalTotal += $product['selling_price'] * $product['quantity'];
+                // $grandSellingPrice += $product['selling_price'];
+                $grandSellingPrice += $product['selling_price'] * $product['quantity'];
                 $grandProfit += $product['profit'];
             }
 
@@ -74,7 +76,7 @@ foreach($data as $date => $dates)
                 $product['name'],
                 $product['quantity'],
                 $product['cost_price'],
-                $product['selling_price'],
+                $product['cost_price'] * $product['quantity'],
                 $product['quantity'] * $product['selling_price'],
                 $product['profit']
             ];

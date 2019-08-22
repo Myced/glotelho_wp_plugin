@@ -118,6 +118,14 @@ class Admin
                 'capability' => "manage_categories",
                 'slug' => "gt_monthly_report",
                 "callback" => ['\App\Reports\MonthlyReportController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
+                "title" => 'Products Report',
+                'menu_title' => "Products Report",
+                'capability' => "manage_categories",
+                'slug' => "gt_products_report",
+                "callback" => ['\App\Reports\ProductsReportController', 'show_report']
             ]
         ];
     }
