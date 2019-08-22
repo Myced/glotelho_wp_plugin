@@ -27,10 +27,7 @@ if($_GET['download'] == true)
     }
 
     //push the headings
-    $h1 = [ "Glotelho Operations Report" ];
-    array_push($full_data, $h1);
-
-    $h1 = [ "Category:", $cat_name];
+    $h1 = [ "Glotelho Categories Report" ];
     array_push($full_data, $h1);
 
     $h1 = ["Date Period:", $date_period];
@@ -41,7 +38,7 @@ if($_GET['download'] == true)
 
     //go through the results and put them into the array
     //get the data and loop through it.
-    if($cat == "-1")
+    if(in_array('-1', $selectedCategories))
     {
         //do this for all categories
         $grandQuantity = 0;
@@ -74,13 +71,13 @@ if($_GET['download'] == true)
 
         $row = [
             "Quantity", "Cost Price", "Total Cost Price",
-            "Selling Price", "Total Income", "Profits"
+            "Selling Price",  "Profits"
         ];
         array_push($full_data, $row);
 
         $row = [
             $grandQuantity, $grandCostPrice, $grandTotalCost,
-            $grandSellingPrice, $grandTotalTotal, $grandProfit
+            $grandSellingPrice,  $grandProfit
         ];
 
         array_push($full_data, $row);
@@ -88,9 +85,31 @@ if($_GET['download'] == true)
 
     }
     else {
-        $data = $manager->get_data($cat);
 
-        require_once BASE_DIRECTORY . '/templates/category_download_row.php';
+        //do it for the selected categories
+        foreach($selectedCategories as $cat_id)
+        {
+            //get the category name
+            $category = get_term_by( 'id', $cat_id, "product_cat");
+
+            $row = [
+                "Category",
+                $category->name
+            ];
+
+            array_push($full_data, $row);
+
+            $data = $manager->get_data($category->term_id);
+
+            require BASE_DIRECTORY . '/templates/category_download_row.php';
+        }
+
+        //now insert the Grand Total for all categories
+        $row = ["", "", ""];
+        array_push($full_data, $row);
+
+
+
     }
 
 
