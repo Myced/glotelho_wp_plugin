@@ -11,7 +11,8 @@ class ProductsReportManager
     public function get_all_products()
     {
         $args = [
-            'downloadable' => false
+            'downloadable' => false,
+            'limit' => 10000
         ];
 
         return wc_get_products($args);
