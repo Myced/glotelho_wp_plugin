@@ -1,15 +1,18 @@
 <?php
 namespace App\Reports;
 
-use Managers\ProductsReportManager;
+use App\Reports\Managers\ProductsReportManager;
 
 class ProductsReportController
 {
 
-    public function show_report()
+    public static function show_report()
     {
         $manager = new ProductsReportManager();
+
+        return require_once BASE_DIRECTORY . '/templates/products_report.php';
     }
+
 }
 
  ?>
