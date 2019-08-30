@@ -142,7 +142,10 @@ function gt_get_cat_name($cat_id)
                                                     <?php
                                                 }
                                                 else {
-                                                    echo number_format($active_price);
+                                                    if(is_numeric($active_price))
+                                                    {
+                                                        echo number_format($active_price);
+                                                    }
                                                 }
                                             ?>
                                         </td>
