@@ -63,6 +63,14 @@ class Admin
                 'slug' => "gt_sales_report",
                 "callback" => ['\App\Reports\SaleReportController', 'show_report']
             ],
+            // [
+            //     "parent_slug" => $parent_slug,
+            //     "title" => 'Top Sellers',
+            //     'menu_title' => "Top Sellers",
+            //     'capability' => "manage_categories",
+            //     'slug' => "gt_top_sellers",
+            //     "callback" => ['\App\Reports\TopSellersController', 'show_report']
+            // ],
             [
                 "parent_slug" => $parent_slug,
                 "title" => 'End OF Day Report',
