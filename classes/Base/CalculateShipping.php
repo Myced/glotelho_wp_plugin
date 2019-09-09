@@ -50,7 +50,7 @@ class CalculateShipping
                             {
                                 echo $_SESSION[self::SHIPPING_COST_MESSAGE];
                                 ?>
-                                <button type="button" name="button"
+                                <button type="button" name="button" style="line-height: normal;"
                                     class="button btn-primary btn-small btn-flat mini_popup">
                                     Changer votre zone
                                 </button>
@@ -58,7 +58,7 @@ class CalculateShipping
                             }
                             else {
                                 ?>
-                                <button type="button" name="button"
+                                <button type="button" name="button" style="line-height: normal;"
                                     class="button btn-primary btn-small btn-flat mini_popup">
                                     Choisir la Zone
                                 </button>

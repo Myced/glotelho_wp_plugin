@@ -95,7 +95,7 @@ class Checkout
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h2 class="page-header m-t-10" >Choisir Votre Zone</h2>
+                        <h2 class="gt-page-header m-t-10" >Choisir Votre Zone</h2>
                     </div>
                 </div>
 
@@ -169,6 +169,7 @@ class Checkout
                 </div>
 
                 <!-- next row -->
+                <br>
                 <div class="row">
                     <div class="col-md-6 col-sm-12 col-xs-12">
 
