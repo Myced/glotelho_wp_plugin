@@ -1,6 +1,6 @@
 {
-    "name": "tnced/ced_plugin",
-    "description": "Testing to build a wordpress plugin",
+    "name": "tnced/gt_shipping_plugin",
+    "description": "A Plugin to provide reporting and shipping to the glotelho.cm",
     "authors": [
         {
             "name": "tncedric",
