@@ -1,6 +1,6 @@
 <?php
 /**
-* @package GT Plugin
+* @package GT EMEI
 **/
 
 /**

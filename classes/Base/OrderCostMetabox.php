@@ -21,7 +21,7 @@ class OrderCostMetabox
         $callback_args = null;
         $priority = "high";
 
-        if($post->post_type = "shop_order")
+        if($post->post_type == "shop_order")
         {
             add_meta_box(
                 $box_id, $title, $callback, $screen,
