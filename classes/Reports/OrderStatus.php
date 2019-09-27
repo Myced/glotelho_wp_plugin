@@ -40,6 +40,18 @@ class OrderStatus
             self::TRASHED => 'TRASHED'
         ];
     }
+
+    public static function validStatuses()
+    {
+        return [
+            self::COMPLETED => 'COMPLETED',
+            self::PROCESSING => 'PROCESSING',
+            self::ON_HOLD => 'ON HOLD',
+            self::PENDING => 'PENDING',
+            self::CANCELLED => 'CANCELLED',
+            self::FAILED => 'FAILED'
+        ];
+    }
 }
 
  ?>

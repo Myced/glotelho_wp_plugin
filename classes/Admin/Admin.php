@@ -57,20 +57,20 @@ class Admin
         return $pages = [
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Rapport Client Achat',
+                'menu_title' => "Rapport Client Achat",
+                'capability' => "manage_categories",
+                'slug' => "gt_client_achat",
+                "callback" => ['\App\Reports\ClientAchatController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Sales Report',
                 'menu_title' => "Sales Report",
                 'capability' => "manage_categories",
                 'slug' => "gt_sales_report",
                 "callback" => ['\App\Reports\SaleReportController', 'show_report']
             ],
-            // [
-            //     "parent_slug" => $parent_slug,
-            //     "title" => 'Top Sellers',
-            //     'menu_title' => "Top Sellers",
-            //     'capability' => "manage_categories",
-            //     'slug' => "gt_top_sellers",
-            //     "callback" => ['\App\Reports\TopSellersController', 'show_report']
-            // ],
             [
                 "parent_slug" => $parent_slug,
                 "title" => 'End OF Day Report',
