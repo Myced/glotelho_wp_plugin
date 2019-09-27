@@ -108,7 +108,7 @@ class MonthlyReportManager
                 GROUP BY wp_posts.ID
                 ORDER BY wp_posts.ID
         ";
-
+ 
         return $sql;
     }
 
