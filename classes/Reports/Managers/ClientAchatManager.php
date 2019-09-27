@@ -51,22 +51,25 @@ class ClientAchatManager
 
     private function set_product_ids()
     {
-        $categories = $_GET['categories'];
-
-        $products = [];
-
-        //for each category take the product ids and save
-        foreach($categories as $category)
+        if(isset($_GET['categories']))
         {
-            $term_ids    = get_term_children( $category, 'product_cat' );
-            $term_ids[]  = $category;
-            $product_ids = get_objects_in_term( $term_ids, 'product_cat' );
+            $categories = $_GET['categories'];
 
-            $products = array_merge($products, $product_ids);
+            $products = [];
+
+            //for each category take the product ids and save
+            foreach($categories as $category)
+            {
+                $term_ids    = get_term_children( $category, 'product_cat' );
+                $term_ids[]  = $category;
+                $product_ids = get_objects_in_term( $term_ids, 'product_cat' );
+
+                $products = array_merge($products, $product_ids);
+            }
+
+            //make the array unique
+            $this->products = array_unique($products);
         }
-
-        //make the array unique
-        $this->products = array_unique($products);
 
     }
 
@@ -208,26 +211,29 @@ class ClientAchatManager
 
     private function set_order_statuses()
     {
-        $statuses = $_GET['statuses'];
-        $in = '(';
-
-        //put in all the statuses here.
-        $i = 0;
-        foreach($statuses as $status)
+        if(isset($_GET['statuses']))
         {
-            $in .= " '$status'";
+            $statuses = $_GET['statuses'];
+            $in = '(';
 
-            if($i < count($statuses) -1 )
+            //put in all the statuses here.
+            $i = 0;
+            foreach($statuses as $status)
             {
-                $in .= ', ';
+                $in .= " '$status'";
+
+                if($i < count($statuses) -1 )
+                {
+                    $in .= ', ';
+                }
+
+                $i++;
             }
 
-            $i++;
+            $in .= ')';
+
+            $this->order_statuses = $in;
         }
-
-        $in .= ')';
-
-        $this->order_statuses = $in;
     }
 }
 

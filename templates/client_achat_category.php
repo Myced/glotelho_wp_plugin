@@ -20,6 +20,12 @@ else {
 //required variables
 $categories = self::getCategories();
 $statuses = self::getStatuses();
+
+if(isset($_GET['download']))
+{
+    require_once BASE_DIRECTORY . '/templates/client_achat_download.php';
+}
+
 ?>
 
 <div class="wrap">
@@ -56,7 +62,7 @@ $statuses = self::getStatuses();
              <select class="form-control chosen" multiple id="gt_category"
                  data-placeholder="Choose the categories needed">
                  <option value="-1"
-                     
+
                  <?php foreach ($categories as $category): ?>
                      <option value="<?php echo $category->term_id ?>"
                          <?php
@@ -100,6 +106,15 @@ $statuses = self::getStatuses();
              </a>
          </div>
      </div>
+
+     <br>
+     <?php
+     if(isset($_GET['categories']))
+     {
+         //include download button
+         require BASE_DIRECTORY . '/templates/excel_download_btn.php';
+     }
+     ?>
 
      <br>
      <br>
