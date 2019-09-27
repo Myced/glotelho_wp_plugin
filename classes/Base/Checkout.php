@@ -255,7 +255,11 @@ class Checkout
                 <!-- end of next row -->
 
                 <!-- details row  -->
+<<<<<<< HEAD
+		<br>
+=======
                 <br>
+>>>>>>> 3f9d26d14a2941c364804ca4403e4a7cca6e1512
                 <div class="row <?php if(empty($this->zone_id)) { echo "hide"; } ?>" id="zone_hide">
                     <div class="col-md-12">
                         <div class="details">
