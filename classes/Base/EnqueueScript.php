@@ -7,7 +7,7 @@ namespace App\Base;
 /**
  *
  */
-class Enqueue
+class EnqueueScript
 {
     //the variable that will contain the glotelho pages
     public $pages = [

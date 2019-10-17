@@ -21,7 +21,7 @@ class GTShippingPlugin
             \App\Base\InitSession::class,
             \App\Admin\Admin::class,
             \App\Base\Sellers::class,
-            \App\Base\Enqueue::class,
+            \App\Base\EnqueueScript::class,
             \App\Base\SettingsLink::class,
             \App\Base\OrderMetaBox::class,
             \App\Base\ZoneController::class,
