@@ -52,6 +52,9 @@ class GTShippingPlugin
 
             //Fix Edit category problem on site
             \App\Base\FixCategoryEditProblem::class,
+
+            //override wp smart search style
+            \App\Base\OverrideSearchModal::class,
         ];
     }
 
