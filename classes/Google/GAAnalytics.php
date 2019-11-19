@@ -25,6 +25,8 @@ class GAAnalytics
           gtag('config', 'UA-110656135-1');
           gtag('config', 'UA-110656135-1', { 'send_page_view': false });
         </script>
+
+        <meta name="p:domain_verify" content="d8660fde4b5fcd6ba43e9bfc5360d43b"/>
         <?php
     }
 }
