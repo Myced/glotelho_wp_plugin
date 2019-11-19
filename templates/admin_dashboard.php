@@ -285,6 +285,7 @@ else {
                   <tr>
                     <th>S/N</th>
                     <th>Category</th>
+                    <th>N<sup>o</sup> of Orders  </th>
                     <th>Qty Bought</th>
                     <th>Total</th>
                   </tr>
