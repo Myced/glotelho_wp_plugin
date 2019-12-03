@@ -13,7 +13,7 @@ class IncomeReportController
 
         $data = $manager->get_data();
 
-        return require_once BASE_DIRECTORY . '/templates/income_report.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/income_report.php';
     }
 
     public static function order_status($status)

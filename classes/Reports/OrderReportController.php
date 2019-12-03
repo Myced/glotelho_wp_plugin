@@ -12,7 +12,7 @@ class OrderReportController
 
         $orders = $manager->get_orders();
 
-        return require_once BASE_DIRECTORY . '/templates/orders_report.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/orders_report.php';
     }
 
     public static function getRegions()

@@ -88,7 +88,7 @@ if($_GET['download'] == true)
 
                     $data = $manager->get_data($category->term_id, $seller->term_id);
 
-                    require BASE_DIRECTORY . '/templates/operations_download_row.php';
+                    require GT_BASE_DIRECTORY . '/templates/operations_download_row.php';
                 }
 
                 //now insert the Grand Total for all categories
@@ -129,7 +129,7 @@ if($_GET['download'] == true)
 
                     $data = $manager->get_data($category->term_id, $seller->term_id);
 
-                    require BASE_DIRECTORY . '/templates/operations_download_row.php';
+                    require GT_BASE_DIRECTORY . '/templates/operations_download_row.php';
                 }
             }
         }
@@ -177,7 +177,7 @@ if($_GET['download'] == true)
 
                     $data = $manager->get_data($category->term_id, $seller->term_id);
 
-                    require BASE_DIRECTORY . '/templates/operations_download_row.php';
+                    require GT_BASE_DIRECTORY . '/templates/operations_download_row.php';
                 }
 
                 //now insert the Grand Total for all categories
@@ -218,7 +218,7 @@ if($_GET['download'] == true)
 
                     $data = $manager->get_data($category->term_id, $seller->term_id);
 
-                    require BASE_DIRECTORY . '/templates/operations_download_row.php';
+                    require GT_BASE_DIRECTORY . '/templates/operations_download_row.php';
                 }
             }
         }

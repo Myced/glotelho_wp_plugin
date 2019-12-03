@@ -27,7 +27,7 @@ class ClientAchatController
             $spreadsheet = new Spreadsheet;
         }
 
-        return require_once BASE_DIRECTORY . '/templates/client_achat_category.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/client_achat_category.php';
     }
 
     public static function getCategories()

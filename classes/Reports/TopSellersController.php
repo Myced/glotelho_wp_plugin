@@ -11,7 +11,7 @@ class TopSellersController
 
         $manager = new TopSellersManager;
 
-        return require_once BASE_DIRECTORY . '/templates/top_sellers.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/top_sellers.php';
 
     }
 }

@@ -18,7 +18,7 @@ class Admin
     {
         //regiser the admin services.
         //these include custom post type and
-        $name = PLUGIN_BASENAME;
+        $name = GT_PLUGIN_BASENAME;
 
         $this->settings = new SettingsApi;
 

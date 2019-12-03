@@ -96,7 +96,7 @@ $sellers  = self::getSellers();
             $data = $manager->get_user_data($seller->term_id);
             $seller_name = $seller->name;
 
-            require BASE_DIRECTORY . '/templates/sellers_report_row.php';
+            require GT_BASE_DIRECTORY . '/templates/sellers_report_row.php';
         }
     }
     else {
@@ -109,7 +109,7 @@ $sellers  = self::getSellers();
                 $data = $manager->get_user_data($seller->term_id);
                 $seller_name = $seller->name;
 
-                require BASE_DIRECTORY . '/templates/sellers_report_row.php';
+                require GT_BASE_DIRECTORY . '/templates/sellers_report_row.php';
             }
         }
         else {
@@ -121,7 +121,7 @@ $sellers  = self::getSellers();
                     $data = $manager->get_user_data($seller->term_id);
                     $seller_name = $seller->name;
 
-                    require BASE_DIRECTORY . '/templates/sellers_report_row.php';
+                    require GT_BASE_DIRECTORY . '/templates/sellers_report_row.php';
                 }
             }
         }

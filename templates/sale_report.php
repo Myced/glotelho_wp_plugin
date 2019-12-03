@@ -22,7 +22,7 @@ if(isset($_GET['download']))
 {
     if($_GET['download'] == true)
     {
-        require_once BASE_DIRECTORY . '/templates/sales_download.php';
+        require_once GT_BASE_DIRECTORY . '/templates/sales_download.php';
     }
 }
 
@@ -89,7 +89,7 @@ function get_order_status($status)
         </div>
     </div>
 
-    <?php require_once BASE_DIRECTORY . '/templates/excel_download_btn.php'; ?>
+    <?php require_once GT_BASE_DIRECTORY . '/templates/excel_download_btn.php'; ?>
 
     <br>
     <div class="row">

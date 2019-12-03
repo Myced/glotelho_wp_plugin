@@ -14,7 +14,7 @@ class SettingsLink
 
     public function __construct()
     {
-        $this->plugin = PLUGIN_NAME;
+        $this->plugin = GT_PLUGIN_NAME;
     }
 
     public function register()

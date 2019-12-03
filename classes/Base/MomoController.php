@@ -13,7 +13,7 @@ class MomoController
 
     public function initialise_momo()
     {
-        // return require_once BASE_DIRECTORY . '/classes/Base/NewMomo.php';
+        // return require_once GT_BASE_DIRECTORY . '/classes/Base/NewMomo.php';
     }
 
     public function add_momo_payment($methods)
