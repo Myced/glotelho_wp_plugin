@@ -194,7 +194,10 @@ class OrderMetaBox
         ?>
         <script type="text/javascript">
             jQuery(document).ready(function($){
-                $('.gt_seller').select2();
+                if(jQuery('.gt_seller').val() !== undefined )
+                {
+                    $('.gt_seller').select2();
+                }
             });
         </script>
         <?php
