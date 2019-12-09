@@ -193,7 +193,7 @@ class OrderMetaBox
     {
         ?>
         <script type="text/javascript">
-            $(document).ready(function(){
+            jQuery(document).ready(function($){
                 $('.gt_seller').select2();
             });
         </script>
