@@ -15,6 +15,8 @@ class OrderMetaBox
         add_action( 'add_meta_boxes', [$this, 'add_meta_box'] );
 
         add_action( 'save_post', [$this, 'save_meta_data'], 10, 1 );
+
+        add_action('admin_footer', [$this, 'init_script']);
     }
 
     public function add_meta_box()
@@ -48,8 +50,8 @@ class OrderMetaBox
         <p>
 			<label class="meta-label" for="gt_plugin_seller">Order Seller:</label>
 
-            <select class="form-controll" name="gt_seller" id="gt_plugin_seller"
-                style="width: 100px; ">
+            <select class="form-controll gt_seller" name="gt_seller" id="gt_plugin_seller"
+                style="width: 200px; ">
                 <option value="-1">Select Seller</option>
 
                 <?php foreach ($this->getSellers() as $seller): ?>
@@ -60,9 +62,12 @@ class OrderMetaBox
                             if($gt_seller == $seller->term_id)
                                 echo "selected";
                         }
+
+                        $code = get_term_meta($seller->term_id, "gt_seller_code", true);
+
                          ?>
                         >
-                        <?php echo $seller->name; ?>
+                        <?php echo $seller->name . ' (' . $code . ')'; ?>
                     </option>
                 <?php endforeach; ?>
 
@@ -99,6 +104,7 @@ class OrderMetaBox
                 <option value="-1">Select Town</option>
 
                 <?php foreach ($this->getTowns() as $town): ?>
+
                     <option value="<?php echo $town->term_id; ?>"
                         <?php
                             if($gt_town == $town->term_id)
@@ -159,6 +165,8 @@ class OrderMetaBox
         // var_dump($post_id); die();
         // Sanitize user input  and update the meta field in the database.
         update_post_meta( $post_id, $this->name, $data );
+
+        //check if the sender has been set.
     }
 
     public function getRegions()
@@ -171,9 +179,25 @@ class OrderMetaBox
         return $this->getTerms('seller');
     }
 
+    private function init_seller_codes()
+    {
+
+    }
+
     public function getTowns()
     {
         return $this->getTerms('zone_town');
+    }
+
+    public function init_script()
+    {
+        ?>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.gt_seller').select2();
+            });
+        </script>
+        <?php
     }
 }
 

@@ -12,7 +12,7 @@ class MonthlyReportController
 
         $data = $manager->get_data();
 
-        return require_once BASE_DIRECTORY . '/templates/monthly_report.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/monthly_report.php';
     }
 
 

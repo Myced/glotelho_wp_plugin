@@ -19,7 +19,7 @@ class CategoriesReportController
             $spreadsheet = new Spreadsheet;
         }
 
-        return require_once BASE_DIRECTORY . '/templates/categories_report.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/categories_report.php';
     }
 
     public static function getCategories()

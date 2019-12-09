@@ -7,7 +7,7 @@
 Plugin Name: Glotelho Shipping Extension
 Plugin URI: https://glotelho.cm
 Description: This is a plugin to setup custom user checkout by zone and calculate prices based on zones
-Version: 2.2.0
+Version: 2.5.1
 Author: Equip Technique Glotelho
 Author URI: https://glotelho.cm
 Licence: GPLv2 or later
@@ -28,9 +28,9 @@ require_once(__DIR__ . '/vendor/autoload.php');
 define('GT_PLUGIN_URL', plugins_url() . '/gt_shipping_plugin/');
 define('GT_ASSETS_URL', GT_PLUGIN_URL . 'assets/');
 define('GT_CLASSES_URL',  'classes/');
-define('PLUGIN_NAME', 'gt_plugin');
-define('PLUGIN_BASENAME', plugin_basename(__FILE__));
-define("BASE_DIRECTORY", __DIR__);
+define('GT_PLUGIN_NAME', 'gt_shipping_plugin');
+define('GT_PLUGIN_BASENAME', plugin_basename(__FILE__));
+define("GT_BASE_DIRECTORY", __DIR__);
 
 
 
@@ -84,7 +84,7 @@ function init_payment()
 {
     if(class_exists('\WooCommerce'))
     {
-        require_once BASE_DIRECTORY . '/classes/Base/MomoPayment.php';
+        require_once GT_BASE_DIRECTORY . '/classes/Base/MomoPayment.php';
     }
     else {
         function gt_admin_notice__error()

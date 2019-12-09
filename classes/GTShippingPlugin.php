@@ -31,6 +31,7 @@ class GTShippingPlugin
             \App\Base\AddProductCostPrice::class,
             \App\Base\AfterOrderPlaced::class,
             \App\Base\OrderCostMetabox::class,
+            \App\Base\SaveFrontOrderSeller::class,
 
             //now control front end scripts
             \App\Base\EnqueueFrontStyles::class,

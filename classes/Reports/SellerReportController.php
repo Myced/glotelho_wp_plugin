@@ -11,7 +11,7 @@ class SellerReportController
     {
         $manager = new SellerReportManager;
 
-        return require_once BASE_DIRECTORY . '/templates/sellers_report.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/sellers_report.php';
     }
 
     public static function order_status($status)

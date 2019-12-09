@@ -21,7 +21,7 @@ class OperationsReportController
             $spreadsheet = new Spreadsheet;
         }
 
-        return require_once BASE_DIRECTORY . '/templates/operations_report.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/operations_report.php';
     }
 
     public static function getCategories()

@@ -10,7 +10,7 @@ class ProductsReportController
     {
         $manager = new ProductsReportManager();
 
-        return require_once BASE_DIRECTORY . '/templates/products_report.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/products_report.php';
     }
 
 }

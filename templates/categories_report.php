@@ -29,7 +29,7 @@ $categories = self::getCategories();
 
 if(isset($_GET['download']))
 {
-    require_once BASE_DIRECTORY . '/templates/category_download.php';
+    require_once GT_BASE_DIRECTORY . '/templates/category_download.php';
 }
 ?>
 
@@ -106,7 +106,7 @@ if(isset($_GET['download']))
     if(isset($_GET['categories']))
     {
         //include download button
-        require BASE_DIRECTORY . '/templates/excel_download_btn.php';
+        require GT_BASE_DIRECTORY . '/templates/excel_download_btn.php';
     }
     ?>
 
@@ -134,11 +134,11 @@ if(isset($_GET['download']))
 
                         $data = $manager->get_data($cat->term_id);
 
-                        require BASE_DIRECTORY . '/templates/category_report_row.php';
+                        require GT_BASE_DIRECTORY . '/templates/category_report_row.php';
                     }
 
                     //now show the grand total space
-                    //require_once BASE_DIRECTORY . '/templates/grand_total.php';
+                    //require_once GT_BASE_DIRECTORY . '/templates/grand_total.php';
                 }
                 else {
 
@@ -153,7 +153,7 @@ if(isset($_GET['download']))
 
                         $data = $manager->get_data($cat->term_id);
 
-                        require BASE_DIRECTORY . '/templates/category_report_row.php';
+                        require GT_BASE_DIRECTORY . '/templates/category_report_row.php';
                     }
                 }
             }

@@ -35,7 +35,7 @@ class ReportsController
         $paymentData = $regStats['payment_methods'];
 
 
-        return require_once BASE_DIRECTORY . '/templates/admin_dashboard.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/admin_dashboard.php';
     }
 
     public static function getRegions()

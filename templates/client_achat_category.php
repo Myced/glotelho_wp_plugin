@@ -23,7 +23,7 @@ $statuses = self::getStatuses();
 
 if(isset($_GET['download']))
 {
-    require_once BASE_DIRECTORY . '/templates/client_achat_download.php';
+    require_once GT_BASE_DIRECTORY . '/templates/client_achat_download.php';
 }
 
 ?>
@@ -112,7 +112,7 @@ if(isset($_GET['download']))
      if(isset($_GET['categories']))
      {
          //include download button
-         require BASE_DIRECTORY . '/templates/excel_download_btn.php';
+         require GT_BASE_DIRECTORY . '/templates/excel_download_btn.php';
      }
      ?>
 
