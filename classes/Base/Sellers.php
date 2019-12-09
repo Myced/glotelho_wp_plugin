@@ -90,7 +90,7 @@ class Sellers
 
         $code = $this->normalise($count);
 
-        $user_code = $role . "_" . $code;
+        $user_code = $role . $code;
 
         return $user_code;
     }
