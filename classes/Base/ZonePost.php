@@ -12,14 +12,14 @@ class ZonePost
 
     function __construct()
     {
-        $this->name = "Zone"
+        $this->name = "Zone";
         $this->args = $this->getArgs();
     }
 
     public function getArgs()
     {
         return $args = [
-            
+
         ];
     }
 }

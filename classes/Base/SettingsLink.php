@@ -19,7 +19,7 @@ class SettingsLink
 
     public function register()
     {
-        add_filter("plugin_action_links_".PLUGIN_BASENAME, [$this, 'settings_link']);
+        add_filter("plugin_action_links_". GT_PLUGIN_BASENAME, [$this, 'settings_link']);
     }
 
     public function settings_link($links)

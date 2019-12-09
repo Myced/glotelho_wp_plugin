@@ -45,26 +45,26 @@ class EnqueueScript
 
             if(in_array($page, $pages))
             {
-                wp_enqueue_style(PLUGIN_NAME . 'Bootstrap', GT_ASSETS_URL . 'admin/bootstrap.css' );
+                wp_enqueue_style(GT_PLUGIN_NAME . 'Bootstrap', GT_ASSETS_URL . 'admin/bootstrap.css' );
 
                 //enqueue moris js
-                wp_enqueue_style(PLUGIN_NAME . 'MorrisCss', GT_ASSETS_URL . 'admin/plugins/morris/morris.css' );
-                wp_enqueue_style(PLUGIN_NAME . 'DatepickerCss', GT_ASSETS_URL . 'admin/plugins/datepicker/bootstrap-datepicker.css' );
-                wp_enqueue_style(PLUGIN_NAME . 'DataTableCss', GT_ASSETS_URL . 'admin/plugins/datatables/dataTables.bootstrap.css' );
+                wp_enqueue_style(GT_PLUGIN_NAME . 'MorrisCss', GT_ASSETS_URL . 'admin/plugins/morris/morris.css' );
+                wp_enqueue_style(GT_PLUGIN_NAME . 'DatepickerCss', GT_ASSETS_URL . 'admin/plugins/datepicker/bootstrap-datepicker.css' );
+                wp_enqueue_style(GT_PLUGIN_NAME . 'DataTableCss', GT_ASSETS_URL . 'admin/plugins/datatables/dataTables.bootstrap.css' );
 
-                wp_enqueue_style(PLUGIN_NAME . 'AdminLTE', GT_ASSETS_URL . 'admin/AdminLTE.css' );
+                wp_enqueue_style(GT_PLUGIN_NAME . 'AdminLTE', GT_ASSETS_URL . 'admin/AdminLTE.css' );
 
                 //enqueue chosen js
-                wp_enqueue_style(PLUGIN_NAME . 'ChosenCss', GT_ASSETS_URL . 'admin/plugins/chosen/chosen.css' );
-                wp_enqueue_script(PLUGIN_NAME . 'ChosenJs', GT_ASSETS_URL . 'admin/plugins/chosen/chosen.jquery.js' );
+                wp_enqueue_style(GT_PLUGIN_NAME . 'ChosenCss', GT_ASSETS_URL . 'admin/plugins/chosen/chosen.css' );
+                wp_enqueue_script(GT_PLUGIN_NAME . 'ChosenJs', GT_ASSETS_URL . 'admin/plugins/chosen/chosen.jquery.js' );
 
                 //enqueue the final script and css for the page
-                wp_enqueue_script(PLUGIN_NAME . 'RaphaelJs', GT_ASSETS_URL . 'admin/plugins/raphael/raphael.min.js' );
-                wp_enqueue_script(PLUGIN_NAME . 'MorrisJs', GT_ASSETS_URL . 'admin/plugins/morris/morris.js' );
-                wp_enqueue_script(PLUGIN_NAME . 'DatepickerJs', GT_ASSETS_URL . 'admin/plugins/datepicker/bootstrap-datepicker.js' );
-                wp_enqueue_script(PLUGIN_NAME . 'DataTableJs', GT_ASSETS_URL . 'admin/plugins/datatables/jquery.dataTables.js' );
-                wp_enqueue_script(PLUGIN_NAME . 'DatepickerBsJs', GT_ASSETS_URL . 'admin/plugins/datatables/dataTables.bootstrap.js' );
-                wp_enqueue_script(PLUGIN_NAME . 'AdminScript', GT_ASSETS_URL . 'admin/script2.js' );
+                wp_enqueue_script(GT_PLUGIN_NAME . 'RaphaelJs', GT_ASSETS_URL . 'admin/plugins/raphael/raphael.min.js' );
+                wp_enqueue_script(GT_PLUGIN_NAME . 'MorrisJs', GT_ASSETS_URL . 'admin/plugins/morris/morris.js' );
+                wp_enqueue_script(GT_PLUGIN_NAME . 'DatepickerJs', GT_ASSETS_URL . 'admin/plugins/datepicker/bootstrap-datepicker.js' );
+                wp_enqueue_script(GT_PLUGIN_NAME . 'DataTableJs', GT_ASSETS_URL . 'admin/plugins/datatables/jquery.dataTables.js' );
+                wp_enqueue_script(GT_PLUGIN_NAME . 'DatepickerBsJs', GT_ASSETS_URL . 'admin/plugins/datatables/dataTables.bootstrap.js' );
+                wp_enqueue_script(GT_PLUGIN_NAME . 'AdminScript', GT_ASSETS_URL . 'admin/script.js' );
             }
         }
 
