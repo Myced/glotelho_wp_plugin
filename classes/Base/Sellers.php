@@ -174,6 +174,7 @@ class Sellers
                         <option value="SC" <?php if($role == "SC") echo 'selected'; ?> >Service Client</option>
                         <option value="AM" <?php if($role == "AM") echo 'selected'; ?> >Ambassador</option>
                         <option value="FL" <?php if($role == "FL") echo 'selected'; ?> >FreeLance</option>
+                        <option value="EM" <?php if($role == "EM") echo 'selected'; ?> >Employee</option>
                     </select>
                     <p class="description">Select the role of the seller</p>
                 </td>
@@ -199,6 +200,7 @@ class Sellers
                     <option value="SC">Service Client</option>
                     <option value="AM">Ambassador</option>
                     <option value="FL">FreeLance</option>
+                    <option value="EM">Employee</option>
                 </select>
                 <p class="description">Select the role of the seller</p>
             </div>
