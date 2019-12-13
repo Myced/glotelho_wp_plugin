@@ -271,12 +271,10 @@ class OperationsReportManager
                         order_item_meta__gt_cost_price.meta_key = '_gt_cost_price'
                     )
                 WHERE
-                    posts.post_type IN('shop_order', 'shop_order_refund') AND posts.post_status IN(
-                        'wc-completed',
-                        'wc-processing',
-                        'wc-on-hold',
-                        'wc-pending'
-                    )
+                    wp_posts.post_type = 'shop_order'
+
+                    AND wp_posts.post_status NOT IN ('auto-draft', 'trash')
+
                     AND
                         posts.$this->post_date_field >= '$this->start_date'
                     AND
