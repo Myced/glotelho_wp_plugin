@@ -4,7 +4,7 @@ namespace App\Reports\Managers;
 use App\Reports\OrderStatus;
 
 
-class OrderReportManager
+class StatusReportManager
 {
 
     public $wpdb;
@@ -79,8 +79,9 @@ class OrderReportManager
         $sql = " SELECT
                     wp_posts.ID,
                     wp_posts.post_title,
-                    wp_posts.post_status,
+                    wp_posts.post_status as status,
                     wp_posts.post_date,
+                    wp_posts.post_excerpt as comment,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_order_total')
                     THEN wp_postmeta.meta_value ELSE NULL END) AS total,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_order_shipping')

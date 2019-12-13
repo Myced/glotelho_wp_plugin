@@ -57,6 +57,14 @@ class Admin
         return $pages = [
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Rapport Statut Commandes',
+                'menu_title' => "Rapport Statut des Commandes",
+                'capability' => "manage_categories",
+                'slug' => "gt_order_statuses",
+                "callback" => ['\App\Reports\RapportStatutController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Rapport Client Achat',
                 'menu_title' => "Rapport Client Achat",
                 'capability' => "manage_categories",

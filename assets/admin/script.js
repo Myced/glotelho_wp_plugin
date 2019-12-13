@@ -4,7 +4,13 @@ jQuery(document).ready(function($){
     $(".datatable").DataTable();
     $(".chosen").chosen();
 
-    
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 
     //do logic to redirect users where they filter date on dashboard
     $("#filter").click(function(){

@@ -20,12 +20,12 @@ else {
 
 <div class="wrap">
     <h3>
-        Orders Report
+        Les Commandes
         (<?php
             if(isset($_GET['start_date']))
                 echo $start_date . ' - ' . $end_date;
             else {
-                echo "Today";
+                echo "Aujourd'hui";
             }
         ?>)
     </h3>
@@ -95,12 +95,35 @@ else {
                                     <th>Total</th>
                                     <th>Seller</th>
                                     <th>Ville</th>
+                                    <th>Commentaire</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <?php $count = 1; $total = 0; $realTotal = 0; ?>
+                                <?php
+                                    $count = 1;
+                                    $total = 0;
+                                    $realTotal = 0;
+
+                                      $townss = self::getTowns();
+                                      $sellerss = self::getSellers();
+
+                                      $towns = [];
+                                      $sellers = [];
+
+                                      foreach($sellerss as $seller)
+                                      {
+                                          $sellers[$seller->term_id] = $seller;
+                                      }
+
+                                      foreach($townss as $town)
+                                      {
+                                          $towns[$town->term_id] = $town;
+                                      }
+
+
+                                ?>
                                 <?php foreach ($orders as $order): ?>
                                     <?php
                                     $amount = $order->total - $order->shipping;
@@ -113,33 +136,64 @@ else {
                                         $realTotal += $amount;
                                     }
 
-                                    //now get data for the ville
-                                    if($order->order_data != null)
+                                    //process order data.
+                                    $town = '';
+                                    $seller = '';
+
+                                    $order_data = $order->order_data;
+
+                                    if($order_data != null)
                                     {
-                                        $order_data = unserialize($order->order_data);
+                                        $data = unserialize($order_data);
 
-                                        $region = $order_data['gt_region'];
-                                        $seller = $order_data['gt_seller'];
-                                        $town = isset($order_data['gt_town']) ? $order_data['gt_town'] : '-1';
+                                        $town_sel = $data['gt_town'];
+                                        $seller_sel = $data['gt_seller'];
 
-                                        //get the seller name
-                                        // and town name
-                                        $sellerTerm = get_term_by("id", $seller, "seller");
-                                        $townTerm = get_term_by("id", $town, "zone_town");
+                                        if($town_sel != '-1')
+                                        {
+                                            if(array_key_exists($town_sel, $towns))
+                                            {
+                                                $town = $towns[$town_sel]->name;
+                                            }
+                                        }
 
-
+                                        if($seller_sel != '-1')
+                                        {
+                                            if(array_key_exists($seller_sel, $sellers))
+                                            {
+                                                $seller = $sellers[$seller_sel]->name;
+                                            }
+                                        }
                                     }
+
+                                    $time = date('d, M Y', strtotime($order->post_date)). ' @ '. date('H:i', strtotime($order->post_date));
+
                                      ?>
                                     <tr>
                                         <td> <?php echo $count++; ?> </td>
-                                        <td> <?php echo date("d, M Y", strtotime($order->post_date)); ?> </td>
+                                        <td>
+                                            <a href="javascript:void(0)"
+                                              data-toggle="tooltip"
+                                              title="<?php echo $time; ?>"
+                                              style="color: #333;">
+                                              <?php echo date("d, M Y", strtotime($order->post_date)); ?>
+                                          </a>
+                                        </td>
                                         <td> Ord #<?php echo $order->ID; ?> </td>
                                         <td> <?php echo $order->first_name . ' ' . $order->last_name; ?> </td>
                                         <td> <?php echo $order->tel; ?> </td>
                                         <td> <?php echo self::showStatus($order->post_status); ?> </td>
                                         <td> <?php echo number_format($amount) . ' FCFA'; ?> </td>
-                                        <td> <?php if($order->order_data != null) { if($seller != '-1') echo $sellerTerm->name; } ?> </td>
-                                        <td> <?php if($order->order_data != null) { if($town != '-1') echo $townTerm->name; } ?> </td>
+                                        <td> <?php echo $seller; ?> </td>
+                                        <td> <?php echo $town; ?> </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-xs" data-toggle="popover"
+                                              title="Commentaire du Commande"
+                                              data-content="<?php echo $order->comment; ?>"
+                                              data-placement="top">
+                                                Commentaire
+                                            </button>
+                                        </td>
                                         <td>
                                             <a href="post.php?post=<?php echo $order->ID; ?>&action=edit"
                                                     class="btn btn-info btn-xs">

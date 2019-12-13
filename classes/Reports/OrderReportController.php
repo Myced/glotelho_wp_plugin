@@ -32,9 +32,8 @@ class OrderReportController
 
     public static function showStatus($status)
     {
-        $statuses = OrderStatus::allClasses();
-        $class = $statuses[$status];
-        $name = OrderStatus::allNames()[$status];
+        $name = OrderStatus::getName($status);
+        $class = OrderStatus::getClass($status);
 
         $status = "<label class=\"$class\">$name </label>";
         return $status;

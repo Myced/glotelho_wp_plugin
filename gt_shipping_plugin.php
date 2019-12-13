@@ -62,8 +62,8 @@ register_deactivation_hook(__FILE__, ['\App\Base\Deactivate', 'deactivate']);
 // }
 
 //set the default timezone
-$timezone_identifier = "Africa/Douala";
-date_default_timezone_set ( $timezone_identifier );
+// $timezone_identifier = "Africa/Douala";
+// date_default_timezone_set ( $timezone_identifier );
 
 /// intialise this plugin
 if(class_exists('App\GTShippingPlugin'))

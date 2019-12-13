@@ -36,7 +36,8 @@ class EnqueueScript
             "gt_eod_report",
             "gt_products_report",
             "gt_top_sellers",
-            "gt_client_achat"
+            "gt_client_achat",
+            "gt_order_statuses"
         ];
 
         if(isset($_GET['page']))
@@ -51,12 +52,14 @@ class EnqueueScript
                 wp_enqueue_style(GT_PLUGIN_NAME . 'MorrisCss', GT_ASSETS_URL . 'admin/plugins/morris/morris.css' );
                 wp_enqueue_style(GT_PLUGIN_NAME . 'DatepickerCss', GT_ASSETS_URL . 'admin/plugins/datepicker/bootstrap-datepicker.css' );
                 wp_enqueue_style(GT_PLUGIN_NAME . 'DataTableCss', GT_ASSETS_URL . 'admin/plugins/datatables/dataTables.bootstrap.css' );
-
+                wp_enqueue_style(GT_PLUGIN_NAME . 'Glyphicon', GT_ASSETS_URL . 'glyphicon.css' );
                 wp_enqueue_style(GT_PLUGIN_NAME . 'AdminLTE', GT_ASSETS_URL . 'admin/AdminLTE.css' );
+                wp_enqueue_style(GT_PLUGIN_NAME . 'CustomStyle', GT_ASSETS_URL . 'mystyle.css' );
 
                 //enqueue chosen js
                 wp_enqueue_style(GT_PLUGIN_NAME . 'ChosenCss', GT_ASSETS_URL . 'admin/plugins/chosen/chosen.css' );
                 wp_enqueue_script(GT_PLUGIN_NAME . 'ChosenJs', GT_ASSETS_URL . 'admin/plugins/chosen/chosen.jquery.js' );
+                wp_enqueue_script(GT_PLUGIN_NAME . 'Bootstrap', GT_ASSETS_URL . 'admin/bootstrap.js' );
 
                 //enqueue the final script and css for the page
                 wp_enqueue_script(GT_PLUGIN_NAME . 'RaphaelJs', GT_ASSETS_URL . 'admin/plugins/raphael/raphael.min.js' );
