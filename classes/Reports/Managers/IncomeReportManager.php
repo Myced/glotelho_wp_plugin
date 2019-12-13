@@ -199,9 +199,9 @@ class IncomeReportManager
                                 order_item_meta__gt_cost_price.meta_key = '_gt_cost_price'
                             )
                         WHERE
-                            wp_posts.post_type = 'shop_order'
+                            posts.post_type = 'shop_order'
 
-                            AND wp_posts.post_status NOT IN ('auto-draft', 'trash')
+                            AND posts.post_status NOT IN ('auto-draft', 'trash')
 
                             AND
                                 posts.post_date >= '$this->start_date'

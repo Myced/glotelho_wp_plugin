@@ -249,9 +249,9 @@ class SellerReportManager
                                 order_item_meta__gt_cost_price.meta_key = '_gt_cost_price'
                             )
                         WHERE
-                            wp_posts.post_type = 'shop_order'
-                            
-                            AND wp_posts.post_status NOT IN ('auto-draft', 'trash')
+                            posts.post_type = 'shop_order'
+
+                            AND posts.post_status NOT IN ('auto-draft', 'trash')
 
                             AND
                                 posts.$this->post_date_field >= '$this->start_date'

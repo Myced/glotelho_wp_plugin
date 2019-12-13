@@ -140,7 +140,16 @@ class ReportsManager
                 $withoutShipping['completed']['total'] += ($post->order_total - $shipping->shipping);
             }
 
-            if($post->post_status == OrderStatus::ON_HOLD || $post->post_status == OrderStatus::PROCESSING)
+            else if($post->post_status == OrderStatus::FAILED
+                || $post->post_status == OrderStatus::CANCELLED)
+            {
+                $response['cancelled']['count'] += 1;
+                $response['cancelled']['total'] += $post->order_total;
+
+                $withoutShipping['cancelled']['total'] += ($post->order_total - $shipping->shipping);
+            }
+
+            else
             {
                 $response['pending']['count'] += 1;
                 $response['pending']['total'] += $post->order_total;
@@ -148,15 +157,6 @@ class ReportsManager
                 $withoutShipping['pending']['total'] += ($post->order_total - $shipping->shipping);
             }
 
-            if($post->post_status == OrderStatus::FAILED
-                || $post->post_status == OrderStatus::CANCELLED
-                || $post->post_status == OrderStatus::TRASHED)
-            {
-                $response['cancelled']['count'] += 1;
-                $response['cancelled']['total'] += $post->order_total;
-
-                $withoutShipping['cancelled']['total'] += ($post->order_total - $shipping->shipping);
-            }
 
             ++$i;
         }
@@ -394,9 +394,9 @@ class ReportsManager
                                 order_item_meta__gt_cost_price.meta_key = '_gt_cost_price'
                             )
                         WHERE
-                            wp_posts.post_type = 'shop_order'
+                            posts.post_type = 'shop_order'
 
-                            AND wp_posts.post_status NOT IN ('auto-draft', 'trash')
+                            AND posts.post_status NOT IN ('auto-draft', 'trash')
 
                             AND
                                 posts.$this->post_date_field >= '$this->start_date'
