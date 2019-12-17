@@ -142,6 +142,14 @@ class Admin
                 'capability' => "manage_categories",
                 'slug' => "gt_products_report",
                 "callback" => ['\App\Reports\ProductsReportController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
+                "title" => 'Commandes Freelance',
+                'menu_title' => "Commandes Freelance",
+                'capability' => "manage_categories",
+                'slug' => "gt_freelance_report",
+                "callback" => ['\App\Reports\FreeLanceController', 'show_report']
             ]
         ];
     }
