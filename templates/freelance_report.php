@@ -114,7 +114,7 @@ else {
                                             <td>
                                                 <button type="button" class="btn btn-info btn-xs" data-toggle="popover"
                                                   title="Commentaire du Commande"
-                                                  data-content="<?php echo $order->post_excerpt; ?>"
+                                                  data-content="<?php echo $order->comment; ?>"
                                                   data-placement="top">
                                                     Commentaire
                                                 </button>
