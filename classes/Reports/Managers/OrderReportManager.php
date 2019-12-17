@@ -81,6 +81,7 @@ class OrderReportManager
                     wp_posts.post_title,
                     wp_posts.post_status,
                     wp_posts.post_date,
+                    wp_posts.post_excerpt as comment,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_order_total')
                     THEN wp_postmeta.meta_value ELSE NULL END) AS total,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_order_shipping')
