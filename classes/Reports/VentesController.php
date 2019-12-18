@@ -4,19 +4,40 @@ namespace App\Reports;
 use App\Traits\ExcelTrait;
 use App\Reports\OrderStatus;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use App\Reports\Managers\ClientAchatManager;
+use App\Reports\Managers\VentesManager;
 
-class ClientAchatController
+class VentesController
 {
     use ExcelTrait;
 
     public static function show_report()
     {
-        $manager = new ClientAchatManager;
+        $manager = new VentesManager;
+
+        //initialise the min and max prices
+        if(isset($_GET['max']))
+        {
+            $max = number_format(self::gt_get_money($_GET['max']));
+        }
+        else {
+            $max = number_format("10000000");
+        }
+
+        if(isset($_GET['min']))
+        {
+            $min = number_format(self::gt_get_money($_GET['min']));
+        }
+        else {
+            $min = number_format('100000');
+        }
+
+        $max_value = self::gt_get_money($max);
+        $min_value = self::gt_get_money($min);
+
 
         if(isset($_GET['categories']))
         {
-            $data = $manager->get_data();
+            $data = $manager->get_data($min_value, $max_value);
         }
         else {
             $data = [];
@@ -27,7 +48,7 @@ class ClientAchatController
             $spreadsheet = new Spreadsheet;
         }
 
-        return require_once GT_BASE_DIRECTORY . '/templates/client_achat_category.php';
+        return require_once GT_BASE_DIRECTORY . '/templates/ventes_report.php';
     }
 
     public static function getCategories()
@@ -51,7 +72,7 @@ class ClientAchatController
 
     public static function getStatuses()
     {
-        return OrderStatus::validStatuses();
+        return OrderStatus::allNames();
     }
 
     public static function showStatus($status)
@@ -61,6 +82,21 @@ class ClientAchatController
 
         $status = "<label class=\"$class\">$name </label>";
         return $status;
+    }
+
+    public static function gt_get_money($money)
+    {
+        $regex = '/[\s\,\.\-]/';
+        if(preg_match($regex, $money))
+        {
+            $filter = preg_filter($regex, '', $money);
+        }
+        else
+        {
+            $filter = $money;
+        }
+
+        return $filter;
     }
 }
 

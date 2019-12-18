@@ -1,5 +1,6 @@
 <?php
-$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_client_achat";
+$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_ventes_report";
+
 
 if(isset($_GET['start_date']))
 {
@@ -17,20 +18,23 @@ else {
     $end_date = date("Y-m-d");
 }
 
+
+
 //required variables
 $categories = self::getCategories();
 $statuses = self::getStatuses();
 
+
 if(isset($_GET['download']))
 {
-    require_once GT_BASE_DIRECTORY . '/templates/client_achat_download.php';
+    require_once GT_BASE_DIRECTORY . '/templates/ventes_reports_download.php';
 }
 
 ?>
 
 <div class="wrap">
     <h3>
-        Rapport Client Achat
+        Ventes
         (<?php
             if(isset($_GET['start_date']))
                 echo $start_date . ' - ' . $end_date;
@@ -61,7 +65,17 @@ if(isset($_GET['download']))
          <div class="col-md-3">
              <select class="form-control chosen" multiple id="gt_category"
                  data-placeholder="Choose the categories needed">
-                 
+                 <option value="-1"
+                 <?php
+                    if(isset($_GET['categories']))
+                    {
+                        if(in_array('-1', $_GET['categories']))
+                            echo 'selected';
+                    }
+                    ?>>
+                     Tous Les Categories
+                 </option>
+
                  <?php foreach ($categories as $category): ?>
                      <option value="<?php echo $category->term_id ?>"
                          <?php
@@ -98,8 +112,23 @@ if(isset($_GET['download']))
 
      <br>
      <div class="row">
+         <div class="col-md-2">
+             <input type="text" name="start_date" value="<?php echo $min; ?>"
+                 class="form-control" id="gt_min_amount"
+                 placeholder="Prix Minimum">
+         </div>
+
+         <div class="col-md-2">
+             <input type="text" name="end_date" value="<?php echo $max; ?>"
+                 class="form-control" id="gt_max_amount"
+                 placeholder="Prix Maximum">
+         </div>
+     </div>
+
+     <br>
+     <div class="row">
          <div class="col-md-12 text-center">
-             <input type="submit" id="filter-achat-client" class="btn btn-primary" value="Filter">
+             <input type="submit" id="filter-ventes" class="btn btn-primary" value="Filter">
              <a href="<?php echo $defaultUrl; ?>" class="btn btn-success">
                  Reset to Today
              </a>
@@ -141,6 +170,7 @@ if(isset($_GET['download']))
                                     <th>Client</th>
                                     <th>Telephone</th>
                                     <th>Produit</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
 
@@ -156,6 +186,7 @@ if(isset($_GET['download']))
                                         <td> <?php echo $order['client_name']; ?> </td>
                                         <td> <?php echo $order['client_tel']; ?> </td>
                                         <td> <?php echo $order['product_name']; ?> </td>
+                                        <td> <?php echo number_format($order['total']); ?> </td>
                                     </tr>
                                 <?php endforeach; ?>
 

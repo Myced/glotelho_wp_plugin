@@ -19,6 +19,10 @@ class OrderStatus
     const TRASHED = 'trash';
     const REFUNDED = 'wc-refund';
 
+    const PENDING_DELIVERY = 'wc-pending-delivery';
+    const PENDING_IMPORT = 'wc-import';
+    const PENDING_ADVANCE = 'WC-pending-advance';
+
     public static function allClasses()
     {
         return [
@@ -36,7 +40,11 @@ class OrderStatus
             self::CANCELLED => 'label label-danger',
             self::FAILED => 'label label-danger',
 
-            self::REFUNDED => 'label label-refund'
+            self::REFUNDED => 'label label-refund',
+
+            self::PENDING_IMPORT => 'label label-pending-import',
+            self::PENDING_ADVANCE => 'label label-pending-advance',
+            self::PENDING_DELIVERY => 'label label-pending-delivery'
         ];
 
     }
@@ -59,7 +67,11 @@ class OrderStatus
             self::CANCELLED => 'Commande Annulée',
             self::FAILED => 'Échouée',
 
-            self::REFUNDED => 'Remboursée'
+            self::REFUNDED => 'Remboursée',
+
+            self::PENDING_IMPORT => 'Produit à l’Import',
+            self::PENDING_ADVANCE => 'Avance en Attente',
+            self::PENDING_DELIVERY => 'En Cours de Livraison'
         ];
     }
 
@@ -89,14 +101,7 @@ class OrderStatus
 
     public static function validStatuses()
     {
-        return [
-            self::COMPLETED => 'COMPLETED',
-            self::PROCESSING => 'PROCESSING',
-            self::ON_HOLD => 'ON HOLD',
-            self::PENDING => 'PENDING',
-            self::CANCELLED => 'CANCELLED',
-            self::FAILED => 'FAILED'
-        ];
+        return self::allNames();
     }
 }
 

@@ -73,6 +73,14 @@ class Admin
             ],
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Rapport Ventes',
+                'menu_title' => "Rapport Ventes",
+                'capability' => "manage_categories",
+                'slug' => "gt_ventes_report",
+                "callback" => ['\App\Reports\VentesController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Sales Report',
                 'menu_title' => "Sales Report",
                 'capability' => "manage_categories",

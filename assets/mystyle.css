@@ -95,3 +95,21 @@
     color: #fff;
     background-color: #4d5125 !important;
 }
+
+.label-pending-import
+{
+    color: #fff;
+    background-color: #1009e8 !important;
+}
+
+.label-pending-advance
+{
+    color: #fff;
+    background-color: #1a00c9 !important;
+}
+
+.label-pending-delivery
+{
+    color: #fff;
+    background-color: #2bef00 !important;
+}

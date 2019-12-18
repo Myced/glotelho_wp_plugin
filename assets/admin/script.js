@@ -92,6 +92,48 @@ jQuery(document).ready(function($){
         window.location.href = finalUrl;
     });
 
+    $("#filter-ventes").click(function(){
+        var url = $("#url").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+        var order_statuses = $("#gt_order_status").val();
+        var categories = $("#gt_category").val();
+
+        var max = $("#gt_max_amount").val();
+        var min = $("#gt_min_amount").val();
+
+        var finalUrl = url + "&start_date=" + start_date
+                            + "&max=" + max + "&min=" + min
+                            + "&end_date=" + end_date;
+
+        if(order_statuses === null)
+        {
+            alert("Please select the required order Status");
+            return false;
+        }
+
+        //form the url with the sellers and categories.
+        for(var i = 0; i < order_statuses.length; i++)
+        {
+            finalUrl += "&statuses%5B%5D=" + order_statuses[i];
+        }
+
+        if(categories === null)
+        {
+            alert("Please select the required categories");
+            return false;
+        }
+
+        //form the url with the sellers and categories.
+        for(var i = 0; i < categories.length; i++)
+        {
+            finalUrl += "&categories%5B%5D=" + categories[i];
+        }
+
+        //redirec the user to the new url
+        window.location.href = finalUrl;
+    });
+
     $("#filter-operations").click(function(){
         var url = $("#url").val();
         var start_date = $("#start_date").val();
