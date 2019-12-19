@@ -17,6 +17,14 @@ if(isset($_GET['end_date']))
 else {
     $end_date = date("Y-m-d");
 }
+
+if(isset($_GET['download']))
+{
+    if($_GET['download'] == true)
+    {
+        require_once GT_BASE_DIRECTORY . '/templates/freelance_report_download.php';
+    }
+}
 ?>
 
 <div class="wrap">
@@ -28,6 +36,8 @@ else {
  <div class="content">
 
      <input type="hidden" id="url" value="<?php echo $defaultUrl; ?>">
+
+     <?php require_once GT_BASE_DIRECTORY . '/templates/excel_download_btn.php'; ?>
 
 
      <br>

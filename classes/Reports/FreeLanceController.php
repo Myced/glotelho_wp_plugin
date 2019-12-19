@@ -1,16 +1,25 @@
 <?php
 namespace App\Reports;
 
+use App\Traits\ExcelTrait;
 use App\Reports\OrderStatus;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use App\Reports\Managers\FreeLanceManager;
 
 class FreeLanceController
 {
+    use ExcelTrait;
+
     public static function show_report()
     {
 
         $sellers = self::getNames();
         $manager = new FreeLanceManager;
+
+        if(isset($_GET['download']))
+        {
+            $spreadsheet = new Spreadsheet;
+        }
 
         return require_once GT_BASE_DIRECTORY . '/templates/freelance_report.php';
     }
@@ -53,7 +62,7 @@ class FreeLanceController
             ],
 
             "2857" => [
-                "name" => "Vengre",
+                "name" => "Kengne",
                 "email" => ""
             ],
 
@@ -88,7 +97,7 @@ class FreeLanceController
             ],
 
             "1219" => [
-                "name" => "Saa Josia",
+                "name" => "Saa Josias",
                 "email" => ""
             ],
 
@@ -98,7 +107,7 @@ class FreeLanceController
             ],
 
             "1010" => [
-                "name" => "Franck Ngueh",
+                "name" => "Franck Ngueti",
                 "email" => ""
             ],
 
@@ -112,13 +121,13 @@ class FreeLanceController
                 "email" => ""
             ],
 
-            "1918" => [
+            "19181" => [
                 "name" => "Rostand Kouteu",
                 "email" => ""
             ],
 
             "2306" => [
-                "name" => "Lucres",
+                "name" => "Lucress",
                 "email" => ""
             ],
 
