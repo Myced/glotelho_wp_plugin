@@ -33,6 +33,10 @@ class GTShippingPlugin
             \App\Base\OrderCostMetabox::class,
             \App\Base\SaveFrontOrderSeller::class,
 
+            \App\Base\AdvancePaymentMetaBox::class,
+            \App\Base\SavePaymentDate::class,
+            \App\Base\PaymentMethodBox::class,
+
             //now control front end scripts
             \App\Base\EnqueueFrontStyles::class,
             \App\Base\Checkout::class,

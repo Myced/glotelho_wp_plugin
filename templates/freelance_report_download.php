@@ -83,7 +83,7 @@ if($_GET['download'] == true)
             $row[4] = $order->tel;
             $row[5] = achat_get_order_status($order->post_status);
             $row[6] = number_format($amount) . ' FCFA';
-            $row[7] = number_format($comm) . 'FCFA';
+            $row[7] = number_format($comm) . ' FCFA';
 
 
             //push the row

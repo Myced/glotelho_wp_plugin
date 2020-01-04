@@ -65,6 +65,14 @@ class Admin
             ],
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Comptabilité',
+                'menu_title' => "Comptabilité",
+                'capability' => "manage_categories",
+                'slug' => "gt_accounting",
+                "callback" => ['\App\Reports\AccountingReportController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Rapport Client Achat',
                 'menu_title' => "Rapport Client Achat",
                 'capability' => "manage_categories",

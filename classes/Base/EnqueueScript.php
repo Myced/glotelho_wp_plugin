@@ -39,7 +39,8 @@ class EnqueueScript
             "gt_client_achat",
             "gt_order_statuses",
             "gt_freelance_report",
-            "gt_ventes_report"
+            "gt_ventes_report",
+            "gt_accounting"
         ];
 
         if(isset($_GET['page']))

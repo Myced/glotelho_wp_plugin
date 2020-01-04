@@ -27,6 +27,18 @@ jQuery(document).ready(function($){
         window.location.href = finalUrl;
     });
 
+    $("#filter-acc").click(function(){
+        var url = $("#url").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+
+        var finalUrl = url + "&start_date=" + start_date
+                            + "&end_date=" + end_date;
+
+        //redirec the user to the new url
+        window.location.href = finalUrl;
+    });
+
     $("#filter-category").click(function(){
         var url = $("#url").val();
         var start_date = $("#start_date").val();

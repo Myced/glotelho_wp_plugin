@@ -5,12 +5,14 @@ use App\Reports\OrderStatus;
 use App\Traits\WooCommerceOrderQuery;
 
 
-class SellerReportManager
+class AccountingReportManager
 {
 
     use WooCommerceOrderQuery;
 
     public $wpdb;
+
+    private $payment_received_status = 'wc-payment-received';
 
     private $start_date;
     private $end_date;
@@ -19,7 +21,9 @@ class SellerReportManager
 
     private $products = [];
 
-    private $result;
+    //initialise the towns
+    private $towns;
+    private $sellers;
 
     private $items_gotten = false;
 
@@ -32,16 +36,12 @@ class SellerReportManager
 
         $this->init_dates();
         $this->init_post_date_field();
-        $this->init_result();
+        $this->init_towns();
+        $this->init_sellers();
 
     }
 
-    public function init_result()
-    {
-        $this->results = $this->get_order_data($this->get_sql());
-    }
-
-    public function init_post_date_field()
+    private function init_post_date_field()
     {
         if(isset($_GET['order_type']))
         {
@@ -57,8 +57,48 @@ class SellerReportManager
         else {
 
             //by default get the post modified date
-            $this->post_date_field = "post_date";
+            $this->post_date_field = "post_modified";
         }
+    }
+
+    private function init_towns()
+    {
+        $towns = get_terms("zone_town", ['hide_empty' => false ]);
+
+        foreach($towns as $town)
+        {
+            $this->towns[$town->term_id] = $town->name;
+        }
+    }
+
+    private function init_sellers()
+    {
+        $sellers = get_terms("seller", ['hide_empty' => false ]);
+
+        foreach($sellers as $seller)
+        {
+            $this->sellers[$seller->term_id] = $seller->name;
+        }
+    }
+
+    private function getTown($id)
+    {
+        if(array_key_exists($id, $this->towns))
+        {
+            return $this->towns[$id];
+        }
+
+        return false;
+    }
+
+    private function getSeller($id)
+    {
+        if(array_key_exists($id, $this->sellers))
+        {
+            return $this->sellers[$id];
+        }
+
+        return false;
     }
 
     public function get_product($id)
@@ -130,29 +170,25 @@ class SellerReportManager
 
     }
 
-    public function get_user_data($seller)
+    public function get_data()
     {
         $data = [];
 
         // $results = $this->get_order_report_data($this->get_args());
+        $results = $this->get_order_data($this->get_sql());
 
-        foreach($this->results as $result)
+        foreach($results as $result)
         {
-            //if the sellers information is not available, then
-            //don't process the current order
             if($result->order_data == null)
             {
-                continue;
+                $seller_name = "";
+                $town_name = "";
             }
-
-            //process the seller information
-            $sellerInfo = unserialize($result->order_data);
-
-
-            //if the seller info is not the current user
-            //then move to next
-            if($sellerInfo['gt_seller'] != $seller)
-                continue;
+            else {
+                $orderInfo = unserialize($result->order_data);
+                $seller_name = $this->getSeller($orderInfo['gt_seller']);
+                $town_name = $this->getTown($orderInfo['gt_town']);
+            }
 
             $date = date("d/M/Y", strtotime($result->post_date));
             if(!array_key_exists($date, $data))
@@ -161,7 +197,14 @@ class SellerReportManager
             }
 
             //now get the order
-            $order = $result->order_id;
+            if($result->invoice_no != null)
+            {
+                $order = $result->invoice_no;
+            }
+            else {
+                $order = $result->order_id;
+            }
+
             if(!array_key_exists($order, $data[$date]))
             {
                 $data[$date][$order] = [];
@@ -179,14 +222,21 @@ class SellerReportManager
                 continue;
             }
 
+            $full_name = $result->first_name . ' ' . $result->last_name;
+
             $productDetails = [
+                'full_name' => $full_name,
                 "order_status" => $result->order_status,
                 'id' => $result->product_id,
                 'name' => $product_info['name'],
                 'cost_price' => $result->cost_price,
                 'selling_price' => $result->item_total / $result->quantity,
+                'product_total' => $result->item_total,
                 'quantity' => $result->quantity,
-                'profit' => $profit
+                'profit' => $profit,
+                'seller' => $seller_name,
+                'town' => $town_name,
+                'payment_method' => $result->payment_method
             ];
 
             //push it into the order
@@ -201,7 +251,7 @@ class SellerReportManager
 
     private function get_sql()
     {
-        $sql = "SELECT
+        return $sql = "SELECT
                             order_item_meta__product_id.meta_value AS product_id,
                             order_item_meta__qty.meta_value AS quantity,
                             order_item_meta__line_subtotal.meta_value AS item_total,
@@ -209,17 +259,30 @@ class SellerReportManager
                             posts.post_date AS post_date,
                             posts.id AS order_id,
                             posts.post_status as order_status,
+                            posts.post_excerpt as order_note,
                             MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
-                                THEN wp_postmeta.meta_value ELSE NULL END) AS order_data
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS order_data,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_first_name')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS first_name,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_last_name')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS last_name,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_wcpdf_invoice_number')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS invoice_no,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_payment_date')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS payment_date,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_payment_method')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS payment_method
+
+
                         FROM
                             wp_posts AS posts
+                        INNER JOIN `wp_postmeta`
+                            ON posts.ID = wp_postmeta.post_id
                         INNER JOIN wp_woocommerce_order_items AS order_items
                         ON
                             (
                                 posts.ID = order_items.order_id
                             )
-                        LEFT JOIN `wp_postmeta`
-                            ON posts.ID = wp_postmeta.post_id
                         LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__product_id
                         ON
                             (
@@ -251,7 +314,7 @@ class SellerReportManager
                         WHERE
                             posts.post_type = 'shop_order'
 
-                            AND posts.post_status NOT IN ('auto-draft', 'trash')
+                            AND posts.post_status = '$this->payment_received_status'
 
                             AND
                                 posts.$this->post_date_field >= '$this->start_date'
@@ -264,8 +327,6 @@ class SellerReportManager
                             product_id,
                             post_date
                         ";
-
-            return $sql;
 
     }
 
