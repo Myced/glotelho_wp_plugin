@@ -266,7 +266,7 @@ class AccountingReportManager
                                 THEN wp_postmeta.meta_value ELSE NULL END) AS first_name,
                             MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_last_name')
                                 THEN wp_postmeta.meta_value ELSE NULL END) AS last_name,
-                            MAX(CASE WHEN (wp_postmeta.meta_key = '_wcpdf_invoice_number')
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_order_number')
                                 THEN wp_postmeta.meta_value ELSE NULL END) AS invoice_no,
                             MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_payment_date')
                                 THEN wp_postmeta.meta_value ELSE NULL END) AS payment_date,
