@@ -262,7 +262,7 @@ function get_product_categories($product_id, $categories, $category_products)
                                             <td> <?php echo $product['payment_method']; ?> </td>
                                             <td>
                                                 <?php
-                                                    $cat = get_product_categories('121', $categories, $category_products);
+                                                    $cat = get_product_categories($product['product_id'], $categories, $category_products);
                                                     echo $cat;
                                                 ?>
                                             </td>

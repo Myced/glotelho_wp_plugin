@@ -225,6 +225,7 @@ class AccountingReportManager
             $full_name = $result->first_name . ' ' . $result->last_name;
 
             $productDetails = [
+                'product_id' => $result->product_id,
                 'full_name' => $full_name,
                 "order_status" => $result->order_status,
                 'id' => $result->product_id,
