@@ -139,24 +139,27 @@ class AdvancePaymentMetaBox
 
         $date = date("Y-m-d H:i:s");
 
-        if($data['method'] != '-1' || !empty($data['amount']))
+        if($data['method'] != '-1')
         {
-            // Sanitize user input  and update the meta field in the database.
-            add_post_meta( $post_id, $this->payment_method_key, $data, false);
-            add_post_meta( $post_id, $this->advance_date_key, $date, true);
+            if( ! empty($data['amount']))
+            {
+                // Sanitize user input  and update the meta field in the database.
+                add_post_meta( $post_id, $this->payment_method_key, $data, false);
+                add_post_meta( $post_id, $this->advance_date_key, $date, true);
 
-            //make a comment to indicate that an avance has been paid.
-            // If you don't have the WC_Order object (from a dynamic $order_id)
-            $order = wc_get_order(  $post_id );
+                //make a comment to indicate that an avance has been paid.
+                // If you don't have the WC_Order object (from a dynamic $order_id)
+                $order = wc_get_order(  $post_id );
 
-            // The text for the note
-            $note = "Une avance de "
-                    . number_format($data['amount'])
-                    . " a été payée par "
-                    . $this->methods[$data['method']];
+                // The text for the note
+                $note = "Une avance de "
+                        . number_format($data['amount'])
+                        . " a été payée par "
+                        . $this->methods[$data['method']];
 
-            // Add the note
-            $order->add_order_note( $note );
+                // Add the note
+                $order->add_order_note( $note );
+            }
 
         }
 
