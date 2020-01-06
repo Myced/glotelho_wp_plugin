@@ -39,7 +39,8 @@ function get_order_status($status)
 
 //now get the products in each categories
 $category_products = [];
-$my_cats = $categories;
+$cat_ids = [];
+$product_cats = [];
 
 foreach($categories as $category)
 {
@@ -47,8 +48,11 @@ foreach($categories as $category)
     $term_ids[]  = $category->term_id;
     $product_ids = get_objects_in_term( $term_ids, 'product_cat' );
 
+    array_push($cat_ids, $category->term_id);
+
     $category_products[$category->term_id] = $product_ids;
 }
+
 
 function get_product_categories($product_id, $categories, $category_products)
 {
@@ -93,6 +97,21 @@ function get_product_categories($product_id, $categories, $category_products)
     }
 
     return $name;
+}
+
+//set up the category data
+$category_data = [];
+
+foreach($categories as $category)
+{
+    $category_data[$category->term_id] = [
+        'name' => $category->name,
+        'qty' => 0,
+        'orders' => 0,
+        'cost' => 0,
+        'total' => 0,
+        'marge' => 0
+    ];
 }
 
 ?>
@@ -144,7 +163,7 @@ function get_product_categories($product_id, $categories, $category_products)
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Sales
+                        Les Ventes
                     </h3>
                 </div>
 
@@ -152,7 +171,8 @@ function get_product_categories($product_id, $categories, $category_products)
                     <div class="table-responsive">
                         <table class="table table-bordered" style="width: 2000px;">
                             <tr>
-                                <th style="min-width: 100px;">Date</th>
+                                <th style="min-width: 150px;">Date Commandé</th>
+                                <th style="min-width: 150px;">Date Encaissé</th>
                                 <th style="min-width: 150px;">No Commande</th>
                                 <th style="min-width: 300px;">Produit</th>
                                 <th style="min-width: 40px">Qte</th>
@@ -198,16 +218,20 @@ function get_product_categories($product_id, $categories, $category_products)
                                     $total_profits = 0;
                                 ?>
 
+                                <?php $gt_current_order = ''; ?>
                                 <?php foreach ($date as $currentOrder => $order): ?>
 
                                     <?php
+                                        $gt_current_order = $currentOrder;
+
                                         $isOrderRow = true;
                                         $orderCount = count($order);
 
-
+                                        $sub_current_order = '';
                                     ?>
                                     <?php foreach ($order as $product): ?>
                                         <?php
+
 
                                         $periodQuantity += $product['quantity'];
                                         $periodCostPrice += $product['cost_price'];
@@ -221,7 +245,69 @@ function get_product_categories($product_id, $categories, $category_products)
                                         $selling_price_total += $product['product_total'];
                                         $total_profits += $product['profit'];
 
+                                        $current_product_id = $product['product_id'];
 
+                                        //the categories that need to be affected by this product
+                                        $affected_categories = [];
+
+                                        //check if this product already has it categories
+                                        if(array_key_exists($current_product_id, $product_cats) )
+                                        {
+                                            //then just update the categories total info
+                                            $affected_categories = $product_cats[$current_product_id];
+                                        }
+                                        else {
+                                            //get the product categories and save them
+
+                                            //loop through the categories
+                                            $prod_cats = [];
+
+                                            foreach($category_products as $cur_cat_id => $cat_products)
+                                            {
+                                                //check if the item is in the list
+                                                if(in_array($current_product_id, $cat_products))
+                                                {
+                                                    array_push($prod_cats, $cur_cat_id);
+                                                }
+                                            }
+
+                                            $product_cats[$product['product_id']] = $prod_cats;
+
+                                            $affected_categories = $prod_cats;
+                                        }
+
+
+                                        //now affect the required categories
+                                        $p_cost_price = $product['cost_price'] * $product['quantity'];
+                                        $p_total = $product['product_total'];
+                                        $marge = $product['profit'];
+
+                                        foreach($affected_categories as $aff_cat)
+                                        {
+                                            $category_data[$aff_cat]['qty'] += $product['quantity'];
+                                            $category_data[$aff_cat]['cost'] += $p_cost_price;
+                                            $category_data[$aff_cat]['total'] += $p_total;
+                                            $category_data[$aff_cat]['marge'] += $marge;
+
+                                            if($sub_current_order == '')
+                                            {
+                                                ++$category_data[$aff_cat]['orders'];
+                                            }
+                                            else {
+                                                if($sub_current_order != $gt_current_order)
+                                                {
+                                                    ++$category_data[$aff_cat]['orders'];
+                                                }
+                                            }
+
+                                            // 'qty' => 0,
+                                            // 'orders' => 0,
+                                            // 'cost' => 0,
+                                            // 'total' => 0,
+                                            // 'marge' => 0
+                                        }
+
+                                        $sub_current_order = $gt_current_order;
 
                                          ?>
                                         <tr>
@@ -233,6 +319,17 @@ function get_product_categories($product_id, $categories, $category_products)
                                                 <td rowspan="<?php echo $dateCount; ?>">
                                                     <?php echo $currentDate; ?>
                                                 </td>
+
+                                                <td rowspan="<?php echo $dateCount; ?>">
+                                                    <?php
+                                                    if($product['payment_date'] != null)
+                                                    {
+                                                        $edate = date("d/M/Y", strtotime($product['payment_date']));
+                                                        echo $edate;
+                                                    }
+                                                     ?>
+                                                </td>
+
                                                 <?php
                                             }
                                              ?>
@@ -288,7 +385,7 @@ function get_product_categories($product_id, $categories, $category_products)
 
                             <!-- //show the details for the date -->
                             <tr>
-                                <th style="text-align: center; font-size: 18px;" colspan="3">Totals</th>
+                                <th style="text-align: center; font-size: 18px;" colspan="4">Totals</th>
                                 <th style="font-size: 18px;"> <?php echo $periodQuantity; ?> </th>
                                 <th style="font-size: 18px;"> <?php echo number_format($periodCostPrice); ?> </th>
                                 <th style="font-size: 18px;"> <?php echo number_format($periodTotalCost); ?> </th>
@@ -308,4 +405,51 @@ function get_product_categories($product_id, $categories, $category_products)
 
         </div>
     </div>
+
+    <!-- category report row  -->
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Les Categories
+                    </h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>S/N</th>
+                                <th>Categorie</th>
+                                <th>Qte Vendu</th>
+                                <th>No Commandes</th>
+                                <th>Coût</th>
+                                <th>Total</th>
+                                <th>Marge</th>
+                            </tr>
+
+                            <?php $count = 1; ?>
+                            <?php foreach ($category_data as $key => $value): ?>
+                                <tr>
+                                    <th> <?php echo $count++; ?> </th>
+                                    <th> <?php echo $value['name']; ?> </th>
+                                    <td> <?php echo $value['qty']; ?> </td>
+                                    <td> <?php echo $value['orders']; ?> </td>
+                                    <td> <?php echo number_format($value['cost']); ?> </td>
+                                    <td> <?php echo number_format($value['total']); ?> </td>
+                                    <td> <?php echo number_format($value['marge']); ?> </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- end of category report row -->
+
 </div>

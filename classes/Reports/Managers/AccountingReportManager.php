@@ -237,7 +237,8 @@ class AccountingReportManager
                 'profit' => $profit,
                 'seller' => $seller_name,
                 'town' => $town_name,
-                'payment_method' => $result->payment_method
+                'payment_method' => $result->payment_method,
+                'payment_date' => $result->payment_date
             ];
 
             //push it into the order
