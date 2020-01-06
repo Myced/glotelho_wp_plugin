@@ -448,6 +448,12 @@ foreach($categories as $category)
 
                             <?php $count = 1; ?>
                             <?php foreach ($category_data as $key => $value): ?>
+                                <?php
+                                //only show whitelisted categories
+                                if(! in_array($key, $whiteList))
+                                    continue;
+
+                                 ?>
                                 <tr>
                                     <th> <?php echo $count++; ?> </th>
                                     <th> <?php echo $value['name']; ?> </th>
