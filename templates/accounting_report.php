@@ -537,7 +537,7 @@ foreach($categories as $category)
 
     <!-- start row to show sales by sellers  -->
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
 
             <div class="box box-warning">
                 <div class="box-header with-border">
@@ -578,7 +578,7 @@ foreach($categories as $category)
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
 
             <div class="box box-warning">
                 <div class="box-header with-border">
@@ -619,7 +619,12 @@ foreach($categories as $category)
 
         </div>
 
-        <div class="col-md-4">
+
+    </div>
+    <!-- end of row of sales by sellers  -->
+
+    <div class="row">
+        <div class="col-md-6">
 
             <div class="box box-warning">
                 <div class="box-header with-border">
@@ -659,7 +664,47 @@ foreach($categories as $category)
             </div>
 
         </div>
+
+        <div class="col-md-6">
+
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Employees
+                    </h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>S/N</th>
+                                <th>Vendeur</th>
+                                <th>No Commandes</th>
+                                <th>Chiffre</th>
+                            </tr>
+
+                            <?php
+                            $sc_data = $seller_data['EM'];
+
+                            $count = 1;
+                             ?>
+
+                             <?php foreach ($sc_data as $key => $value): ?>
+                                 <tr>
+                                     <td> <?php echo $count++; ?> </td>
+                                     <td> <?php echo $value['name']; ?> </td>
+                                     <td> <?php echo $value['orders_count']; ?> </td>
+                                     <td> <?php echo number_format($value['amount']); ?> </td>
+                                 </tr>
+                             <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
-    <!-- end of row of sales by sellers  -->
 
 </div>
