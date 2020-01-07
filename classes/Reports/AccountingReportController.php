@@ -51,5 +51,29 @@ class AccountingReportController
 
         return $statuss;
     }
+
+    public static function getSellers()
+    {
+        $sellers = [];
+        $key = 'gt_seller_code';
+
+        $sell = get_terms("seller", ['hide_empty' => false ]);
+
+        foreach($sell as $seller)
+        {
+            //get the seller code
+            $code = get_term_meta( $seller->term_id, $key, $single = true );
+
+            $group =  substr($code, 0, 2);
+
+            $sellers[$seller->term_id] = [
+                "name" => $seller->name,
+                "code" => $code,
+                "group" => $group
+            ];
+        }
+
+        return $sellers;
+    }
 }
  ?>

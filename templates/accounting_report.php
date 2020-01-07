@@ -473,4 +473,193 @@ foreach($categories as $category)
     </div>
     <!-- end of category report row -->
 
+    <?php
+
+    //get orders for this statistics
+    $paidOrders = $manager->getPaidOrders();
+
+    $sellers = self::getSellers();
+
+    $seller_data['SC'] = [];
+    $seller_data['FL'] = [];
+    $seller_data['AM'] = [];
+    $seller_data['EM'] = [];
+
+    foreach($sellers as $seller_id => $seller)
+    {
+            // add the seller to the list
+            $array = [];
+            $seller_group = $seller['group'];
+
+            // array_push($seller_data[$seller_group], $array);
+            $seller_data[$seller_group][$seller_id] = [
+                            "name" => $seller['name'],
+                            "orders_count" => 0,
+                            "amount" => 0
+                        ];
+
+    }
+
+    //loop through the data and calculate
+    foreach($paidOrders as $order)
+    {
+        if($order->order_data != null)
+        {
+            $order_data = unserialize($order->order_data);
+
+            $region = $order_data['gt_region'];
+            $seller_id = $order_data['gt_seller'];
+            $town = isset($order_data['gt_town']) ? $order_data['gt_town'] : '-1';
+
+            //get the user type
+            $seller = $sellers[$seller_id];
+            $seller_group = $seller['group'];
+
+            //now add the sales for the seller
+            ++$seller_data[$seller_group][$seller_id]['orders_count'];
+            $seller_data[$seller_group][$seller_id]['amount'] += $order->total;
+
+            // $report['sellers'][$seller]['count'] += 1;
+            // $report['sellers'][$seller]['total'] += $order_amount;
+
+            //
+            // $report['regions'][$region]['count'] += 1;
+            // $report['regions'][$region]['total'] += $order_amount;
+            //
+            // $report['towns'][$town]['count'] += 1;
+            // $report['towns'][$town]['total'] += $order_amount;
+
+        }
+    }
+
+    //loop through and make the reports
+    ?>
+
+    <!-- start row to show sales by sellers  -->
+    <div class="row">
+        <div class="col-md-4">
+
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Service Client
+                    </h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>S/N</th>
+                                <th>Vendeur</th>
+                                <th>No Commandes</th>
+                                <th>Chiffre</th>
+                            </tr>
+
+                            <?php
+                            $sc_data = $seller_data['SC'];
+
+                            $count = 1;
+                             ?>
+
+                             <?php foreach ($sc_data as $key => $value): ?>
+                                 <tr>
+                                     <td> <?php echo $count++; ?> </td>
+                                     <td> <?php echo $value['name']; ?> </td>
+                                     <td> <?php echo $value['orders_count']; ?> </td>
+                                     <td> <?php echo number_format($value['amount']); ?> </td>
+                                 </tr>
+                             <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Ambassadors
+                    </h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>S/N</th>
+                                <th>Vendeur</th>
+                                <th>No Commandes</th>
+                                <th>Chiffre</th>
+                            </tr>
+
+                            <?php
+                            $sc_data = $seller_data['AM'];
+
+                            $count = 1;
+                             ?>
+
+                             <?php foreach ($sc_data as $key => $value): ?>
+                                 <tr>
+                                     <td> <?php echo $count++; ?> </td>
+                                     <td> <?php echo $value['name']; ?> </td>
+                                     <td> <?php echo $value['orders_count']; ?> </td>
+                                     <td> <?php echo number_format($value['amount']); ?> </td>
+                                 </tr>
+                             <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        FreeLance
+                    </h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>S/N</th>
+                                <th>Vendeur</th>
+                                <th>No Commandes</th>
+                                <th>Chiffre</th>
+                            </tr>
+
+                            <?php
+                            $sc_data = $seller_data['FL'];
+
+                            $count = 1;
+                             ?>
+
+                             <?php foreach ($sc_data as $key => $value): ?>
+                                 <tr>
+                                     <td> <?php echo $count++; ?> </td>
+                                     <td> <?php echo $value['name']; ?> </td>
+                                     <td> <?php echo $value['orders_count']; ?> </td>
+                                     <td> <?php echo number_format($value['amount']); ?> </td>
+                                 </tr>
+                             <?php endforeach; ?>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- end of row of sales by sellers  -->
+
 </div>
