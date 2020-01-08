@@ -178,7 +178,7 @@ foreach($categories as $category)
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Les Ventes
+                        Les Ventes Encaissé
                     </h3>
                 </div>
 
@@ -416,6 +416,25 @@ foreach($categories as $category)
                     </div>
                 </div>
             <!-- /.box-body -->
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Les Commandes Encaissé
+                    </h3>
+                </div>
+
+                <div class="box-body">
+
+                </div>
+
             </div>
 
         </div>

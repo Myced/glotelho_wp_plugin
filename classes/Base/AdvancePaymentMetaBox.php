@@ -34,39 +34,43 @@ class AdvancePaymentMetaBox
     {
         global $post;
         //get previous payments and show them.
-        $payments = get_post_meta($post->ID, $this->payment_method_key);
+        $payments = get_post_meta($post->ID, $this->payment_method_key, true);
 
-        if(count($payments) > 0)
+        $amount = "";
+        $method = "";
+
+        if(! empty($payments))
         {
+            $amount = $payments['amount'];
+            $method = $payments['method'];
+
             //show the payments
             echo "<h4> Les Paiements </h4>";
+
+            //echo a form field to indicate that the advance had been added earlier
+            ?>
+            <input type="hidden" name="gt_old_method" value="<?php echo $method; ?>">
+            <input type="hidden" name="gt_old_amount" value="<?php echo $amount; ?>">
+            <?php
 
             ?>
             <table class="widefat fixed" cellspacing="0">
                 <tr>
-                    <th>S/N</th>
-                    <th>Montant</th>
-                    <th>Method</th>
+                    <th> <strong>S/N</strong> </th>
+                    <th> <strong>Montant</strong> </th>
+                    <th> <strong>Method</strong> </th>
                 </tr>
 
             <?php
 
             $count = 1;
-            foreach ($payments as $payment) {
-
-                $method = $payment['method'];
-                $amount = $payment['amount'];
-
-                ?>
-                <tr>
-                    <td> <?php echo $count++; ?> </td>
-                    <td> <?php echo number_format($amount); ?> </td>
-                    <td> <?php echo $this->methods[$method] ?> </td>
-                </tr>
-                <?php
-            }
 
             ?>
+                <tr>
+                    <td> <?php echo $count++; ?> </td>
+                    <td> <?php echo number_format($payments['amount']); ?> </td>
+                    <td> <?php echo $this->methods[$payments['method']]; ?> </td>
+                </tr>
             </table>
             <?php
         }
@@ -80,7 +84,13 @@ class AdvancePaymentMetaBox
                 style="width: 200px; ">
                 <option value="-1">Sélectionnez le mode de paiement</option>
                 <?php foreach ($this->methods as $key => $value): ?>
-                    <option value="<?php echo $key ?>">
+                    <option value="<?php echo $key ?>"
+                        <?php
+                        if(! empty($method)) {
+                            if($method == $key)
+                                echo 'selected';
+                        }
+                         ?>>
                         <?php echo $value; ?>
                     </option>
                 <?php endforeach; ?>
@@ -90,7 +100,9 @@ class AdvancePaymentMetaBox
         <p>
 			<label class="meta-label" for="gt_plugin_region">Montant:</label>
 
-            <input type="text" name="gt_advance_amount" value="" placeholder="Montant">
+            <input type="text" name="gt_advance_amount"
+                value="<?php if(! empty($amount)) echo number_format($amount); ?>"
+                placeholder="Montant">
 		</p>
 
         <?php
@@ -132,6 +144,10 @@ class AdvancePaymentMetaBox
         }
         // --- Its safe for us to save the data ! --- //
 
+        $old_method = isset($_POST['gt_old_method']) ? $_POST['gt_old_method'] : '-1' ;
+        $old_amount = isset($_POST['gt_old_amount']) ? $this->get_money($_POST['gt_old_amount']) : '-1';
+        $note = '';
+
         $data = [
             'method' => $_POST['gt_payment_mode'],
             'amount' => $this->get_money($_POST['gt_advance_amount'])
@@ -143,22 +159,65 @@ class AdvancePaymentMetaBox
         {
             if( ! empty($data['amount']))
             {
-                // Sanitize user input  and update the meta field in the database.
-                add_post_meta( $post_id, $this->payment_method_key, $data, false);
-                add_post_meta( $post_id, $this->advance_date_key, $date, true);
+                //save the meta data to the database
 
-                //make a comment to indicate that an avance has been paid.
-                // If you don't have the WC_Order object (from a dynamic $order_id)
-                $order = wc_get_order(  $post_id );
+                //the advance has not bee saved before
+                if($old_method == '-1')
+                {
+                    update_post_meta( $post_id, $this->payment_method_key, $data );
+                    update_post_meta( $post_id, $this->advance_date_key, $date );
 
-                // The text for the note
-                $note = "Une avance de "
-                        . number_format($data['amount'])
-                        . " a été payée par "
-                        . $this->methods[$data['method']];
+                    //make a comment to indicate that an avance has been paid.
+                    // If you don't have the WC_Order object (from a dynamic $order_id)
+                    $order = wc_get_order(  $post_id );
 
-                // Add the note
-                $order->add_order_note( $note );
+                    // The text for the note
+                    $note = "Une avance de "
+                            . number_format($data['amount'])
+                            . " a été payée par "
+                            . $this->methods[$data['method']];
+
+                    // Add the note
+                    $order->add_order_note( $note );
+
+                }
+
+                else {
+                    ///check if the old values are equal to the new
+                    if($old_amount == $data['amount'] && $old_method == $data['method'])
+                    {
+                        //do nothing
+                    }
+                    else {
+                        //update the values and also make a comment.
+                        update_post_meta( $post_id, $this->payment_method_key, $data );
+                        update_post_meta( $post_id, $this->advance_date_key, $date );
+
+                        //update the comment depending on what changed.
+                        if($old_amount != $data['amount'] )
+                        {
+                            $note = "Le montant de l'avance  a èté changé"
+                                    . " de " . $old_amount . "  à "
+                                    . number_format($data['amount']);
+                        }
+
+                        if($old_method != $data['method'])
+                        {
+                            $note = "Le Method de Paiement de l'avance  a èté changé"
+                                    . " de " . $this->methods[$old_method] . "  à "
+                                    . $this->methods[$data['method']] ;
+                        }
+
+                        //make a comment to indicate that an avance has been paid.
+                        // If you don't have the WC_Order object (from a dynamic $order_id)
+                        $order = wc_get_order(  $post_id );
+
+                        // Add the note
+                        $order->add_order_note( $note );
+                    }
+                }
+
+
             }
 
         }
