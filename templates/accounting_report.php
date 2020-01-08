@@ -17,14 +17,6 @@ else {
     $end_date = date("Y-m-d");
 }
 
-//if the request is to download the document
-if(isset($_GET['download']))
-{
-    if($_GET['download'] == true)
-    {
-        require_once GT_BASE_DIRECTORY . '/templates/sales_download.php';
-    }
-}
 
 function get_order_status($status)
 {
@@ -140,6 +132,15 @@ $paidOrders = $manager->getPaidOrders();
 
 $sellers = self::getSellers();
 $towns = self::getTowns();
+
+//if the request is to download the document
+if(isset($_GET['download']))
+{
+    if($_GET['download'] == true)
+    {
+        require_once GT_BASE_DIRECTORY . '/templates/accounting_download.php';
+    }
+}
 ?>
 
 <div class="wrap">
@@ -326,11 +327,6 @@ $towns = self::getTowns();
                                                 }
                                             }
 
-                                            // 'qty' => 0,
-                                            // 'orders' => 0,
-                                            // 'cost' => 0,
-                                            // 'total' => 0,
-                                            // 'marge' => 0
                                         }
 
                                         $sub_current_order = $gt_current_order;
