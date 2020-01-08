@@ -42,6 +42,12 @@ $category_products = [];
 $cat_ids = [];
 $product_cats = [];
 
+$payment_methods = [
+    "MOMO" => "MTN Mobile Money",
+    "ORANGE" => "Orange Money",
+    "CASH" => "CASH"
+];
+
 //since there are almost 46 categories and we need only a few.
 //let me whitelist categories to be shown.
 $whiteList = [
@@ -129,6 +135,11 @@ foreach($categories as $category)
     ];
 }
 
+//get orders for this statistics
+$paidOrders = $manager->getPaidOrders();
+
+$sellers = self::getSellers();
+$towns = self::getTowns();
 ?>
 
 <div class="wrap">
@@ -432,7 +443,140 @@ foreach($categories as $category)
                 </div>
 
                 <div class="box-body">
+                    <div class="table-responsive">
 
+                        <table class="table-bordered table "  style="width: 1500px;">
+                            <thead>
+                                <tr>
+                                    <th>S/N</th>
+                                    <th>Date Cmde</th>
+                                    <th>Date Encaissé</th>
+                                    <th>No Commde</th>
+                                    <th>Client</th>
+                                    <th>Status</th>
+                                    <th>Advance</th>
+                                    <th>Advance Method</th>
+                                    <th>Total Cmde</th>
+                                    <th>Net Encaissé</th>
+                                    <th>Mtd de Paiement</th>
+                                    <th>Seller</th>
+                                    <th>Ville</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <?php
+                                    $count = 1;
+
+                                    //set the totals;
+                                    $total_income = 0;
+                                    $total_advances = 0;
+                                    $total_cashed = [];
+                                    $total_cashed['ALL'] = 0;
+
+                                    foreach ($payment_methods as $key => $value) {
+                                        $total_cashed[$key] = 0;
+                                    }
+                                ?>
+                                <?php foreach ($paidOrders as $order): ?>
+                                    <?php
+                                    $client  = $order->first_name . ' ' . $order->last_name;
+
+                                    $advance = '';
+                                    $advance_method = '';
+                                    $total = $order->total;
+                                    $net_income = 0;
+
+
+                                    //order data
+                                    $order_town = "";
+                                    $order_seller = "";
+
+                                    if($order->advance_data != null)
+                                    {
+                                        //the advance is not null
+                                        $advance_data  = unserialize($order->advance_data);
+
+                                        $advance = $advance_data['amount'];
+                                        $advance_method = $advance_data['method'];
+
+                                        $total_advances += $advance;
+
+                                    }
+
+                                    if($order->order_data != null)
+                                    {
+                                        $order_data = unserialize($order->order_data);
+
+                                        $order_town = $towns[$order_data['gt_town']];
+
+                                        $s_data = $sellers[$order_data['gt_seller']];
+                                        $order_seller = $s_data['name'];
+                                    }
+
+                                    $net_income = $total - $advance;
+
+                                    //calculate the totals
+                                    $total_cashed['ALL'] += $net_income;
+
+
+                                    if(array_key_exists($order->payment_method, $payment_methods))
+                                    {
+                                        //sum that payment method
+                                        $total_cashed[$order->payment_method] += $net_income;
+                                    }
+
+                                     ?>
+                                    <tr>
+                                        <td> <?php echo $count++; ?> </td>
+                                        <td> <?php echo date("d, M Y", strtotime($order->post_date)); ?> </td>
+                                        <td> <?php echo date("d, M Y", strtotime($order->payment_date)); ?> </td>
+                                        <td>
+                                            Ord
+                                            #<?php
+                                            if(! is_null($order->invoice_no))
+                                            {
+                                                echo $order->invoice_no;
+                                            }
+                                            else {
+                                                echo $order->ID;
+                                            }
+                                             ?>
+                                        </td>
+                                        <td> <?php echo $client; ?> </td>
+                                        <td> <strong> <i class="fa fa-check text-success"></i> </strong> </td>
+                                        <td> <?php echo number_format($advance); ?> </td>
+                                        <td> <?php echo $payment_methods[$advance_method]; ?> </td>
+                                        <td> <?php echo number_format($total); ?> </td>
+                                        <td> <?php echo number_format($net_income); ?> </td>
+                                        <td> <?php echo $payment_methods[$order->payment_method]; ?> </td>
+                                        <td> <?php echo $order_seller; ?> </td>
+                                        <td> <?php echo $order_town; ?> </td>
+
+                                    </tr>
+
+                                <?php endforeach; ?>
+                                <tr>
+                                    <th colspan="2">Total Encaissé</th>
+                                    <th colspan="2"> <?php echo number_format($total_cashed['ALL']); ?> FCFA </th>
+                                </tr>
+
+                                <?php foreach ($total_cashed as $key => $value): ?>
+
+                                    <?php if ($key != 'ALL'): ?>
+                                        <tr>
+                                            <th colspan="2">
+                                                Total Encaissé ( <?php echo $payment_methods[$key]; ?> )
+                                            </th>
+                                            <th colspan="2">
+                                                <?php echo number_format($total_cashed[$key]); ?> FCFA
+                                            </th>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
@@ -493,11 +637,6 @@ foreach($categories as $category)
     <!-- end of category report row -->
 
     <?php
-
-    //get orders for this statistics
-    $paidOrders = $manager->getPaidOrders();
-
-    $sellers = self::getSellers();
 
     $seller_data['SC'] = [];
     $seller_data['FL'] = [];

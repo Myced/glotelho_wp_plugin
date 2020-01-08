@@ -75,5 +75,20 @@ class AccountingReportController
 
         return $sellers;
     }
+
+    public static function getTowns()
+    {
+        $towns = [];
+
+        $ts = get_terms("zone_town", ['hide_empty' => false ]);
+
+        foreach ($ts as $town)
+        {
+            //save the towns
+            $towns[$town->term_id] = $town->name;
+        }
+
+        return $towns;
+    }
 }
  ?>

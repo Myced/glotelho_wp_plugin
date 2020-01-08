@@ -355,7 +355,19 @@ class AccountingReportManager
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_phone')
                     THEN wp_postmeta.meta_value ELSE NULL END) AS tel,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
-                    THEN wp_postmeta.meta_value ELSE NULL END) AS order_data
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS order_data,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_advance_payment')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS advance_data,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_advance_date')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS advance_date,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_payment_method')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS payment_method,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_payment_date')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS payment_date,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_order_number')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS invoice_no
+
+
 
                 FROM `wp_posts`
                 LEFT JOIN `wp_postmeta`
