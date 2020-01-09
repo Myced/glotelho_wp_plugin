@@ -37,7 +37,11 @@ $product_cats = [];
 $payment_methods = [
     "MOMO" => "MTN Mobile Money",
     "ORANGE" => "Orange Money",
-    "CASH" => "CASH"
+    "CASH" => "CASH",
+    "YDE" => "YAOUNDE",
+    "CHEQUE" => "CHEQUE",
+    "CARD" => "CARD",
+    "SHOWROOM" => "SHOWROOM"
 ];
 
 //since there are almost 46 categories and we need only a few.

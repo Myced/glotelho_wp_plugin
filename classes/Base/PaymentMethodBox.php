@@ -10,7 +10,11 @@ class PaymentMethodBox
     private $methods = [
         "MOMO" => "MTN Mobile Money",
         "ORANGE" => "Orange Money",
-        "CASH" => "CASH"
+        "CASH" => "CASH",
+        "YDE" => "YAOUNDE",
+        "CHEQUE" => "CHEQUE",
+        "CARD" => "CARD",
+        "SHOWROOM" => "SHOWROOM"
     ];
 
 
