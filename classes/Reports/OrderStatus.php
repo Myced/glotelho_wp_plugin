@@ -23,6 +23,14 @@ class OrderStatus
     const PENDING_IMPORT = 'wc-import';
     const PENDING_ADVANCE = 'WC-pending-advance';
 
+    const WAITING_SHIPPING_FEE = 'waiting-shippx-fe';
+    const PAYMENT_RECEIVED = "payment-received";
+    const TO_BE_VERIFIED = "to-be-verified";
+    const DELIVERY_FORWARDED = "delivery-forwarde";
+    const ORDER_PLANNED = "order-planned";
+    const ON_REAPPRO = "on-reappro";
+    const ON_REAPPRO_2 = "on-purchase";
+
     public static function allClasses()
     {
         return [
@@ -44,7 +52,15 @@ class OrderStatus
 
             self::PENDING_IMPORT => 'label label-pending-import',
             self::PENDING_ADVANCE => 'label label-pending-advance',
-            self::PENDING_DELIVERY => 'label label-pending-delivery'
+            self::ON_DELIVERY => 'label label-pending-delivery',
+
+            self::WAITING_SHIPPING_FEE => 'label label-waiting-shipping-fee',
+            self::PAYMENT_RECEIVED => 'label label-payment-received',
+            self::TO_BE_VERIFIED => 'label label-to-be-verified',
+            self::DELIVERY_FORWARDED => "label label-delivery-forwarded",
+            self::ORDER_PLANNED => 'label label-order-planned',
+            self::ON_REAPPRO => 'label label-on-reappro',
+            self::ON_REAPPRO_2 => 'label label-on-purchase'
         ];
 
     }
@@ -71,7 +87,15 @@ class OrderStatus
 
             self::PENDING_IMPORT => 'Produit à l’Import',
             self::PENDING_ADVANCE => 'Avance en Attente',
-            self::PENDING_DELIVERY => 'En Cours de Livraison'
+            self::ON_DELIVERY => 'En Cours de Livraison',
+
+            self::WAITING_SHIPPING_FEE => "En Attente De Frais De Livraison",
+            self::PAYMENT_RECEIVED => "Encaissé",
+            self::TO_BE_VERIFIED => 'A Vérifier Par Le Service Client',
+            self::DELIVERY_FORWARDED => "Livraison Reportée",
+            self::ORDER_PLANNED => 'Commande Planifiée',
+            self::ON_REAPPRO => 'En Cour d’Approvisionement',
+            self::ON_REAPPRO_2 => 'En Cour d’Approvisionement'
         ];
     }
 

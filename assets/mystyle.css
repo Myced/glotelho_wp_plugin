@@ -113,3 +113,44 @@
     color: #fff;
     background-color: #2bef00 !important;
 }
+
+.label-waiting-shipping-fee {
+    color: #fff;
+    background-color: #dd8500 !important;
+}
+
+.label-payment-received
+{
+    color: #fff;
+    background-color: #18d100 !important;
+}
+
+.label-to-be-verified
+{
+    color: #fff;
+    background-color: #a80075 !important;
+}
+
+.label-delivery-forwarded
+{
+    color: #fff;
+    background-color: #a80075 !important;
+}
+
+.label-order-planned
+{
+    color: #fff;
+    background-color: #001ee5 !important;
+}
+
+.label-on-reappro
+{
+    color: #fff;
+    background-color: #db003a !important;
+}
+
+.label-on-purchase
+{
+    color: #fff;
+    background-color: #002ee8 !important;
+}
