@@ -207,8 +207,8 @@ if($_GET['download'] == true)
     }
 
     $row = [ "", "", "GRAND TOTAL", "", "",
-        $grandQuantity, $grandCostPrice, $grandTotalCost,
-         $grandTotalTotal, $grandProfit
+        $grandQuantity, number_format($grandCostPrice), number_format($grandTotalCost),
+         number_format($grandTotalTotal), number_format($grandProfit)
     ];
 
     array_push($full_data, $row);
