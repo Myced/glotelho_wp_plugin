@@ -682,7 +682,6 @@ if(isset($_GET['download']))
                                         <td> <?php echo $payment_methods[$advance_method]; ?> </td>
                                         <td> <?php echo date("d, M Y", strtotime($order->advance_date)); ?> </td>
                                         <td> <?php echo number_format($total); ?> </td>
-                                        <td> <?php echo $payment_methods[$order->payment_method]; ?> </td>
                                         <td> <?php echo $order_seller; ?> </td>
                                         <td> <?php echo $order_town; ?> </td>
 
