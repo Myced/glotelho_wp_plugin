@@ -19,17 +19,17 @@ class OrderStatus
     const TRASHED = 'trash';
     const REFUNDED = 'wc-refund';
 
-    const PENDING_DELIVERY = 'wc-pending-delivery';
+    const ON_DELIVERY = 'wc-pending-delivery';
     const PENDING_IMPORT = 'wc-import';
-    const PENDING_ADVANCE = 'WC-pending-advance';
+    const PENDING_ADVANCE = 'wc-pending-advance';
 
-    const WAITING_SHIPPING_FEE = 'waiting-shippx-fe';
-    const PAYMENT_RECEIVED = "payment-received";
-    const TO_BE_VERIFIED = "to-be-verified";
-    const DELIVERY_FORWARDED = "delivery-forwarde";
-    const ORDER_PLANNED = "order-planned";
-    const ON_REAPPRO = "on-reappro";
-    const ON_REAPPRO_2 = "on-purchase";
+    const WAITING_SHIPPING_FEE = 'wc-waiting-shippx-fe';
+    const PAYMENT_RECEIVED = "wc-payment-received";
+    const TO_BE_VERIFIED = "wc-to-be-verified";
+    const DELIVERY_FORWARDED = "wc-delivery-forwarde";
+    const ORDER_PLANNED = "wc-order-planned";
+    const ON_REAPPRO = "wc-on-reappro";
+    const ON_REAPPRO_2 = "wc-on-purchase";
 
     public static function allClasses()
     {

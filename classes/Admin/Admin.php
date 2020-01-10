@@ -73,6 +73,14 @@ class Admin
             ],
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Commandes Vendeurs',
+                'menu_title' => "Commandes Vendeurs",
+                'capability' => "manage_categories",
+                'slug' => "gt_seller_orders",
+                "callback" => ['\App\Reports\SellerOrderController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Rapport Client Achat',
                 'menu_title' => "Rapport Client Achat",
                 'capability' => "manage_categories",
