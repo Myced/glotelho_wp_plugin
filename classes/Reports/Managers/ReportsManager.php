@@ -132,7 +132,8 @@ class ReportsManager
             $response['total_cost'] += $post->order_total;
             $withoutShipping['total_cost'] += ($post->order_total - $shipping->shipping);
 
-            if($post->post_status == OrderStatus::COMPLETED)
+            if($post->post_status == OrderStatus::COMPLETED
+                || $post->post_status == OrderStatus::PAYMENT_RECEIVED)
             {
                 $response['completed']['count'] += 1;
                 $response['completed']['total'] += $post->order_total;

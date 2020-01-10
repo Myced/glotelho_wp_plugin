@@ -104,7 +104,7 @@
                                              $isOrderRow = false;
                                              ?>
                                              <td rowspan="<?php echo $orderCount; ?>">
-                                                Ord #<?php echo $currentOrder; ?>
+                                                #<?php echo $currentOrder; ?> <br>
                                                 <?php echo self::order_status($product['order_status']); ?>
                                              </td>
                                              <?php

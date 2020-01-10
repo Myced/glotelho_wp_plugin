@@ -242,7 +242,7 @@ if(isset($_GET['sellers']))
                                                   <?php echo date("d, M Y", strtotime($order->post_date)); ?>
                                               </a>
                                             </td>
-                                            <td> Ord #<?php echo $order_no; ?> </td>
+                                            <td> #<?php echo $order_no; ?> </td>
                                             <td> <?php echo $order->first_name . ' ' . $order->last_name; ?> </td>
                                             <td> <?php echo $order->tel; ?> </td>
                                             <td> <?php echo self::order_status($order->post_status); ?> </td>
@@ -285,7 +285,7 @@ if(isset($_GET['sellers']))
                                                     <?php echo number_format($value['amount']); ?>
                                                 </strong>
                                             </td>
-                                            <td colspan="4"></td>
+                                            <td colspan="5"></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
