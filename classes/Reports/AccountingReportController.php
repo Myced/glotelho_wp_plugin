@@ -90,5 +90,14 @@ class AccountingReportController
 
         return $towns;
     }
+
+    public static function show_status($status)
+    {
+        $name = OrderStatus::getName($status);
+        $class = OrderStatus::getClass($status);
+
+        $status = "<label class=\"$class\">$name </label>";
+        return $status;
+    }
 }
  ?>

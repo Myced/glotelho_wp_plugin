@@ -584,6 +584,128 @@ if(isset($_GET['download']))
         </div>
     </div>
 
+    <!-- advances received 0 -->
+    <?php $advance_orders = $manager->get_adavance_orders(); ?>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Les Avances Encaissé
+                    </h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="table-responsive">
+
+                        <table class="table-bordered table "  style="width: 1500px;">
+                            <thead>
+                                <tr>
+                                    <th>S/N</th>
+                                    <th>Date Cmde</th>
+                                    <th>No Commde</th>
+                                    <th>Client</th>
+                                    <th>Status</th>
+                                    <th>Advance</th>
+                                    <th>Advance Method</th>
+                                    <th>Date D'Advance</th>
+                                    <th>Total Cmde</th>
+                                    <th>Seller</th>
+                                    <th>Ville</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <?php
+                                    $count = 1;
+                                    $total_advances = 0;
+                                ?>
+                                <?php foreach ($advance_orders as $order): ?>
+                                    <?php
+                                    //DO NOT INCLUDES COMMANDESA ALREADY ENCAISSER
+                                    if($order->post_status == \App\Reports\OrderStatus::PAYMENT_RECEIVED)
+                                    {
+                                        continue;
+                                    }
+
+                                    $client  = $order->first_name . ' ' . $order->last_name;
+
+                                    $advance = '';
+                                    $advance_method = '';
+
+
+                                    //order data
+                                    $order_town = "";
+                                    $order_seller = "";
+
+                                    if($order->advance_data != null)
+                                    {
+                                        //the advance is not null
+                                        $advance_data  = unserialize($order->advance_data);
+
+                                        $advance = $advance_data['amount'];
+                                        $advance_method = $advance_data['method'];
+
+                                        $total_advances += $advance;
+
+                                    }
+
+                                    if($order->order_data != null)
+                                    {
+                                        $order_data = unserialize($order->order_data);
+
+                                        $order_town = $towns[$order_data['gt_town']];
+
+                                        $s_data = $sellers[$order_data['gt_seller']];
+                                        $order_seller = $s_data['name'];
+                                    }
+
+                                     ?>
+                                    <tr>
+                                        <td> <?php echo $count++; ?> </td>
+                                        <td> <?php echo date("d, M Y", strtotime($order->post_date)); ?> </td>
+                                        <td>
+                                            #<?php
+                                            if(! is_null($order->invoice_no))
+                                            {
+                                                echo $order->invoice_no;
+                                            }
+                                            else {
+                                                echo $order->ID;
+                                            }
+                                             ?>
+                                        </td>
+                                        <td> <?php echo $client; ?> </td>
+                                        <td> <?php echo self::show_status($order->post_status); ?> </strong> </td>
+                                        <td> <?php echo number_format($advance); ?> </td>
+                                        <td> <?php echo $payment_methods[$advance_method]; ?> </td>
+                                        <td> <?php echo date("d, M Y", strtotime($order->advance_date)); ?> </td>
+                                        <td> <?php echo number_format($total); ?> </td>
+                                        <td> <?php echo $payment_methods[$order->payment_method]; ?> </td>
+                                        <td> <?php echo $order_seller; ?> </td>
+                                        <td> <?php echo $order_town; ?> </td>
+
+                                    </tr>
+
+                                <?php endforeach; ?>
+
+                                <tr>
+                                    <th colspan="3" class="text-center">Total Advances</th>
+                                    <td colspan="2"> <?php echo number_format($total_advances); ?> </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- end of advances -->
+
     <!-- category report row  -->
     <br>
     <div class="row">

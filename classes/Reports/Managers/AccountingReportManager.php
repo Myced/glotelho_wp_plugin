@@ -384,6 +384,99 @@ class AccountingReportManager
         return $sql;
     }
 
+    public function get_adavance_orders()
+    {
+        $ids = $this->get_advance_ids();
+
+        return $this->wpdb->get_results($this->get_advance_orders_sql($ids));
+    }
+
+    private function get_advance_ids()
+    {
+        $post_ids = $this->wpdb->get_results($this->get_advance_sql());
+
+        $ids = '(';
+        //prepare the ids.
+        $count = 0;
+        $post_count = count($post_ids);
+
+        foreach ($post_ids as $id ) {
+            //put the ids here.
+            $ids .= $id->post_id;
+
+            if($count < $post_count - 1)
+            {
+                $ids .= ',';
+            }
+
+            ++$count;
+        }
+
+
+        $ids .=  ')';
+
+        return $ids;
+    }
+
+    private function get_advance_orders_sql($ids)
+    {
+        $sql = " SELECT
+                    wp_posts.ID,
+                    wp_posts.post_title,
+                    wp_posts.post_status,
+                    wp_posts.post_date,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_order_total')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS total,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_order_shipping')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS shipping,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_first_name')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS first_name,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_last_name')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS last_name,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_phone')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS tel,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS order_data,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_advance_payment')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS advance_data,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_advance_date')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS advance_date,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_order_number')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS invoice_no
+
+                FROM `wp_posts`
+                LEFT JOIN `wp_postmeta`
+                    ON wp_posts.ID = wp_postmeta.post_id
+                WHERE
+                    wp_posts.post_type = 'shop_order'
+                    AND
+                    wp_posts.ID IN $ids
+                GROUP BY wp_posts.ID
+                ORDER BY wp_posts.ID DESC
+        ";
+
+        return $sql;
+    }
+
+    private function get_advance_sql()
+    {
+        $sql = " SELECT
+                    `post_id`
+                FROM
+                    `wp_postmeta`
+                WHERE
+                    `meta_key` = '_gt_advance_date'
+                    AND
+                    (
+                        `meta_value` >= '$this->start_date'
+                        AND
+                        `meta_value` <= '$this->end_date'
+                    )
+        ";
+
+        return $sql;
+    }
+
 }
 
 ?>
