@@ -261,7 +261,7 @@ class AccountingReportManager
         return $sql = "SELECT
                             order_item_meta__product_id.meta_value AS product_id,
                             order_item_meta__qty.meta_value AS quantity,
-                            order_item_meta__line_subtotal.meta_value AS item_total,
+                            order_item_meta__line_total.meta_value AS item_total,
                             order_item_meta__gt_cost_price.meta_value AS cost_price,
                             posts.post_date AS post_date,
                             posts.id AS order_id,
@@ -304,12 +304,12 @@ class AccountingReportManager
                             ) AND(
                                 order_item_meta__qty.meta_key = '_qty'
                             )
-                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__line_subtotal
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__line_total
                         ON
                             (
-                                order_items.order_item_id = order_item_meta__line_subtotal.order_item_id
+                                order_items.order_item_id = order_item_meta__line_total.order_item_id
                             ) AND(
-                                order_item_meta__line_subtotal.meta_key = '_line_subtotal'
+                                order_item_meta__line_total.meta_key = '_line_total'
                             )
                         LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__gt_cost_price
                         ON
@@ -387,6 +387,9 @@ class AccountingReportManager
     public function get_adavance_orders()
     {
         $ids = $this->get_advance_ids();
+
+        if(strlen($ids) == 2)
+            return [];
 
         return $this->wpdb->get_results($this->get_advance_orders_sql($ids));
     }
