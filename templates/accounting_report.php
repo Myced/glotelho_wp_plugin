@@ -202,8 +202,8 @@ if(isset($_GET['download']))
                     <div class="table-responsive">
                         <table class="table table-bordered" style="width: 2000px;">
                             <tr>
-                                <th style="min-width: 150px;">Date Commandé</th>
                                 <th style="min-width: 150px;">Date Encaissé</th>
+                                <th style="min-width: 150px;">Date Commandé</th>
                                 <th style="min-width: 150px;">No Commande</th>
                                 <th style="min-width: 300px;">Produit</th>
                                 <th style="min-width: 40px">Qte</th>
@@ -345,17 +345,6 @@ if(isset($_GET['download']))
                                                 <td rowspan="<?php echo $dateCount; ?>">
                                                     <?php echo $currentDate; ?>
                                                 </td>
-
-                                                <td rowspan="<?php echo $dateCount; ?>">
-                                                    <?php
-                                                    if($product['payment_date'] != null)
-                                                    {
-                                                        $edate = date("d/M/Y", strtotime($product['payment_date']));
-                                                        echo $edate;
-                                                    }
-                                                     ?>
-                                                </td>
-
                                                 <?php
                                             }
                                              ?>
@@ -365,6 +354,15 @@ if(isset($_GET['download']))
                                              {
                                                  $isOrderRow = false;
                                                  ?>
+                                                 <td rowspan="<?php echo $orderCount; ?>">
+                                                     <?php
+                                                     if($product['order_date'] != null)
+                                                     {
+                                                         $edate = date("d/M/Y", strtotime($product['order_date']));
+                                                         echo $edate;
+                                                     }
+                                                      ?>
+                                                 </td>
                                                  <td rowspan="<?php echo $orderCount; ?>">
                                                     Ord #<?php echo $currentOrder; ?>
                                                     <?php echo self::order_status($product['order_status']); ?>
@@ -396,7 +394,7 @@ if(isset($_GET['download']))
 
                                 <!-- //show the details for the date -->
                                 <tr>
-                                    <th style="text-align: center" colspan="2">Totals</th>
+                                    <th style="text-align: center" colspan="3">Totals</th>
                                     <th> <?php echo $quantityTotal; ?> </th>
                                     <th> <?php echo number_format($cost_price_total); ?> </th>
                                     <th> <?php echo number_format($total_cost_price_total); ?> </th>
@@ -624,10 +622,10 @@ if(isset($_GET['download']))
                                 <?php foreach ($advance_orders as $order): ?>
                                     <?php
                                     //DO NOT INCLUDES COMMANDESA ALREADY ENCAISSER
-                                    if($order->post_status == \App\Reports\OrderStatus::PAYMENT_RECEIVED)
-                                    {
-                                        continue;
-                                    }
+                                    // if($order->post_status == \App\Reports\OrderStatus::PAYMENT_RECEIVED)
+                                    // {
+                                    //     continue;
+                                    // }
 
                                     $client  = $order->first_name . ' ' . $order->last_name;
 

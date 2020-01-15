@@ -190,7 +190,7 @@ class AccountingReportManager
                 $town_name = $this->getTown($orderInfo['gt_town']);
             }
 
-            $date = date("d/M/Y", strtotime($result->post_date));
+            $date = date("d/M/Y", strtotime($result->payment_date));
             if(!array_key_exists($date, $data))
             {
                 $data[$date] = [];
@@ -238,7 +238,8 @@ class AccountingReportManager
                 'seller' => $seller_name,
                 'town' => $town_name,
                 'payment_method' => $result->payment_method,
-                'payment_date' => $result->payment_date
+                'payment_date' => $result->payment_date,
+                'order_date' => $result->post_date
             ];
 
             //push it into the order
@@ -333,6 +334,11 @@ class AccountingReportManager
                             ID,
                             product_id,
                             post_date
+
+                        HAVING
+                            payment_date >= '$this->start_date'
+                            AND
+                            payment_date <= '$this->end_date'
                         ";
 
     }
@@ -377,8 +383,14 @@ class AccountingReportManager
                     AND wp_posts.post_status = '$this->payment_received_status'
                     AND wp_posts.$this->post_date_field >= '$this->start_date'
                     AND wp_posts.$this->post_date_field <= '$this->end_date'
-                GROUP BY wp_posts.ID
-                ORDER BY wp_posts.ID DESC
+                GROUP BY
+                    wp_posts.ID
+                HAVING
+                    payment_date >= '$this->start_date'
+                    AND
+                    payment_date <= '$this->end_date'
+                ORDER BY
+                    wp_posts.ID DESC
         ";
 
         return $sql;
