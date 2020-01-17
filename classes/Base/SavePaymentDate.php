@@ -30,7 +30,15 @@ class SavePaymentDate
 
     public function save_payment_date($post_id)
     {
-        $date = date("Y-m-d H:i:s");
+        $payment_date = $_POST['gt_payment_date'];
+
+        if(empty($payment_date))
+        {
+            $payment_date = date("Y-m-d H:i:s");
+        }
+
+        $date = $payment_date;
+
         $single = true;
 
         //check if the date has been set before
