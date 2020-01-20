@@ -56,8 +56,8 @@ $whiteList = [
     '1523', //PRODUITS NATURELS
     '1319', //SÉCURITÉ ELECTRONIQUE
     '1387', //TELEPHONES & TABLETTES
-    // '16', //clothing
-    // '77' //laptops
+    '16', //clothing
+    '77' //laptops
 ];
 
 foreach($categories as $category)
