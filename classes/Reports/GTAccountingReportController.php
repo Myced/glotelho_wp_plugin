@@ -15,6 +15,10 @@ class GTAccountingReportController
         $manager = new AccountingReportManager;
 
         $data = $manager->get_data();
+
+        $shippings = $manager->get_shipping();
+        $fees = $manager->get_fees();
+
         $categories = self::getCategories();
 
         //create a new spread sheet if we need to download.

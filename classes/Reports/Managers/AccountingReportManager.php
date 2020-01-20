@@ -486,6 +486,122 @@ class AccountingReportManager
         return $sql;
     }
 
+    public function get_fees()
+    {
+        return $this->wpdb->get_results($this->get_fee_sql());
+    }
+
+    public function get_shipping()
+    {
+        return $this->wpdb->get_results($this->get_shipping_sql());
+    }
+
+    private function get_fee_sql()
+    {
+        return $sql = "SELECT
+                            order_item_meta__line_total.meta_value AS item_total,
+                            posts.post_date AS post_date,
+                            posts.ID AS order_id,
+                            posts.post_status as order_status,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS order_data,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_order_number')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS invoice_no,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_payment_date')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS payment_date,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_payment_method')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS payment_method
+
+
+                        FROM
+                            wp_posts AS posts
+                        INNER JOIN `wp_postmeta`
+                            ON posts.ID = wp_postmeta.post_id
+                        INNER JOIN wp_woocommerce_order_items AS order_items
+                        ON
+                            (
+                                posts.ID = order_items.order_id
+                            )
+
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__line_total
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__line_total.order_item_id
+                            ) AND(
+                                order_item_meta__line_total.meta_key = '_line_total'
+                            )
+
+                        WHERE
+                            posts.post_type = 'shop_order'
+
+                            AND
+                                posts.post_status = '$this->payment_received_status'
+                            AND
+                                order_items.order_item_type = 'fee'
+                        GROUP BY
+                            ID,
+                            post_date
+
+                        HAVING
+                            payment_date >= '$this->start_date'
+                            AND
+                            payment_date <= '$this->end_date'
+                        ";
+    }
+
+    private function get_shipping_sql()
+    {
+        return $sql = "SELECT
+                            order_item_meta_cost.meta_value AS item_total,
+                            posts.post_date AS post_date,
+                            posts.ID AS order_id,
+                            posts.post_status as order_status,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS order_data,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_order_number')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS invoice_no,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_payment_date')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS payment_date,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_payment_method')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS payment_method
+
+
+                        FROM
+                            wp_posts AS posts
+                        INNER JOIN `wp_postmeta`
+                            ON posts.ID = wp_postmeta.post_id
+                        INNER JOIN wp_woocommerce_order_items AS order_items
+                        ON
+                            (
+                                posts.ID = order_items.order_id
+                            )
+
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta_cost
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta_cost.order_item_id
+                            ) AND(
+                                order_item_meta_cost.meta_key = 'cost'
+                            )
+
+                        WHERE
+                            posts.post_type = 'shop_order'
+
+                            AND
+                                posts.post_status = '$this->payment_received_status'
+                            AND
+                                order_items.order_item_type = 'shipping'
+                        GROUP BY
+                            ID,
+                            post_date
+
+                        HAVING
+                            payment_date >= '$this->start_date'
+                            AND
+                            payment_date <= '$this->end_date'
+                        ";
+    }
+
 }
 
 ?>

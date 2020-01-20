@@ -161,6 +161,51 @@ if(isset($_GET['download']))
         require_once GT_BASE_DIRECTORY . '/templates/accounting_download.php';
     }
 }
+
+//process shipping costs here.
+$shipping = [];
+
+$shipping['DLA'] = 0;
+$shipping['YDE'] = 0;
+$shipping['ALL'] = 0;
+
+//loop through the fees and add them to shipping
+foreach ($fees as $fee) {
+    //get the town
+    $forder_data = unserialize($fee->order_data);
+    $ftown = $forder_data['gt_town'];
+
+    $ftown_name = $towns[$ftown];
+
+    if($ftown_name == "Yaounde")
+    {
+        $shipping['YDE'] += $fee->item_total;
+    }
+    else {
+        $shipping['DLA'] += $fee->item_total;
+    }
+
+    $shipping['ALL'] += $fee->item_total;
+}
+
+foreach ($shippings as $fee) {
+    //get the town
+    $forder_data = unserialize($fee->order_data);
+    $ftown = $forder_data['gt_town'];
+
+    $ftown_name = $towns[$ftown];
+
+    if($ftown_name == "Yaounde")
+    {
+        $shipping['YDE'] += $fee->item_total;
+    }
+    else {
+        $shipping['DLA'] += $fee->item_total;
+    }
+
+    $shipping['ALL'] += $fee->item_total;
+}
+
 ?>
 
 <div class="wrap">
@@ -379,6 +424,9 @@ if(isset($_GET['download']))
                                 $cat_cost = 0;
                                 $cat_sales = 0;
                                 $cat_marge = 0;
+
+                                $cat_sales += $shipping['YDE'];
+                                $cat_sales += $shipping['YDE'];
                             ?>
                             <?php foreach ($cat_branch_data['YDE'] as $key => $value): ?>
                                 <?php
@@ -398,6 +446,20 @@ if(isset($_GET['download']))
                                     <td> <?php echo number_format($value['marge']); ?> </td>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr>
+                                <th colspan="2" class="text-center">
+                                    Frais De Livraisons
+                                </th>
+                                <th>
+                                    <?php echo number_format(0); ?> FCFA
+                                </th>
+                                <th>
+                                    <?php echo number_format($shipping['YDE']); ?> FCFA
+                                </th>
+                                <th>
+                                    <?php echo number_format($shipping['YDE']); ?> FCFA
+                                </th>
+                            </tr>
                             <tr>
                                 <th colspan="2" class="text-center">
                                     TOTAL/GROSS PROFIT
@@ -452,6 +514,10 @@ if(isset($_GET['download']))
                                 $cat_cost = 0;
                                 $cat_sales = 0;
                                 $cat_marge = 0;
+
+                                //add the shipping costs
+                                $cat_sales += $shipping['DLA'];
+                                $cat_marge += $shipping['DLA'];
                             ?>
                             <?php foreach ($cat_branch_data['DLA'] as $key => $value): ?>
                                 <?php
@@ -472,6 +538,21 @@ if(isset($_GET['download']))
                                     <td> <?php echo number_format($value['marge']); ?> </td>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr>
+                                <th colspan="2" class="text-center">
+                                    Frais De Livraisons
+                                </th>
+                                <th>
+                                    <?php echo number_format(0); ?> FCFA
+                                </th>
+                                <th>
+                                    <?php echo number_format($shipping['DLA']); ?> FCFA
+                                </th>
+                                <th>
+                                    <?php echo number_format($shipping['DLA']); ?> FCFA
+                                </th>
+                            </tr>
+
                             <tr>
                                 <th colspan="2" class="text-center">
                                     TOTAL/GROSS PROFIT
@@ -525,6 +606,9 @@ if(isset($_GET['download']))
                                 $gen_costs = 0;
                                 $gen_sales = 0;
                                 $gen_marge = 0;
+
+                                $gen_sales += $shipping['ALL'];
+                                $gen_marge += $shipping['ALL'];
                             ?>
                             <?php foreach ($category_data as $key => $value): ?>
                                 <?php
@@ -547,6 +631,20 @@ if(isset($_GET['download']))
                             <?php endforeach; ?>
                             <tr>
                                 <th colspan="2" class="text-center">
+                                    Frais De Livraisons
+                                </th>
+                                <th>
+                                    <?php echo number_format(0); ?> FCFA
+                                </th>
+                                <th>
+                                    <?php echo number_format($shipping['ALL']); ?> FCFA
+                                </th>
+                                <th>
+                                    <?php echo number_format($shipping['ALL']); ?> FCFA
+                                </th>
+                            </tr>
+                            <tr>
+                                <th colspan="2" class="text-center">
                                     TOTAL/GROSS PROFIT
                                 </th>
                                 <th>
@@ -567,63 +665,5 @@ if(isset($_GET['download']))
         </div>
     </div>
     <!-- End of General Sales Ecommerce -->
-
-    <?php
-
-    $seller_data['SC'] = [];
-    $seller_data['FL'] = [];
-    $seller_data['AM'] = [];
-    $seller_data['EM'] = [];
-
-    foreach($sellers as $seller_id => $seller)
-    {
-            // add the seller to the list
-            $array = [];
-            $seller_group = $seller['group'];
-
-            // array_push($seller_data[$seller_group], $array);
-            $seller_data[$seller_group][$seller_id] = [
-                            "name" => $seller['name'],
-                            "orders_count" => 0,
-                            "amount" => 0
-                        ];
-
-    }
-
-    //loop through the data and calculate
-    foreach($paidOrders as $order)
-    {
-        if($order->order_data != null)
-        {
-            $order_data = unserialize($order->order_data);
-
-            $region = $order_data['gt_region'];
-            $seller_id = $order_data['gt_seller'];
-            $town = isset($order_data['gt_town']) ? $order_data['gt_town'] : '-1';
-
-            //get the user type
-            $seller = $sellers[$seller_id];
-            $seller_group = $seller['group'];
-
-            //now add the sales for the seller
-            ++$seller_data[$seller_group][$seller_id]['orders_count'];
-            $seller_data[$seller_group][$seller_id]['amount'] += $order->total;
-
-            // $report['sellers'][$seller]['count'] += 1;
-            // $report['sellers'][$seller]['total'] += $order_amount;
-
-            //
-            // $report['regions'][$region]['count'] += 1;
-            // $report['regions'][$region]['total'] += $order_amount;
-            //
-            // $report['towns'][$town]['count'] += 1;
-            // $report['towns'][$town]['total'] += $order_amount;
-
-        }
-    }
-
-    //loop through and make the reports
-    ?>
-
 
 </div>
