@@ -1,5 +1,5 @@
 <?php
-$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_accounting";
+$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_accounting_report";
 
 if(isset($_GET['start_date']))
 {
