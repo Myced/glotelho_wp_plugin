@@ -73,6 +73,14 @@ class Admin
             ],
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Comptabilité Report',
+                'menu_title' => "Comptabilité Rapport",
+                'capability' => "manage_categories",
+                'slug' => "gt_accounting_report",
+                "callback" => ['\App\Reports\GTAccountingReportController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Commandes Vendeurs',
                 'menu_title' => "Commandes Vendeurs",
                 'capability' => "manage_categories",
