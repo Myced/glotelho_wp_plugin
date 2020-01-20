@@ -54,7 +54,7 @@ $whiteList = [
     '1393', //TELECOMS
     '1394', //INFORMATIQUE
     '1523', //PRODUITS NATURELS
-    '1319', //SÉCURITÉ ELECTRONIQUE
+    '1390', //SÉCURITÉ ELECTRONIQUE
     '1387', //TELEPHONES & TABLETTES
     '16', //clothing
     '77' //laptops

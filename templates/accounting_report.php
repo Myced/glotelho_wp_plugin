@@ -47,7 +47,6 @@ $payment_methods = [
 //since there are almost 46 categories and we need only a few.
 //let me whitelist categories to be shown.
 $whiteList = [
-    '3263', //FESTI NOËL
     '3210', //PRODUITS POUR BÉBÉS
     '3202', //Sécurité/Télécom
     '1426', //BUREAUX & MAISON
