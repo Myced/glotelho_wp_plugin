@@ -293,10 +293,10 @@ if(isset($_GET['download']))
                                          <td> <?php echo $count++; ?> </td>
                                          <td> <?php echo $item['name']; ?> </td>
                                          <td> <?php echo $item['quantity']; ?> </td>
-                                         <td> <?php echo $item['unit_cost']; ?> </td>
-                                         <td> <?php echo $item['total_cost']; ?> </td>
-                                         <td> <?php echo $item['product_total']; ?> </td>
-                                         <td> <?php echo $item['profit']; ?> </td>
+                                         <td> <?php echo number_format($item['unit_cost']); ?> </td>
+                                         <td> <?php echo number_format($item['total_cost']); ?> </td>
+                                         <td> <?php echo number_format($item['product_total']); ?> </td>
+                                         <td> <?php echo number_format($item['profit']); ?> </td>
                                      </tr>
                                  <?php endforeach; ?>
 
