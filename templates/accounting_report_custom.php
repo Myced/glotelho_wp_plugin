@@ -426,7 +426,7 @@ foreach ($shippings as $fee) {
                                 $cat_marge = 0;
 
                                 $cat_sales += $shipping['YDE'];
-                                $cat_sales += $shipping['YDE'];
+                                $cat_marge += $shipping['YDE'];
                             ?>
                             <?php foreach ($cat_branch_data['YDE'] as $key => $value): ?>
                                 <?php
@@ -524,6 +524,8 @@ foreach ($shippings as $fee) {
                                 //only show whitelisted categories
                                 if(! in_array($key, $whiteList))
                                     continue;
+
+
 
                                 $cat_cost += $value['cost'];
                                 $cat_sales += $value['total'];
