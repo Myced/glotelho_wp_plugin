@@ -81,6 +81,14 @@ class Admin
             ],
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Comptabilité Cat',
+                'menu_title' => "Comptabilité Categorie",
+                'capability' => "manage_categories",
+                'slug' => "gt_accounting_cat",
+                "callback" => ['\App\Reports\AccountingCatController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Commandes Vendeurs',
                 'menu_title' => "Commandes Vendeurs",
                 'capability' => "manage_categories",
