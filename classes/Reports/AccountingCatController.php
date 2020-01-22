@@ -26,6 +26,22 @@ class AccountingCatController
         return require_once GT_BASE_DIRECTORY . '/templates/accounting_cat.php';
     }
 
+    public function show_cat_report()
+    {
+        $manager = new AccountingCatManager;
+
+        $data = $manager->get_data();
+        $categories = self::getCategories();
+
+        //create a new spread sheet if we need to download.
+        if(isset($_GET['download']))
+        {
+            $spreadsheet = new Spreadsheet;
+        }
+
+        return require_once GT_BASE_DIRECTORY . '/templates/accounting_cat_town.php';
+    }
+
     public static function getCategories()
     {
         //prendre tous les category

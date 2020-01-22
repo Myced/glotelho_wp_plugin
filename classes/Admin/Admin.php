@@ -89,6 +89,14 @@ class Admin
             ],
             [
                 "parent_slug" => $parent_slug,
+                "title" => 'Comptabilité Cat Towns',
+                'menu_title' => "Comptabilité Categorie Towns",
+                'capability' => "manage_categories",
+                'slug' => "gt_accounting_town_cat",
+                "callback" => ['\App\Reports\AccountingCatController', 'show_cat_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
                 "title" => 'Commandes Vendeurs',
                 'menu_title' => "Commandes Vendeurs",
                 'capability' => "manage_categories",

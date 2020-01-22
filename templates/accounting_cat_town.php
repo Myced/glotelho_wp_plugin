@@ -1,7 +1,7 @@
 <?php
 // we are here for the accounting part;
 
-$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_accounting_cat";
+$defaultUrl = basename($_SERVER['PHP_SELF']) . "?page=gt_accounting_town_cat";
 
 if(isset($_GET['start_date']))
 {
@@ -37,6 +37,8 @@ $cat_ids = [];
 $product_cats = [];
 
 $cat_products_items = [];
+$cat_products_items['YDE'] = [];
+$cat_products_items['DLA'] = [];
 
 $payment_methods = [
     "MOMO" => "MTN Mobile Money",
@@ -60,7 +62,7 @@ $whiteList = [
     '1523', //PRODUITS NATURELS
     '1390', //SÉCURITÉ ELECTRONIQUE
     '1387', //TELEPHONES & TABLETTES
-    '16'
+    '16' //clothing
 ];
 
 foreach($categories as $category)
@@ -75,10 +77,15 @@ foreach($categories as $category)
 
     if(in_array($category->term_id, $whiteList))
     {
-        $cat_products_items[$category->term_id] = [];
+        $cat_products_items['YDE'][$category->term_id] = [];
 
-        $cat_products_items[$category->term_id]['name'] = $category->name;
-        $cat_products_items[$category->term_id]['items'] = [];
+        $cat_products_items['YDE'][$category->term_id]['name'] = $category->name;
+        $cat_products_items['YDE'][$category->term_id]['items'] = [];
+
+
+        $cat_products_items['DLA'][$category->term_id] = [];
+        $cat_products_items['DLA'][$category->term_id]['name'] = $category->name;
+        $cat_products_items['DLA'][$category->term_id]['items'] = [];
     }
 }
 
@@ -163,6 +170,7 @@ if(isset($_GET['download']))
 
              //get the product category and add it to the right category
              $product_id = $product['product_id'];
+             $town = $product['town'];
 
              $affected_categories = [];
 
@@ -197,7 +205,15 @@ if(isset($_GET['download']))
             {
                 if(in_array($acat, $whiteList))
                 {
-                    array_push($cat_products_items[$acat]['items'], $item);
+                    //add to the appropriate town
+                    if($town == "Yaounde")
+                    {
+                        array_push($cat_products_items['YDE'][$acat]['items'], $item);
+                    }
+                    else {
+                        array_push($cat_products_items['DLA'][$acat]['items'], $item);
+                    }
+
                 }
             }
 
@@ -206,6 +222,7 @@ if(isset($_GET['download']))
      }
 
  }
+
   ?>
 
  <div class="wrap">
@@ -248,11 +265,96 @@ if(isset($_GET['download']))
 
      <?php require_once GT_BASE_DIRECTORY . '/templates/excel_download_btn.php'; ?>
 
-     <br>
+     <br><br>
+     <div class="row">
+         <div class="col-md-12">
+             <h2>Yaounde Branch</h2>
+         </div>
+     </div>
      <div class="row">
          <div class="col-md-12">
 
-             <?php foreach ($cat_products_items as $key => $pcat): ?>
+             <?php foreach ($cat_products_items['YDE'] as $key => $pcat): ?>
+                 <div class="box box-info">
+                     <div class="box-header with-border">
+                         <h3 class="box-title">
+                             <?php echo $pcat['name']; ?>
+                         </h3>
+                     </div>
+
+                     <div class="box-body">
+                         <div class="table-responsive">
+                             <table class="table table-bordered" style="width: 1000px;">
+                                 <tr>
+                                     <th style="min-width: 10px"> S/N </th>
+                                     <th style="min-width: 300px;">Produit</th>
+                                     <th style="min-width: 40px">Qte</th>
+                                     <th style="min-width: 120px;">Prix Unitaire (PU)</th>
+                                     <th style="min-width: 120px;">Prix Reviendre (PR)</th>
+                                     <th style="min-width: 120px;">Prix Total (PT)</th>
+                                     <th style="min-width: 100px;">Marge</th>
+                                 </tr>
+
+                                 <?php
+                                 $count = 1;
+                                 $quantity = 0;
+                                 $unit_cost = 0;
+                                 $cost_price = 0;
+                                 $selling_price =0;
+                                 $marge = 0;
+                                  ?>
+                                 <?php foreach ($pcat['items'] as $item): ?>
+                                     <?php
+                                     $quantity += $item['quantity'];
+                                     $unit_cost += $item['unit_cost'];
+                                     $cost_price += $item['total_cost'];
+                                     $selling_price += $item['product_total'];
+                                     $marge += $item['profit'];
+
+                                      ?>
+                                     <tr>
+                                         <td> <?php echo $count++; ?> </td>
+                                         <td> <?php echo $item['name']; ?> </td>
+                                         <td> <?php echo $item['quantity']; ?> </td>
+                                         <td> <?php echo number_format($item['unit_cost']); ?> </td>
+                                         <td> <?php echo number_format($item['total_cost']); ?> </td>
+                                         <td> <?php echo number_format($item['product_total']); ?> </td>
+                                         <td> <?php echo number_format($item['profit']); ?> </td>
+                                     </tr>
+                                 <?php endforeach; ?>
+
+                                 <tr>
+                                     <th style="text-align: center" colspan="2">Totals</th>
+                                     <th> <?php echo number_format($quantity); ?> </th>
+                                     <th> <?php echo number_format($unit_cost); ?> </th>
+                                     <th> <?php echo number_format($cost_price); ?> </th>
+                                     <th> <?php echo number_format($selling_price); ?> </th>
+                                     <th> <?php echo number_format($marge); ?> </th>
+                                 </tr>
+
+                                 <!-- //show the details for the date -->
+
+
+                             </table>
+                         </div>
+                     </div>
+                 <!-- /.box-body -->
+                 </div>
+             <?php endforeach; ?>
+
+         </div>
+     </div>
+
+     <br><br><br>
+     <div class="row">
+         <div class="col-md-12">
+             <h2>Douala and Other Branches</h2>
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-md-12">
+
+             <?php foreach ($cat_products_items['DLA'] as $key => $pcat): ?>
                  <div class="box box-info">
                      <div class="box-header with-border">
                          <h3 class="box-title">
