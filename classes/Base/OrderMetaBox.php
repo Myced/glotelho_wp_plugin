@@ -1,6 +1,7 @@
 <?php
 namespace App\Base;
 
+use App\Base\Users;
 use App\Traits\ZoneTrait;
 
 class OrderMetaBox
@@ -25,9 +26,25 @@ class OrderMetaBox
             [$this,'add_order_box_fields'], 'shop_order', 'side', 'core' );
     }
 
+    private function get_authorized_users()
+    {
+        return Users::authorized();
+    }
+
+    private function current_username()
+    {
+        $user = wp_get_current_user();
+
+        return $user->user_login;
+    }
+
     public function add_order_box_fields()
     {
         global $post;
+
+        $old_status = $post->post_status;
+        $authorized_users = json_encode($this->get_authorized_users());
+        $current_user = $this->current_username();
 
         $meta_data = get_post_meta( $post->ID, $this->name, true );
 
@@ -44,7 +61,14 @@ class OrderMetaBox
         }
 
         echo '<input type="hidden" name="gt_order_nonce" value="' . wp_create_nonce() . '">';
+        echo '<input type="hidden" id="gt_b_old_status"
+                name="gt_b_old_status" value="' . $old_status . '">';
 
+        echo "<input type=\"hidden\" id=\"gt_auth_users\"
+                name=\"gt_auth_users\" value='$authorized_users'>";
+
+        echo '<input type="hidden" id="gt_b_current_user"
+                name="gt_b_current_user" value="' . $current_user . '">';
 
         ?>
         <p>
@@ -198,6 +222,44 @@ class OrderMetaBox
                 {
                     $('.gt_seller').select2();
                 }
+
+                jQuery('#post').on('submit', function(event){
+
+                    //get the required variables
+                    var old_status = $("#gt_b_old_status").val();
+                    var new_status = $("#order_status").val();
+                    var authorized_users = $.parseJSON($("#gt_auth_users").val());
+                    var current_user = $("#gt_b_current_user").val();
+
+                    var paid_status = "wc-payment-received";
+
+                    if(old_status === paid_status)
+                    {
+                        //no more modifications for unauthorized users
+                        if(authorized_users.includes(current_user))
+                        {
+                            return true;
+                        }
+                        else {
+                            alert("Vous ne pouvez plus modifier cette commande. La commande a été Encaissé");
+                            alert("Voir Elizabeth Comptabilité s'il ya des modifications à faire.");
+                        }
+                    }
+                    else {
+                        if(new_status !== paid_status)
+                        {
+                            //you can submit the form
+                            return true;
+                        }
+                        else {
+                            alert("Tu ne peux pas Changer le status à Encaissé");
+                            alert("Il faut contacter Elizabeth La Comptable");
+                        }
+                    }
+
+                    return false;
+
+                })
             });
         </script>
         <?php

@@ -9,7 +9,7 @@ class Users
     public static function authorized()
     {
         return [
-            'admin', 'cedrickt',
+            'cedrickt',
             'eliza', 'stephane'
         ];
     }
