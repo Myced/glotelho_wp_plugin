@@ -252,8 +252,16 @@ class OrderMetaBox
                             return true;
                         }
                         else {
-                            alert("Tu ne peux pas Changer le status à Encaissé");
-                            alert("Il faut contacter Elizabeth La Comptable");
+                            //if the user is authroized, the submit
+                            if(authorized_users.includes(current_user))
+                            {
+                                return true;
+                            }
+                            else {
+                                alert("Tu ne peux pas Changer le status à Encaissé");
+                                alert("Il faut contacter Elizabeth La Comptable");
+                            }
+
                         }
                     }
 
