@@ -60,6 +60,9 @@ class GTShippingPlugin
 
             //override wp smart search style
             \App\Base\OverrideSearchModal::class,
+
+            //SMS notifications
+            \App\Base\SendConfirmationSMS::class,
         ];
     }
 
