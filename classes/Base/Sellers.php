@@ -52,8 +52,8 @@ class Sellers
     {
         if(isset($_POST['gt_seller_role']))
         {
-            $role = $_POST['gt_seller_role'] ?? "";
-            $code = $_POST['gt_seller_code'] ?? "";
+            $role = isset($_POST['gt_seller_role']) ? $_POST['gt_seller_role'] : "";
+            $code = isset($_POST['gt_seller_code']) ? $_POST['gt_seller_code'] : "";
             $single = true;
 
 
