@@ -17,7 +17,8 @@ class AdvancePaymentMetaBox
         "YDE" => "YAOUNDE",
         "CHEQUE" => "CHEQUE",
         "CARD" => "CARD",
-        "SHOWROOM" => "SHOWROOM"
+        "SHOWROOM" => "SHOWROOM",
+        "CAISSE_DG" => "CAISSE DG"
     ];
 
 
@@ -216,8 +217,14 @@ class AdvancePaymentMetaBox
                         // If you don't have the WC_Order object (from a dynamic $order_id)
                         $order = wc_get_order(  $post_id );
 
-                        // Add the note
-                        $order->add_order_note( $note );
+                        if(is_boolean($order))
+                        {
+                            //do nothing
+                        }
+                        else {
+                            // Add the note
+                            $order->add_order_note( $note );
+                        }
                     }
                 }
 

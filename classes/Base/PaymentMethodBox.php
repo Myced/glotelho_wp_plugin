@@ -16,7 +16,8 @@ class PaymentMethodBox
         "YDE" => "YAOUNDE",
         "CHEQUE" => "CHEQUE",
         "CARD" => "CARD",
-        "SHOWROOM" => "SHOWROOM"
+        "SHOWROOM" => "SHOWROOM",
+        "CAISSE_DG" => "CAISSE DG"
     ];
 
 
