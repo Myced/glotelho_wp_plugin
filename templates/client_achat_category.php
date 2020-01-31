@@ -21,6 +21,65 @@ else {
 $categories = self::getCategories();
 $statuses = self::getStatuses();
 
+//the numbers that have already been displayed
+$gt_numbers = [];
+
+function gt_format_number($num)
+{
+    //get the formatted number
+    $formatted = format_tel(clean_tel($num));
+
+    if(is_bool($formatted))
+    {
+        return false;
+    }
+
+    $final_number = "+237 " . $formatted;
+
+    return $final_number;
+}
+
+function clean_tel($number)
+{
+    $regex = '/[\s\,\.\-\+\_]/';
+    if(preg_match($regex, $number))
+    {
+        $filter = preg_filter($regex, '', $number);
+    }
+    else
+    {
+        $filter = $number;
+    }
+
+    return $filter;
+}
+
+function format_tel($tel)
+{
+    if(strlen($tel) == 9)
+    {
+        return $tel;
+    }
+    elseif (strlen($tel) == 8) {
+        return '6' . $tel;
+    }
+    else {
+        //the number is not 9 digits
+        if(strlen($tel) == 12)
+        {
+            return substr($tel, 2, 9);
+        }
+        elseif (strlen($tel) == 11)
+        {
+            //the tel number is
+            return '6' . substr($tel, 2, 8);
+        }
+        else {
+            return false;
+        }
+    }
+}
+
 if(isset($_GET['download']))
 {
     require_once GT_BASE_DIRECTORY . '/templates/client_achat_download.php';
@@ -61,7 +120,7 @@ if(isset($_GET['download']))
          <div class="col-md-3">
              <select class="form-control chosen" multiple id="gt_category"
                  data-placeholder="Choose the categories needed">
-                 
+
                  <?php foreach ($categories as $category): ?>
                      <option value="<?php echo $category->term_id ?>"
                          <?php
@@ -148,13 +207,29 @@ if(isset($_GET['download']))
 
                                 <?php $count = 1; ?>
                                 <?php foreach ($data as $order): ?>
+                                    <?php
+                                    $tel = $order['client_tel'];
+
+                                    $my_formatted_tel = gt_format_number($tel);
+
+                                    //check if the number is in the list of numbers.
+                                    if(in_array($my_formatted_tel, $gt_numbers))
+                                    {
+                                        //then don't show the number again
+                                        continue;
+                                    }
+
+                                    //the number is not there.
+                                    //add it to the list of numbers
+                                    array_push($gt_numbers, $my_formatted_tel);
+                                     ?>
                                     <tr>
                                         <td> <?php echo $count++; ?> </td>
                                         <td> <?php echo date("d, M Y", strtotime($order['date'])); ?> </td>
                                         <td> Ord #<?php echo $order['order_no']; ?> </td>
                                         <td> <?php echo self::showStatus($order['order_status']); ?> </td>
                                         <td> <?php echo $order['client_name']; ?> </td>
-                                        <td> <?php echo $order['client_tel']; ?> </td>
+                                        <td> <?php echo $my_formatted_tel; ?> </td>
                                         <td> <?php echo $order['product_name']; ?> </td>
                                     </tr>
                                 <?php endforeach; ?>

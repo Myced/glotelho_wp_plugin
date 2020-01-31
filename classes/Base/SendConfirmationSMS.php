@@ -120,15 +120,24 @@ class SendConfirmationSMS
     private function format_tel($num)
     {
         $tel = $this->clean_tel($num);
+
         if(strlen($tel) == 9)
         {
             return $tel;
+        }
+        elseif (strlen($tel) == 8) {
+            return '6' . $tel;
         }
         else {
             //the number is not 9 digits
             if(strlen($tel) == 12)
             {
                 return substr($tel, 2, 9);
+            }
+            elseif (strlen($tel) == 11)
+            {
+                //the tel number is
+                return '6' . substr($tel, 2, 8);
             }
             else {
                 return false;

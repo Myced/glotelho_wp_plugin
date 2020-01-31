@@ -47,12 +47,27 @@ if($_GET['download'] == true)
     //get the data and loop through it.
     foreach($data as $achat)
     {
+        $tel = $achat['client_tel'];
+
+        $my_formatted_tel = gt_format_number($tel);
+
+        //check if the number is in the list of numbers.
+        if(in_array($my_formatted_tel, $gt_numbers))
+        {
+            //then don't show the number again
+            continue;
+        }
+
+        //the number is not there.
+        //add it to the list of numbers
+        array_push($gt_numbers, $my_formatted_tel);
+
         $row = [
             $achat['date'],
             $achat['order_no'],
             achat_get_order_status($achat['order_status']),
             $achat['client_name'],
-            $achat['client_tel'],
+            $my_formatted_tel,
             $achat['product_name']
         ];
 
