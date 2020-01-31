@@ -127,14 +127,14 @@ class Admin
                 'slug' => "gt_sales_report",
                 "callback" => ['\App\Reports\SaleReportController', 'show_report']
             ],
-            [
-                "parent_slug" => $parent_slug,
-                "title" => 'End OF Day Report',
-                'menu_title' => "End OF Day Report",
-                'capability' => "manage_categories",
-                'slug' => "gt_eod_report",
-                "callback" => ['\App\Reports\EndOfDayReportController', 'show_report']
-            ],
+            // [
+            //     "parent_slug" => $parent_slug,
+            //     "title" => 'End OF Day Report',
+            //     'menu_title' => "End OF Day Report",
+            //     'capability' => "manage_categories",
+            //     'slug' => "gt_eod_report",
+            //     "callback" => ['\App\Reports\EndOfDayReportController', 'show_report']
+            // ],
             [
                 "parent_slug" => $parent_slug,
                 "title" => 'Orders Report',
@@ -151,14 +151,14 @@ class Admin
                 'slug' => "gt_sellers_report",
                 "callback" => ['\App\Reports\SellerReportController', 'show_report']
             ],
-            [
-                "parent_slug" => $parent_slug,
-                "title" => 'Operations Report',
-                'menu_title' => "Operations Report",
-                'capability' => "manage_categories",
-                'slug' => "gt_operations_report",
-                "callback" => ['\App\Reports\OperationsReportController', 'show_report']
-            ],
+            // [
+            //     "parent_slug" => $parent_slug,
+            //     "title" => 'Operations Report',
+            //     'menu_title' => "Operations Report",
+            //     'capability' => "manage_categories",
+            //     'slug' => "gt_operations_report",
+            //     "callback" => ['\App\Reports\OperationsReportController', 'show_report']
+            // ],
             [
                 "parent_slug" => $parent_slug,
                 "title" => 'Categories Report',
@@ -167,30 +167,30 @@ class Admin
                 'slug' => "gt_categories_report",
                 "callback" => ['\App\Reports\CategoriesReportController', 'show_report']
             ],
-            [
-                "parent_slug" => $parent_slug,
-                "title" => 'Income Report',
-                'menu_title' => "Income Report",
-                'capability' => "manage_categories",
-                'slug' => "gt_income_report",
-                "callback" => ['\App\Reports\IncomeReportController', 'show_report']
-            ],
-            [
-                "parent_slug" => $parent_slug,
-                "title" => 'Monthly Report',
-                'menu_title' => "Monthly Report",
-                'capability' => "manage_categories",
-                'slug' => "gt_monthly_report",
-                "callback" => ['\App\Reports\MonthlyReportController', 'show_report']
-            ],
-            [
-                "parent_slug" => $parent_slug,
-                "title" => 'Products Report',
-                'menu_title' => "Products Report",
-                'capability' => "manage_categories",
-                'slug' => "gt_products_report",
-                "callback" => ['\App\Reports\ProductsReportController', 'show_report']
-            ],
+            // [
+            //     "parent_slug" => $parent_slug,
+            //     "title" => 'Income Report',
+            //     'menu_title' => "Income Report",
+            //     'capability' => "manage_categories",
+            //     'slug' => "gt_income_report",
+            //     "callback" => ['\App\Reports\IncomeReportController', 'show_report']
+            // ],
+            // [
+            //     "parent_slug" => $parent_slug,
+            //     "title" => 'Monthly Report',
+            //     'menu_title' => "Monthly Report",
+            //     'capability' => "manage_categories",
+            //     'slug' => "gt_monthly_report",
+            //     "callback" => ['\App\Reports\MonthlyReportController', 'show_report']
+            // ],
+            // [
+            //     "parent_slug" => $parent_slug,
+            //     "title" => 'Products Report',
+            //     'menu_title' => "Products Report",
+            //     'capability' => "manage_categories",
+            //     'slug' => "gt_products_report",
+            //     "callback" => ['\App\Reports\ProductsReportController', 'show_report']
+            // ],
             [
                 "parent_slug" => $parent_slug,
                 "title" => 'Commandes Freelance',
@@ -198,14 +198,6 @@ class Admin
                 'capability' => "manage_categories",
                 'slug' => "gt_freelance_report",
                 "callback" => ['\App\Reports\FreeLanceController', 'show_report']
-            ],
-            [
-                "parent_slug" => $parent_slug,
-                "title" => 'TEst',
-                'menu_title' => "TEst",
-                'capability' => "manage_categories",
-                'slug' => "gt_test_report",
-                "callback" => ['\App\Reports\TestController', 'show_report']
             ]
         ];
     }
