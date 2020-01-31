@@ -104,6 +104,32 @@ jQuery(document).ready(function($){
         window.location.href = finalUrl;
     });
 
+    $("#filter-christian").click(function(){
+        var url = $("#url").val();
+        var start_date = $("#start_date").val();
+        var end_date = $("#end_date").val();
+        var order_statuses = $("#gt_order_status").val();
+
+        var finalUrl = url + "&start_date=" + start_date
+                            + "&end_date=" + end_date;
+
+        if(order_statuses === null)
+        {
+            alert("Please select the required order Status");
+            return false;
+        }
+
+        //form the url with the sellers and categories.
+        for(var i = 0; i < order_statuses.length; i++)
+        {
+            finalUrl += "&statuses%5B%5D=" + order_statuses[i];
+        }
+
+
+        //redirec the user to the new url
+        window.location.href = finalUrl;
+    });
+
     $("#filter-ventes").click(function(){
         var url = $("#url").val();
         var start_date = $("#start_date").val();

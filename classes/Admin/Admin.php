@@ -198,6 +198,14 @@ class Admin
                 'capability' => "manage_categories",
                 'slug' => "gt_freelance_report",
                 "callback" => ['\App\Reports\FreeLanceController', 'show_report']
+            ],
+            [
+                "parent_slug" => $parent_slug,
+                "title" => 'Christian Report',
+                'menu_title' => "Christian Report",
+                'capability' => "manage_categories",
+                'slug' => "gt_christian_report",
+                "callback" => ['\App\Reports\ChristianController', 'show_report']
             ]
         ];
     }
