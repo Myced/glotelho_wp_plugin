@@ -40,6 +40,13 @@ class ChristianController
         return $status;
     }
 
+    public static function get_name($status)
+    {
+        $name = OrderStatus::getName($status);
+
+        return $name;
+    }
+
     public static function getStatuses()
     {
         return OrderStatus::validStatuses();

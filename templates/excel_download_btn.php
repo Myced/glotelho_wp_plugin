@@ -9,7 +9,7 @@ $url .= '&download=true';
     <div class="col-md-12">
         <a href="<?php echo $url; ?>" class="btn btn-success">
             <i class="fa fa-download"></i>
-            Download Excel
+            Téléchargez Excel
         </a>
     </div>
 </div>
