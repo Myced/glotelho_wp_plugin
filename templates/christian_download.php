@@ -65,6 +65,7 @@ if($_GET['download'] == true)
     // Redirect output to a client’s web browser (Xlsx)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="RapportChristian.xlsx"');
+    header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: max-age=0');
     // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');
