@@ -22,7 +22,7 @@ if(isset($_GET['download']))
 {
     if($_GET['download'] == true)
     {
-        require_once GT_BASE_DIRECTORY . '/templates/sales_download.php';
+        require_once GT_BASE_DIRECTORY . '/templates/christian_download.php';
     }
 }
 
@@ -109,8 +109,9 @@ $statuses = self::getStatuses();
                                 <th style="min-width: 100px;">Date</th>
                                 <th style="min-width: 80px;">Order</th>
                                 <th style="min-width: 100px;">Status</th>
-                                <th style="min-width: 200px;">Client</th>
-                                <th style="min-width: 300px;">Product</th>
+                                <th style="min-width: 150px;">Client</th>
+                                <th style="min-width: 100px;">Ville</th>
+                                <th style="min-width: 250px;">Product</th>
                                 <th style="min-width: 40px">Qty</th>
                             </tr>
 
@@ -132,6 +133,9 @@ $statuses = self::getStatuses();
 
                                       <td>
                                           <?php echo $item['full_name']; ?>
+                                      </td>
+                                      <td>
+                                          <?php echo $item['town']; ?>
                                       </td>
                                         <td> <?php echo $item['product_name']; ?> </td>
                                         <td> <?php echo $item['quantity']; ?> </td>

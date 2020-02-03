@@ -14,7 +14,13 @@ class ChristianController
     {
         $manager = new ChristianManager;
 
-        $data = $manager->get_data();
+        if(isset($_GET['start_date']))
+        {
+            $data = $manager->get_data();
+        }
+        else {
+            $data = [];
+        }
 
         //create a new spread sheet if we need to download.
         if(isset($_GET['download']))

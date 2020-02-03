@@ -95,6 +95,7 @@ class ChristianManager
                 'date' => $date,
                 'order_number' => $order_number,
                 'full_name' => $full_name,
+                'town' => $result->town,
                 "order_status" => $result->order_status,
                 'product_name' => $result->item_name,
                 'quantity' => $result->quantity,
@@ -125,7 +126,11 @@ class ChristianManager
                             MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_first_name')
                                 THEN wp_postmeta.meta_value ELSE NULL END) AS first_name,
                             MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_last_name')
-                                THEN wp_postmeta.meta_value ELSE NULL END) AS last_name
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS last_name,
+                            MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_city')
+                                THEN wp_postmeta.meta_value ELSE NULL END) AS town
+
+
                         FROM
                             wp_posts AS posts
                         INNER JOIN `wp_postmeta`
