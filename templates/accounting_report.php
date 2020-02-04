@@ -41,7 +41,8 @@ $payment_methods = [
     "YDE" => "YAOUNDE",
     "CHEQUE" => "CHEQUE",
     "CARD" => "CARD",
-    "SHOWROOM" => "SHOWROOM"
+    "SHOWROOM" => "SHOWROOM",
+    "CAISSE_DG" => "CAISSE DG"
 ];
 
 //since there are almost 46 categories and we need only a few.
@@ -70,10 +71,11 @@ foreach($categories as $category)
 }
 
 
-function get_product_categories($product_id, $categories, $category_products)
+function get_product_categories($product_id, $categories, $category_products, $whiteList)
 {
     $name = "";
     $all = [];
+
 
     foreach ($categories as $category)
     {
@@ -82,7 +84,11 @@ function get_product_categories($product_id, $categories, $category_products)
 
         if(in_array($product_id, $ids))
         {
-            array_push($all, $category->name);
+            //if its a whitelisted category
+            if(in_array($category->term_id, $whiteList))
+            {
+                array_push($all, $category->name);
+            }
         }
     }
 
@@ -382,7 +388,7 @@ if(isset($_GET['download']))
                                             <td> <?php echo $product['payment_method']; ?> </td>
                                             <td>
                                                 <?php
-                                                    $cat = get_product_categories($product['product_id'], $categories, $category_products);
+                                                    $cat = get_product_categories($product['product_id'], $categories, $category_products, $whiteList);
                                                     echo $cat;
                                                 ?>
                                             </td>
