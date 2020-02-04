@@ -241,8 +241,8 @@ class OrderMetaBox
                             return true;
                         }
                         else {
-                            alert("Vous ne pouvez plus modifier cette commande. La commande a été Encaissé");
-                            alert("Voir Elizabeth Comptabilité s'il ya des modifications à faire.");
+                            alert("Vous ne pouvez plus modifier cette commande car elle a déjà été Encaissé");
+                            alert("Veuillez contacter la comptabilité");
                         }
                     }
                     else {
@@ -258,8 +258,9 @@ class OrderMetaBox
                                 return true;
                             }
                             else {
-                                alert("Tu ne peux pas Changer le status à Encaissé");
-                                alert("Il faut contacter Elizabeth La Comptable");
+
+                                alert("vous n'avez pas l'autorisation de Changer ce status à Encaissé, veuillez contacter votre responsable ");
+
                             }
 
                         }

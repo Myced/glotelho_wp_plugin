@@ -50,13 +50,15 @@ class Sellers
 
     public function save_extra_fileds($term_id)
     {
+        //get the name  of the seller
+        $seller = get_term($term_id);
+        $name = $seller->name;
+
         if(isset($_POST['gt_seller_role']))
         {
             $role = isset($_POST['gt_seller_role']) ? $_POST['gt_seller_role'] : "";
             $code = isset($_POST['gt_seller_code']) ? $_POST['gt_seller_code'] : "";
             $single = true;
-
-
 
             //try to get the seller role and code
             $seller_role = get_term_meta($term_id, $this->role_key, $single);
@@ -64,7 +66,7 @@ class Sellers
 
             if(empty($seller_code))
             {
-                $code = $this->generateCode($role);
+                $code = $this->generateCode($role, $name);
 
                 //insert it
                 add_term_meta ($term_id, $this->code_key, $code, $single);
@@ -80,8 +82,36 @@ class Sellers
         }
     }
 
-    public function generateCode($role)
+    public function generateCode($role, $name)
     {
+        //split the name
+        $name_array = explode(' ', $name);
+
+        $abbr = '';
+
+        //process the name
+        if(count($name_array) == 0)
+        {
+            $abbr = '';
+        }
+        elseif(count($name_array) == 1)
+        {
+            //get the first letter
+            $abbr = substr($name_array[0], 0, 1);
+
+            ///convert to uppercase
+            $abbr = strtoupper($abbr);
+        }
+        else {
+            $abbr1 = substr($name_array[0], 0, 1);
+            $abbr1 = strtoupper($abbr1);
+
+            $abbr2 = substr($name_array[1], 0, 1);
+            $abbr2 = strtoupper($abbr2);
+
+            $abbr = $abbr1 . $abbr2;
+        }
+
         //get the sellers in that type
         $sellers = $this->getSellersByRole($role);
 
@@ -90,7 +120,7 @@ class Sellers
 
         $code = $this->normalise($count);
 
-        $user_code = $role . $code;
+        $user_code = $role . $abbr . $code;
 
         return $user_code;
     }
