@@ -45,7 +45,8 @@ class EnqueueScript
             "gt_accounting_report",
             "gt_accounting_cat",
             "gt_accounting_town_cat",
-            "gt_christian_report"
+            "gt_christian_report",
+            "gt_user_stats"
         ];
 
         if(isset($_GET['page']))

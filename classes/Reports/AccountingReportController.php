@@ -16,6 +16,7 @@ class AccountingReportController
 
         $data = $manager->get_data();
         $categories = self::getCategories();
+        $allCategories = self::allCategories();
 
         //create a new spread sheet if we need to download.
         if(isset($_GET['download']))
@@ -40,6 +41,20 @@ class AccountingReportController
                 //this category is a top level category
                 array_push($categories, $cat);
             }
+        }
+
+        return $categories;
+    }
+
+    public static function allCategories()
+    {
+        $categoriesMixed = get_terms('product_cat', ['hide_empty' => false ]);
+
+        $categories = [];
+
+        foreach($categoriesMixed as $cat)
+        {
+            array_push($categories, $cat);
         }
 
         return $categories;

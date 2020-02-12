@@ -57,6 +57,8 @@ $whiteList = [
     '1523', //PRODUITS NATURELS
     '1390', //SÉCURITÉ ELECTRONIQUE
     '1387', //TELEPHONES & TABLETTES
+    '16',
+    '69',
 ];
 
 foreach($categories as $category)
@@ -219,7 +221,8 @@ if(isset($_GET['download']))
                                 <th style="min-width: 150px;">Vendeur</th>
                                 <th style="min-width: 120px;">Ville</th>
                                 <th style="min-width: 100px;">Paiement</th>
-                                <th style="min-width: 400px;"> Categorie </th>
+                                <th style="min-width: 200px;"> Categorie </th>
+                                <th style="min-width: 200px;">Sub Category </th>
                             </tr>
 
                             <?php
@@ -311,6 +314,12 @@ if(isset($_GET['download']))
 
                                             $affected_categories = $prod_cats;
                                         }
+
+                                        //get the product category
+                                        $sub_cat = wc_get_product_categories($current_product_id);
+
+                                        var_dump($sub_cat);
+
 
 
                                         //now affect the required categories

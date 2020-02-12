@@ -50,18 +50,7 @@ $payment_methods = [
 
 //since there are almost 46 categories and we need only a few.
 //let me whitelist categories to be shown.
-$whiteList = [
-    '3210', //PRODUITS POUR BÉBÉS
-    '3202', //Sécurité/Télécom
-    '1426', //BUREAUX & MAISON
-    '1483', //ELECTROMENAGER
-    '1393', //TELECOMS
-    '1394', //INFORMATIQUE
-    '1523', //PRODUITS NATURELS
-    '1390', //SÉCURITÉ ELECTRONIQUE
-    '1387', //TELEPHONES & TABLETTES
-    '16'
-];
+$whiteList = \App\Base\WhiteList::categories();
 
 foreach($categories as $category)
 {

@@ -196,7 +196,7 @@ else {
                                         </td>
                                         <td>
                                             <a href="post.php?post=<?php echo $order->ID; ?>&action=edit"
-                                                    class="btn btn-info btn-xs">
+                                                    class="btn btn-info btn-xs" target="_blank">
                                                 View
                                             </a>
                                         </td>

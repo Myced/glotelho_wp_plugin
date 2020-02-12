@@ -206,7 +206,15 @@ class Admin
                 'capability' => "manage_categories",
                 'slug' => "gt_christian_report",
                 "callback" => ['\App\Reports\ChristianController', 'show_report']
-            ]
+            ],
+            // [
+            //     "parent_slug" => $parent_slug,
+            //     "title" => 'User Stats',
+            //     'menu_title' => "User Stats",
+            //     'capability' => "manage_categories",
+            //     'slug' => "gt_user_stats",
+            //     "callback" => ['\App\Reports\UserStatsController', 'show_report']
+            // ]
         ];
     }
 
