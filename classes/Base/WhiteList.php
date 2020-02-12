@@ -18,6 +18,7 @@ class WhiteList
             '1387', //TELEPHONES & TABLETTES
             '3347', //SAV
             '3361', //SUPER MARCHE
+            '3592', //pagne 8 mars
             '16' //clothing
         ];
     }
