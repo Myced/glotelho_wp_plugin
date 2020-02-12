@@ -238,6 +238,7 @@ if(isset($_GET['download']))
                             <?php foreach ($data as $currentDate => $date): ?>
 
                                 <?php
+
                                     $dateCount = 0;
                                     $isDateRow = true;
 
@@ -316,11 +317,7 @@ if(isset($_GET['download']))
                                         }
 
                                         //get the product category
-                                        $sub_cat = wc_get_product_categories($current_product_id);
-
-                                        var_dump($sub_cat);
-
-
+                                        $sub_cat = wc_get_product_category_list($current_product_id);
 
                                         //now affect the required categories
                                         $p_cost_price = $product['cost_price'] * $product['quantity'];
@@ -401,6 +398,8 @@ if(isset($_GET['download']))
                                                     echo $cat;
                                                 ?>
                                             </td>
+
+                                            <td> <?php echo $sub_cat; ?> </td>
                                         </tr>
                                     <?php endforeach; ?>
 
