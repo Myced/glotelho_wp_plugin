@@ -34,32 +34,11 @@ $category_products = [];
 $cat_ids = [];
 $product_cats = [];
 
-$payment_methods = [
-    "MOMO" => "MTN Mobile Money",
-    "ORANGE" => "Orange Money",
-    "CASH" => "CASH",
-    "YDE" => "YAOUNDE",
-    "CHEQUE" => "CHEQUE",
-    "CARD" => "CARD",
-    "SHOWROOM" => "SHOWROOM",
-    "CAISSE_DG" => "CAISSE DG"
-];
+$payment_methods = \App\Base\WhiteList::payment_methods();
 
 //since there are almost 46 categories and we need only a few.
 //let me whitelist categories to be shown.
-$whiteList = [
-    '3210', //PRODUITS POUR BÉBÉS
-    '3202', //Sécurité/Télécom
-    '1426', //BUREAUX & MAISON
-    '1483', //ELECTROMENAGER
-    '1393', //TELECOMS
-    '1394', //INFORMATIQUE
-    '1523', //PRODUITS NATURELS
-    '1390', //SÉCURITÉ ELECTRONIQUE
-    '1387', //TELEPHONES & TABLETTES
-    '16',
-    '69',
-];
+$whiteList = \App\Base\WhiteList::categories();
 
 foreach($categories as $category)
 {
