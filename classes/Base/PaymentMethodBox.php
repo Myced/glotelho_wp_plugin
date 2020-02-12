@@ -2,6 +2,7 @@
 namespace App\Base;
 
 use App\Base\Users;
+use App\Base\WhiteList;
 
 class PaymentMethodBox
 {
@@ -9,17 +10,12 @@ class PaymentMethodBox
     private $order_payment_method_key = "_gt_order_payment_method";
     public $date_key = "_gt_payment_date";
 
-    private $methods = [
-        "MOMO" => "MTN Mobile Money",
-        "ORANGE" => "Orange Money",
-        "CASH" => "CASH",
-        "YDE" => "YAOUNDE",
-        "CHEQUE" => "CHEQUE",
-        "CARD" => "CARD",
-        "SHOWROOM" => "SHOWROOM",
-        "CAISSE_DG" => "CAISSE DG"
-    ];
+    private $methods;
 
+    public function __construct()
+    {
+        $this->methods = WhiteList::payment_methods();
+    }
 
     public function register()
     {

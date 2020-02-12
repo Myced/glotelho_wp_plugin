@@ -24,7 +24,16 @@ class WhiteList
 
     public static function payment_methods()
     {
-
+        return [
+            "MOMO" => "MTN Mobile Money",
+            "ORANGE" => "Orange Money",
+            "CASH" => "CASH",
+            "YDE" => "YAOUNDE",
+            "CHEQUE" => "CHEQUE",
+            "CARD" => "CARD",
+            "SHOWROOM" => "SHOWROOM",
+            "CAISSE_DG" => "CAISSE DG"
+        ];
     }
 }
 

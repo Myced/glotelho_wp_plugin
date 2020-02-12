@@ -1,6 +1,7 @@
 <?php
 namespace App\Base;
 
+use App\Base\WhiteList;
 use App\Traits\ZoneTrait;
 
 class AdvancePaymentMetaBox
@@ -10,17 +11,12 @@ class AdvancePaymentMetaBox
     private $payment_method_key = "_gt_advance_payment";
     private $advance_date_key = "_gt_advance_date";
 
-    private $methods = [
-        "MOMO" => "MTN Mobile Money",
-        "ORANGE" => "Orange Money",
-        "CASH" => "CASH",
-        "YDE" => "YAOUNDE",
-        "CHEQUE" => "CHEQUE",
-        "CARD" => "CARD",
-        "SHOWROOM" => "SHOWROOM",
-        "CAISSE_DG" => "CAISSE DG"
-    ];
+    private $methods ;
 
+    public function __construct()
+    {
+        $this->methods = WhiteList::payment_methods();
+    }
 
     public function register()
     {

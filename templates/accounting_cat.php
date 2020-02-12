@@ -38,15 +38,7 @@ $product_cats = [];
 
 $cat_products_items = [];
 
-$payment_methods = [
-    "MOMO" => "MTN Mobile Money",
-    "ORANGE" => "Orange Money",
-    "CASH" => "CASH",
-    "YDE" => "YAOUNDE",
-    "CHEQUE" => "CHEQUE",
-    "CARD" => "CARD",
-    "SHOWROOM" => "SHOWROOM"
-];
+$payment_methods = \App\Base\WhiteList::payment_methods();
 
 //since there are almost 46 categories and we need only a few.
 //let me whitelist categories to be shown.
