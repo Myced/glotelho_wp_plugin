@@ -71,6 +71,8 @@ class OrderMetaBox
                 name="gt_b_current_user" value="' . $current_user . '">';
 
         ?>
+        <input type="hidden" name="allowed_status" id="allowed_status"
+            value='<?php echo json_encode(Users::get_user_access($current_user)); ?>'>
         <p>
 			<label class="meta-label" for="gt_plugin_seller">Order Seller:</label>
 
@@ -230,43 +232,62 @@ class OrderMetaBox
                     var new_status = $("#order_status").val();
                     var authorized_users = $.parseJSON($("#gt_auth_users").val());
                     var current_user = $("#gt_b_current_user").val();
+                    var allowed_actions = $.parseJSON($("#allowed_status").val());
+
+                    console.log(allowed_actions);
 
                     var paid_status = "wc-payment-received";
 
-                    if(old_status === paid_status)
+                    if(allowed_actions.length === 0)
                     {
-                        //no more modifications for unauthorized users
-                        if(authorized_users.includes(current_user))
-                        {
-                            return true;
-                        }
-                        else {
-                            alert("Vous ne pouvez plus modifier cette commande car elle a déjà été Encaissé");
-                            alert("Veuillez contacter la comptabilité");
-                        }
+                        alert("Vous n'êtes pas autorisé à effectuer aucune action sur les commandes");
+                        return false;
                     }
                     else {
-                        if(new_status !== paid_status)
-                        {
-                            //you can submit the form
+                        if(allowed_actions.includes(old_status))
                             return true;
-                        }
+                        else if(allowed_actions.includes(new_status))
+                            return true;
                         else {
-                            //if the user is authroized, the submit
-                            if(authorized_users.includes(current_user))
-                            {
-                                return true;
-                            }
-                            else {
-
-                                alert("vous n'avez pas l'autorisation de Changer ce status à Encaissé, veuillez contacter votre responsable ");
-
-                            }
-
+                            alert("Vous n'avez pas l'autorisation de Changer ce statut");
+                            return false;
                         }
                     }
 
-                    return false;
+//                     if(old_status === paid_status)
+//                     {
+//                         //no more modifications for unauthorized users
+//                         if(authorized_users.includes(current_user))
+//                         {
+//                             return true;
+//                         }
+//                         else {
+//                             alert("Vous ne pouvez plus modifier cette commande car elle a déjà été Encaissé");
+//                             alert("Veuillez contacter la comptabilité");
+//                         }
+//                     }
+//                     else {
+//                         if(new_status !== paid_status)
+//                         {
+//                             //you can submit the form
+//                             return true;
+//                         }
+//                         else {
+//                             //if the user is authroized, the submit
+//                             if(authorized_users.includes(current_user))
+//                             {
+//                                 return true;
+//                             }
+//                             else {
+// alert("vous n'avez pas l'autorisation de Changer ce status à Encaissé, veuillez contacter votre responsable ");
+//
+//
+//                             }
+//
+//                         }
+//                     }
+//
+//                     return false;
 
                 })
             });

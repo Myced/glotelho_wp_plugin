@@ -10,6 +10,7 @@ class OrderStatus
     const UNREACHABLE2 = 'wc-unreachable-2';
     const ON_HOLD = 'wc-on-hold';
     const COMFIRMED = 'wc-on-hold';
+
     const COMPLETED = 'wc-completed';
     const FAILED = 'wc-failed';
     const CANCELLED = 'wc-cancelled';
@@ -30,6 +31,11 @@ class OrderStatus
     const ORDER_PLANNED = "wc-order-planned";
     const ON_REAPPRO = "wc-on-reappro";
     const ON_REAPPRO_2 = "wc-on-purchase";
+
+    const PLANNED_PUS = 'wc-planned_pus';
+    const ADVANCED_PAID = 'wc-advance_paid';
+    const UNFINISHED = "wc-wc-unfinished";
+    const SHIPPED_OTHER_TOWN = 'wc-shipped_other_tow';
 
     public static function allClasses()
     {
@@ -60,7 +66,12 @@ class OrderStatus
             self::DELIVERY_FORWARDED => "label label-delivery-forwarded",
             self::ORDER_PLANNED => 'label label-order-planned',
             self::ON_REAPPRO => 'label label-on-reappro',
-            self::ON_REAPPRO_2 => 'label label-on-purchase'
+            self::ON_REAPPRO_2 => 'label label-on-purchase',
+
+            self::PLANNED_PUS => 'label label-planned-pus',
+            self::ADVANCED_PAID => 'label label-advance-paid',
+            self::UNFINISHED => 'label label-unfinished',
+            self::SHIPPED_OTHER_TOWN => "label label-shipped-other-town"
         ];
 
     }
@@ -76,7 +87,7 @@ class OrderStatus
             self::UNREACHABLE2 => 'Injoignable 2',
             self::ON_HOLD => 'Commande Confirmée',
             self::PLANNING => 'Planification',
-            self::SHIPPED => 'Commande Expédié',
+            self::SHIPPED => 'Expédié Yaoounde',
 
             self::COMPLETED => 'Commande Livrée',
 
@@ -93,9 +104,14 @@ class OrderStatus
             self::PAYMENT_RECEIVED => "Encaissé",
             self::TO_BE_VERIFIED => 'A Vérifier Par Le Service Client',
             self::DELIVERY_FORWARDED => "Livraison Reportée",
-            self::ORDER_PLANNED => 'Commande Planifiée',
+            self::ORDER_PLANNED => 'Planifiée Fleet',
             self::ON_REAPPRO => 'En Cour d’Approvisionement',
-            self::ON_REAPPRO_2 => 'En Cour d’Approvisionement'
+            self::ON_REAPPRO_2 => 'En Cour d’Approvisionement',
+
+            self::PLANNED_PUS => "Planifiée PUS",
+            self::ADVANCED_PAID => "Avance Payé",
+            self::UNFINISHED => "Commande Non Terminée",
+            self::SHIPPED_OTHER_TOWN => "Expédié Autre Ville"
         ];
     }
 

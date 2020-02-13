@@ -179,7 +179,7 @@ else {
                                               <?php echo date("d, M Y", strtotime($order->post_date)); ?>
                                           </a>
                                         </td>
-                                        <td> Ord #<?php echo $order->ID; ?> </td>
+                                        <td> # <?php echo is_null($order->invoice_no) ? $order->ID : $order->invoice_no; ?> </td>
                                         <td> <?php echo $order->first_name . ' ' . $order->last_name; ?> </td>
                                         <td> <?php echo $order->tel; ?> </td>
                                         <td> <?php echo self::showStatus($order->post_status); ?> </td>

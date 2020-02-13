@@ -92,6 +92,8 @@ class OrderReportManager
                     THEN wp_postmeta.meta_value ELSE NULL END) AS last_name,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_billing_phone')
                     THEN wp_postmeta.meta_value ELSE NULL END) AS tel,
+                MAX(CASE WHEN (wp_postmeta.meta_key = '_order_number')
+                    THEN wp_postmeta.meta_value ELSE NULL END) AS invoice_no,
                 MAX(CASE WHEN (wp_postmeta.meta_key = '_gt_order_data')
                     THEN wp_postmeta.meta_value ELSE NULL END) AS order_data
 

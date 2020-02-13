@@ -154,3 +154,27 @@
     color: #fff;
     background-color: #002ee8 !important;
 }
+
+.label-planned-pus
+{
+    color: #fff;
+    background-color: #b22300 !important;
+}
+
+.label-advance-paid
+{
+    color: #fff;
+    background-color: #2900f9 !important;
+}
+
+.label-unfinished
+{
+    color: #fff;
+    background-color: #7406e2 !important;
+}
+
+.label-shipped-other-town
+{
+    color: #fff;
+    background-color: #0031d6 !important;
+}
