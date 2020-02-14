@@ -37,7 +37,7 @@ class OrderStatus
     const UNFINISHED = "wc-wc-unfinished";
     const SHIPPED_OTHER_TOWN = 'wc-shipped_other_tow';
 
-    const PLANNED_yde = "wc-planned-yde";
+    const PLANNED_YDE = "wc-planned-yde";
 
     public static function allClasses()
     {

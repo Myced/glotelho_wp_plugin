@@ -28,7 +28,6 @@ if(isset($_GET['download']))
 
 $statuses = self::getStatuses();
 
-
 ?>
 
 <div class="wrap">
