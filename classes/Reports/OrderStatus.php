@@ -37,6 +37,8 @@ class OrderStatus
     const UNFINISHED = "wc-wc-unfinished";
     const SHIPPED_OTHER_TOWN = 'wc-shipped_other_tow';
 
+    const PLANNED_yde = "wc-planned-yde";
+
     public static function allClasses()
     {
         return [
@@ -71,7 +73,9 @@ class OrderStatus
             self::PLANNED_PUS => 'label label-planned-pus',
             self::ADVANCED_PAID => 'label label-advance-paid',
             self::UNFINISHED => 'label label-unfinished',
-            self::SHIPPED_OTHER_TOWN => "label label-shipped-other-town"
+            self::SHIPPED_OTHER_TOWN => "label label-shipped-other-town",
+
+            self::PLANNED_YDE  => 'label label-planned-yde'
         ];
 
     }
@@ -111,7 +115,9 @@ class OrderStatus
             self::PLANNED_PUS => "Planifiée PUS",
             self::ADVANCED_PAID => "Avance Payé",
             self::UNFINISHED => "Commande Non Terminée",
-            self::SHIPPED_OTHER_TOWN => "Expédié Autre Ville"
+            self::SHIPPED_OTHER_TOWN => "Expédié Autre Ville",
+
+            self::PLANNED_YDE => "Planifié Yaoundé"
         ];
     }
 

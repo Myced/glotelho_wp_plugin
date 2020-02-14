@@ -238,56 +238,59 @@ class OrderMetaBox
 
                     var paid_status = "wc-payment-received";
 
-                    if(allowed_actions.length === 0)
+                    // if(allowed_actions.length === 0)
+                    // {
+                    //     alert("Vous n'êtes pas autorisé à effectuer aucune action sur les commandes");
+                    //     return false;
+                    // }
+                    // else if (allowed_actions.includes('ALL')) {
+                    //     //This user is an admin.
+                    //     return true;
+                    // }
+                    // else {
+                    //     if(allowed_actions.includes(old_status))
+                    //         return true;
+                    //     else if(allowed_actions.includes(new_status))
+                    //         return true;
+                    //     else {
+                    //         alert("Vous n'avez pas l'autorisation de Changer ce statut");
+                    //         return false;
+                    //     }
+                    // }
+
+                    if(old_status === paid_status)
                     {
-                        alert("Vous n'êtes pas autorisé à effectuer aucune action sur les commandes");
-                        return false;
+                        //no more modifications for unauthorized users
+                        if(authorized_users.includes(current_user))
+                        {
+                            return true;
+                        }
+                        else {
+                            alert("Vous ne pouvez plus modifier cette commande car elle a déjà été Encaissé");
+                            alert("Veuillez contacter la comptabilité");
+                        }
                     }
                     else {
-                        if(allowed_actions.includes(old_status))
+                        if(new_status !== paid_status)
+                        {
+                            //you can submit the form
                             return true;
-                        else if(allowed_actions.includes(new_status))
-                            return true;
+                        }
                         else {
-                            alert("Vous n'avez pas l'autorisation de Changer ce statut");
-                            return false;
+                            //if the user is authroized, the submit
+                            if(authorized_users.includes(current_user))
+                            {
+                                return true;
+                            }
+                            else {
+                                alert("vous n'avez pas l'autorisation de Changer ce status à Encaissé, veuillez contacter votre responsable ");
+
+                            }
+
                         }
                     }
 
-//                     if(old_status === paid_status)
-//                     {
-//                         //no more modifications for unauthorized users
-//                         if(authorized_users.includes(current_user))
-//                         {
-//                             return true;
-//                         }
-//                         else {
-//                             alert("Vous ne pouvez plus modifier cette commande car elle a déjà été Encaissé");
-//                             alert("Veuillez contacter la comptabilité");
-//                         }
-//                     }
-//                     else {
-//                         if(new_status !== paid_status)
-//                         {
-//                             //you can submit the form
-//                             return true;
-//                         }
-//                         else {
-//                             //if the user is authroized, the submit
-//                             if(authorized_users.includes(current_user))
-//                             {
-//                                 return true;
-//                             }
-//                             else {
-// alert("vous n'avez pas l'autorisation de Changer ce status à Encaissé, veuillez contacter votre responsable ");
-//
-//
-//                             }
-//
-//                         }
-//                     }
-//
-//                     return false;
+                    return false;
 
                 })
             });
