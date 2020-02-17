@@ -98,7 +98,7 @@ class Users
         $users = [
             'perdita' => [
                 OrderStatus::ON_HOLD,
-                OrderStatus::DELIVERY_FORWARDED
+                OrderStatus::DELIVERY_FORWARDED_DLA
             ],
 
             'christian2' => [
