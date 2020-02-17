@@ -27,7 +27,7 @@ class OrderStatus
     const WAITING_SHIPPING_FEE = 'wc-waiting-shippx-fe';
     const PAYMENT_RECEIVED = "wc-payment-received";
     const TO_BE_VERIFIED = "wc-to-be-verified";
-    const DELIVERY_FORWARDED = "wc-delivery-forwarde";
+    const DELIVERY_FORWARDED_DLA = "wc-delivery-forwarde";
     const ORDER_PLANNED = "wc-order-planned";
     const ON_REAPPRO = "wc-on-reappro";
     const ON_REAPPRO_2 = "wc-on-purchase";
@@ -38,6 +38,8 @@ class OrderStatus
     const SHIPPED_OTHER_TOWN = 'wc-shipped_other_tow';
 
     const PLANNED_YDE = "wc-planned-yde";
+
+    const DELIVERY_FORWARDED_YDE = 'wc-delivery_resch_yd';
 
     public static function allClasses()
     {
@@ -65,7 +67,7 @@ class OrderStatus
             self::WAITING_SHIPPING_FEE => 'label label-waiting-shipping-fee',
             self::PAYMENT_RECEIVED => 'label label-payment-received',
             self::TO_BE_VERIFIED => 'label label-to-be-verified',
-            self::DELIVERY_FORWARDED => "label label-delivery-forwarded",
+            self::DELIVERY_FORWARDED_DLA => "label label-delivery-forwarded",
             self::ORDER_PLANNED => 'label label-order-planned',
             self::ON_REAPPRO => 'label label-on-reappro',
             self::ON_REAPPRO_2 => 'label label-on-purchase',
@@ -75,7 +77,9 @@ class OrderStatus
             self::UNFINISHED => 'label label-unfinished',
             self::SHIPPED_OTHER_TOWN => "label label-shipped-other-town",
 
-            self::PLANNED_YDE  => 'label label-planned-yde'
+            self::PLANNED_YDE  => 'label label-planned-yde',
+
+            self::DELIVERY_FORWARDED_YDE => 'label label-delivery-forwarded-yde'
         ];
 
     }
@@ -107,7 +111,7 @@ class OrderStatus
             self::WAITING_SHIPPING_FEE => "En Attente De Frais De Livraison",
             self::PAYMENT_RECEIVED => "Encaissé",
             self::TO_BE_VERIFIED => 'A Vérifier Par Le Service Client',
-            self::DELIVERY_FORWARDED => "Livraison Reportée",
+            self::DELIVERY_FORWARDED_DLA => "Livraison Reportée DLA",
             self::ORDER_PLANNED => 'Planifiée Fleet',
             self::ON_REAPPRO => 'En Cour d’Approvisionement',
             self::ON_REAPPRO_2 => 'En Cour d’Approvisionement',
@@ -117,7 +121,9 @@ class OrderStatus
             self::UNFINISHED => "Commande Non Terminée",
             self::SHIPPED_OTHER_TOWN => "Expédié Autre Ville",
 
-            self::PLANNED_YDE => "Planifié Yaoundé"
+            self::PLANNED_YDE => "Planifié Yaoundé",
+
+            self::DELIVERY_FORWARDED_YDE => 'Livraison Reporté YDE'
         ];
     }
 
