@@ -63,6 +63,9 @@ class GTShippingPlugin
 
             //SMS notifications
             \App\Base\SendConfirmationSMS::class,
+
+            //infobip sms api
+            \App\Ajax\InfoBipOrderStatus::class,
         ];
     }
 
