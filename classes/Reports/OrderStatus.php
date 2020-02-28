@@ -41,6 +41,8 @@ class OrderStatus
 
     const DELIVERY_FORWARDED_YDE = 'wc-delivery_resch_yd';
 
+    const CS_VERIFIED = 'wc-cs-verified';
+
     public static function allClasses()
     {
         return [
@@ -79,7 +81,9 @@ class OrderStatus
 
             self::PLANNED_YDE  => 'label label-planned-yde',
 
-            self::DELIVERY_FORWARDED_YDE => 'label label-delivery-forwarded-yde'
+            self::DELIVERY_FORWARDED_YDE => 'label label-delivery-forwarded-yde',
+
+            self::CS_VERIFIED => 'label label-cs-verified'
         ];
 
     }
@@ -123,7 +127,9 @@ class OrderStatus
 
             self::PLANNED_YDE => "Planifié Yaoundé",
 
-            self::DELIVERY_FORWARDED_YDE => 'Livraison Reporté YDE'
+            self::DELIVERY_FORWARDED_YDE => 'Livraison Reporté YDE',
+
+            self::CS_VERIFIED => "Déja Verifié et En Attente"
         ];
     }
 
