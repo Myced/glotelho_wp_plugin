@@ -161,7 +161,7 @@ class ChristianManager
                         LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__line_total
                         ON
                             (
-                                order_items.order_item_id = order_item_meta__qty.order_item_id
+                                order_items.order_item_id = order_item_meta__line_total.order_item_id
                             ) AND(
                                 order_item_meta__line_total.meta_key = '_line_total'
                             )

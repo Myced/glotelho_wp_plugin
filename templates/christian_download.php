@@ -48,7 +48,9 @@ if($_GET['download'] == true)
             3 => $item['full_name'],
             4 => $item['town'],
             5 => $item['product_name'],
-            6 => $item['quantity']
+            6 => number_format($item['selling_price']),
+            7 => $item['quantity'],
+            8 => $item['comment']
         ];
 
 
