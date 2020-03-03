@@ -99,6 +99,8 @@ class ChristianManager
                 "order_status" => $result->order_status,
                 'product_name' => $result->item_name,
                 'quantity' => $result->quantity,
+                'comment' => $result->order_note,
+                'selling_price' => $result->selling_price
             ];
 
             //push it into the order
@@ -116,6 +118,7 @@ class ChristianManager
         return $sql = "SELECT
                             order_item_meta__product_id.meta_value AS product_id,
                             order_item_meta__qty.meta_value AS quantity,
+                            order_item_meta__line_total.meta_value as selling_price,
                             order_items.order_item_name as item_name,
                             posts.post_date AS post_date,
                             posts.id AS order_id,
@@ -153,6 +156,14 @@ class ChristianManager
                                 order_items.order_item_id = order_item_meta__qty.order_item_id
                             ) AND(
                                 order_item_meta__qty.meta_key = '_qty'
+                            )
+
+                        LEFT JOIN wp_woocommerce_order_itemmeta AS order_item_meta__line_total
+                        ON
+                            (
+                                order_items.order_item_id = order_item_meta__qty.order_item_id
+                            ) AND(
+                                order_item_meta__line_total.meta_key = '_line_total'
                             )
 
                         WHERE

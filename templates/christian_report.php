@@ -111,7 +111,9 @@ $statuses = self::getStatuses();
                                 <th style="min-width: 150px;">Client</th>
                                 <th style="min-width: 100px;">Ville</th>
                                 <th style="min-width: 250px;">Product</th>
+                                <th style="min-width: 50px;">Prix</th>
                                 <th style="min-width: 40px">Qty</th>
+                                <th style="min-width: 250px;">Comment</th>
                             </tr>
 
 
@@ -137,7 +139,9 @@ $statuses = self::getStatuses();
                                           <?php echo $item['town']; ?>
                                       </td>
                                         <td> <?php echo $item['product_name']; ?> </td>
+                                        <td> <?php echo $item['selling_price']; ?> </td>
                                         <td> <?php echo $item['quantity']; ?> </td>
+                                        <td> <?php echo $item['comment']; ?> </td>
 
                                 </tr>
 
