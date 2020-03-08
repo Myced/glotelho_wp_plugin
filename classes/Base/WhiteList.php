@@ -19,6 +19,7 @@ class WhiteList
             '3347', //SAV
             '3361', //SUPER MARCHE
             '3592', //pagne 8 mars
+            '3730', //MODE for shoes
             '16' //clothing
         ];
     }
