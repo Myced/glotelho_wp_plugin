@@ -43,6 +43,8 @@ class OrderStatus
 
     const CS_VERIFIED = 'wc-cs-verified';
 
+    const APPRO_FORWARDED = 'wc-appro_forward';
+
     public static function allClasses()
     {
         return [
@@ -83,7 +85,9 @@ class OrderStatus
 
             self::DELIVERY_FORWARDED_YDE => 'label label-delivery-forwarded-yde',
 
-            self::CS_VERIFIED => 'label label-cs-verified'
+            self::CS_VERIFIED => 'label label-cs-verified',
+
+            self::APPRO_FORWARDED => 'label label-appro-forward'
         ];
 
     }
@@ -129,7 +133,9 @@ class OrderStatus
 
             self::DELIVERY_FORWARDED_YDE => 'Livraison Reporté YDE',
 
-            self::CS_VERIFIED => "Déja Verifié et En Attente"
+            self::CS_VERIFIED => "Déja Verifié et En Attente",
+
+            self::APPRO_FORWARDED => 'Appro Reporté'
         ];
     }
 
