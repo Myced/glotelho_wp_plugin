@@ -66,6 +66,9 @@ class GTShippingPlugin
 
             //infobip sms api
             \App\Ajax\InfoBipOrderStatus::class,
+
+            //Show Seller Name
+            \App\Base\ShowSellerOnProduct::class,
         ];
     }
 
