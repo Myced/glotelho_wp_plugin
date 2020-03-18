@@ -21,7 +21,7 @@ class ShowSellerOnProduct
 
         ?>
         <p>
-            Vendu par:
+            Vendeur:
             <span style="font-size: 18px; font-weight: bold;">
                 <?php echo $seller; ?>
             </span>
@@ -30,6 +30,8 @@ class ShowSellerOnProduct
     }
 
     public function getSeller(){
+
+        return "Espace Mobile";
 
         $seller_id = $this->getSellerId();
 
